@@ -18,19 +18,18 @@ Summary(pt_BR):	Implementação da API SASL
 Summary(ru):	âÉÂÌÉÏÔÅËÁ Cyrus SASL
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÁ Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.19
-Release:	2
+Version:	2.1.20
+Release:	1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
-# Source0-md5:	ea76410ad88fa7b6c17a6aac424382c9
+# Source0-md5:	268ead27f4ac39bcfe17d9e38e0f2977
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
 Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-nolibs.patch
 Patch2:		%{name}-lt.patch
-Patch3:		%{name}-unchecked_env.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -373,16 +372,18 @@ Wtyczka PostgreSQL do Cyrus SASL.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
 ls rfc*.txt >> rfc-compliance
 rm -f rfc*.txt
+cd ..
+
+rm -rf autom4te.cache saslauthd/autom4te.cache
+# acinclude.m4 contains only old libtool.m4
+rm -f acinclude.m4 libtool config/libtool.m4 saslauthd/acinclude.m4
 
 %build
-# acinclude.m4 contains only old libtool.m4
-rm -f acinclude.m4 libtool config/libtool.m4
 %{__libtoolize}
 %{__aclocal} -I cmulocal -I config
 %{__autoheader}
@@ -390,12 +391,11 @@ rm -f acinclude.m4 libtool config/libtool.m4
 %{__autoconf}
 
 cd saslauthd
-	rm -f acinclude.m4
-	%{__libtoolize}
-	%{__aclocal} -I ../cmulocal -I ../config -I config
-	%{__autoheader}
-	%{__automake}
-	%{__autoconf}
+%{__libtoolize}
+%{__aclocal} -I ../cmulocal -I ../config -I config
+%{__autoheader}
+%{__automake}
+%{__autoconf}
 cd ..
 
 %configure \
