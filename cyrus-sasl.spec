@@ -373,7 +373,7 @@ fi
 %defattr(644,root,root,755)
 %{_includedir}/*.h
 %attr(755,root,root) %{_libdir}/lib*.so
-%attr(755,root,root) %{_libdir}/lib*.la
+%{_libdir}/lib*.la
 %{_mandir}/man3/*
 
 %files static
