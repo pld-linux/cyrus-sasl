@@ -19,14 +19,16 @@ Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
 Patch0:		%{name}-configdir.patch
+Patch1:		%{name}-nolibs.patch
+Patch2:		%{name}-lt14d.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	db-devel
-BuildRequires:	pam-devel
-BuildRequires:	openssl-devel >= 0.9.6a
 BuildRequires:	libtool	>= 1.4
 %{!?_without_mysql:BuildRequires: mysql-devel}
 %{!?_without_ldap:BuildRequires: openldap-devel}
+BuildRequires:	openssl-devel >= 0.9.6a
+BuildRequires:	pam-devel
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -321,21 +323,24 @@ Cyrus SASL mysql plugin.
 %description mysql -l pl
 Wtyczka mysql do Cyrus SASL.
 
-
 %prep
 %setup  -q
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
-rm -f config/missing
+# acinclude.m4 contains only old libtool.m4
+rm -f acinclude.m4 config/missing
 %{__libtoolize}
 %{__aclocal} -I cmulocal -I config
 %{__autoheader}
-automake -a
+%{__automake}
+#-a
 %{__autoconf}
 
 cd saslauthd
-%{__libtoolize}
+#%{__libtoolize}
 %{__aclocal} -I ../cmulocal -I ../config -I config
 %{__autoheader}
 automake -a
@@ -355,7 +360,8 @@ LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl2/sasl.db \
 	--with-configdir=%{_sysconfdir} \
-	--disable-krb4
+	--disable-krb4 \
+	--disable-gssapi
 %{__make}
 
 %install

@@ -1,0 +1,42 @@
+--- cyrus-sasl-2.1.10/configure.in.orig	Thu Jan  9 20:22:17 2003
++++ cyrus-sasl-2.1.10/configure.in	Thu Jan  9 20:47:17 2003
+@@ -807,7 +807,7 @@
+ AC_SUBST(LTSNPRINTFOBJS)
+ 
+ dnl do we need to link in -lresolv?
+-AC_CHECK_LIB(resolv, inet_aton)
++AC_SEARCH_LIBS(inet_aton, resolv)
+ 
+ dnl Check for getaddrinfo
+ GETADDRINFOOBJS=""
+--- cyrus-sasl-2.1.10/cmulocal/bsd_sockets.m4.orig	Tue May 28 21:06:56 2002
++++ cyrus-sasl-2.1.10/cmulocal/bsd_sockets.m4	Thu Jan  9 21:07:50 2003
+@@ -16,11 +16,12 @@
+ 			     LIB_SOCKET="-lsocket $LIB_SOCKET")
+ 	)
+ 	LIBS="$LIB_SOCKET $save_LIBS"
+-	AC_CHECK_FUNC(res_search, :,
+-                AC_CHECK_LIB(resolv, res_search,
+-                              LIB_SOCKET="-lresolv $LIB_SOCKET") 
+-        )
+-	LIBS="$LIB_SOCKET $save_LIBS"
++dnl we don't need res_search if no kerberos support
++dnl	AC_CHECK_FUNC(res_search, :,
++dnl             AC_CHECK_LIB(resolv, res_search,
++dnl                           LIB_SOCKET="-lresolv $LIB_SOCKET") 
++dnl     )
++dnl	LIBS="$LIB_SOCKET $save_LIBS"
+ 	AC_CHECK_FUNCS(dn_expand dns_lookup)
+ 	LIBS="$save_LIBS"
+ 	AC_SUBST(LIB_SOCKET)
+--- cyrus-sasl-2.1.10/saslauthd/configure.in.orig	Fri Dec  6 17:24:06 2002
++++ cyrus-sasl-2.1.10/saslauthd/configure.in	Thu Jan  9 21:22:46 2003
+@@ -106,7 +106,7 @@
+ fi
+ AC_SUBST(LIB_PAM)
+ 
+-AC_CHECK_LIB(resolv, inet_aton)
++AC_SEARCH_LIBS(inet_aton, resolv)
+ 
+ AC_MSG_CHECKING(to include experimental LDAP support)
+ AC_ARG_WITH(ldap, [  --with-ldap=DIR         use LDAP (in DIR) (experimental) [no] ],
