@@ -21,6 +21,7 @@ Source3:	%{name}.pam
 Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-nolibs.patch
 Patch2:		%{name}-lt14d.patch
+Patch3:		%{name}-do_dlopen.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	db-devel
@@ -328,6 +329,7 @@ Wtyczka mysql do Cyrus SASL.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 # acinclude.m4 contains only old libtool.m4
