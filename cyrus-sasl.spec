@@ -26,6 +26,7 @@ Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-nolibs.patch
 Patch2:		%{name}-lt14d.patch
 Patch3:		%{name}-do_dlopen.patch
+URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	db-devel
@@ -35,7 +36,6 @@ BuildRequires:	libtool	>= 1.4
 %{!?_without_ldap:BuildRequires: openldap-devel}
 BuildRequires:	openssl-devel >= 0.9.7
 BuildRequires:	pam-devel
-URL:		http://asg.web.cmu.edu/sasl/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/sasl
@@ -352,10 +352,10 @@ rm -f acinclude.m4 config/missing
 %{__autoconf}
 
 cd saslauthd
-%{__aclocal} -I ../cmulocal -I ../config -I config
-%{__autoheader}
-automake -a
-%{__autoconf}
+	%{__aclocal} -I ../cmulocal -I ../config -I config
+	%{__autoheader}
+	%{__automake}
+	%{__autoconf}
 cd ..
 
 LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
@@ -387,7 +387,9 @@ cd ..
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/var/lib/sasl2,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig}} \
 		$RPM_BUILD_ROOT%{_mandir}/man8
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 rm -rf $RPM_BUILD_ROOT%{_mandir}/cat*
 rm -f $RPM_BUILD_ROOT%{_libdir}/sasl2/*.{la,a}
