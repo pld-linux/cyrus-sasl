@@ -6,6 +6,7 @@
 # _with_srp		- build srp pluggin
 # _without_myslq	- don't build mysql pluggin
 # _without_ldap		- disable LDAP support for sasluthd
+# _with_gssapi		- enable GSSAPI support for sasluthd
 #
 Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
@@ -216,6 +217,23 @@ anonimowego uwierzytelniania.
 Este plugin implementa o mecanismo SASL ANONYMOUS, usado para
 autenticação anônima.
 
+%if %{with gssapi}
+%package gssapi
+Summary:	GSSAPI Cyrus SASL plugin
+Summary(pl):	Wtyczka GSSAPI do Cyrus SASL
+Summary(pt_BR):	Mecanismo SASL GSSAPI
+Group:		Libraries
+Requires:	%{name} = %{version}
+
+%description gssapi
+This plugin implements the SASL GSSAPI mechanism, used for
+GSSAPI/Kerberos5 authentication.
+
+%description gssapi -l pt_BR
+Este plugin implementa o mecanismo SASL GSSAPI, usado para
+autenticação Kerberos/GSSAPI.
+%endif
+
 %package login
 Summary:	Unsupported Login Cyrus SASL plugin
 Summary(pl):	Nie wspierana wtyczka Login do Cyrus SASL
@@ -373,7 +391,8 @@ LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 	--with-dbpath=/var/lib/sasl2/sasl.db \
 	--with-configdir=%{_sysconfdir} \
 	--disable-krb4 \
-	--disable-gssapi
+	%{?_with_gssapi: --enable-gssapi } \
+  %{?!_with_gssapi: --disable-gssapi }
 %{__make}
 
 cd doc
@@ -459,6 +478,12 @@ fi
 %files anonymous
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libanonymous.so*
+
+%if %{with gssapi}
+%files gssapi
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libgssapi.so*
+%endif
 
 %files cram-md5
 %defattr(644,root,root,755)
