@@ -1,17 +1,20 @@
-diff -durN cyrus-sasl-2.1.10.orig/acconfig.h cyrus-sasl-2.1.10/acconfig.h
---- cyrus-sasl-2.1.10.orig/acconfig.h	Tue Sep 10 19:17:32 2002
-+++ cyrus-sasl-2.1.10/acconfig.h	Thu Jan  9 11:42:29 2003
-@@ -78,6 +78,9 @@
- /* This is where plugins will live at runtime */
- #undef PLUGINDIR
+--- cyrus-sasl-2.1.17/configure.in.orig	2003-11-28 19:37:10.000000000 +0100
++++ cyrus-sasl-2.1.17/configure.in	2003-12-03 22:45:24.790632560 +0100
+@@ -710,6 +710,13 @@
+ AC_DEFINE_UNQUOTED(PLUGINDIR, "$plugindir", [Runtime plugin location])
+ AC_SUBST(plugindir)
  
-+/* This is where config files will live at runtime */
-+#undef CONFIGDIR
++AC_ARG_WITH(configdir, [   --with-configdir=DIR    set the directory where config files will
++                          be found [/etc/sasl] ],
++  configdir=$withval,
++  configdir=/etc/sasl)
++AC_DEFINE_UNQUOTED(CONFIGDIR, "$configdir", [Runtime config files location])
++AC_SUBST(configdir)
 +
- /* Make autoheader happy */
- #undef WITH_SYMBOL_UNDERSCORE
- 
-@@ -247,6 +250,7 @@
+ dnl look for rc4 libraries. we accept the CMU one or one from openSSL
+ AC_ARG_WITH(rc4, [  --with-rc4              use internal rc4 routines [yes] ],
+ 	with_rc4=$withval,
+@@ -1006,6 +1013,7 @@
  #endif
  
  #define SASL_PATH_ENV_VAR "SASL_PATH"
@@ -19,23 +22,6 @@ diff -durN cyrus-sasl-2.1.10.orig/acconfig.h cyrus-sasl-2.1.10/acconfig.h
  
  #include <stdlib.h>
  #include <sys/types.h>
-diff -durN cyrus-sasl-2.1.10.orig/configure.in cyrus-sasl-2.1.10/configure.in
---- cyrus-sasl-2.1.10.orig/configure.in	Fri Dec  6 17:23:56 2002
-+++ cyrus-sasl-2.1.10/configure.in	Thu Jan  9 11:42:29 2003
-@@ -664,6 +664,13 @@
- AC_DEFINE_UNQUOTED(PLUGINDIR, "$plugindir")
- AC_SUBST(plugindir)
- 
-+AC_ARG_WITH(configdir, [   --with-configdir=DIR    set the directory where config files will
-+                          be found [/etc/sasl] ],
-+  configdir=$withval,
-+  configdir=/etc/sasl)
-+AC_DEFINE_UNQUOTED(CONFIGDIR, "$configdir")
-+AC_SUBST(configdir)
-+
- dnl look for rc4 libraries. we accept the CMU one or one from openSSL
- AC_ARG_WITH(rc4, [  --with-rc4              use internal rc4 routines [yes] ],
- 	with_rc4=$withval,
 diff -durN cyrus-sasl-2.1.10.orig/include/sasl.h cyrus-sasl-2.1.10/include/sasl.h
 --- cyrus-sasl-2.1.10.orig/include/sasl.h	Fri Dec  6 17:23:59 2002
 +++ cyrus-sasl-2.1.10/include/sasl.h	Thu Jan  9 11:44:00 2003
@@ -143,13 +129,12 @@ diff -durN cyrus-sasl-2.1.10.orig/lib/saslint.h cyrus-sasl-2.1.10/lib/saslint.h
  _sasl_find_verifyfile_callback(const sasl_callback_t *callbacks);
  
  extern int _sasl_common_init(void);
-diff -durN cyrus-sasl-2.1.10.orig/lib/server.c cyrus-sasl-2.1.10/lib/server.c
---- cyrus-sasl-2.1.10.orig/lib/server.c	Thu Dec  5 05:16:59 2002
-+++ cyrus-sasl-2.1.10/lib/server.c	Thu Jan  9 11:42:29 2003
-@@ -379,15 +379,15 @@
-   char *c;
+--- cyrus-sasl-2.1.17/lib/server.c.orig	2003-11-14 17:49:07.000000000 +0100
++++ cyrus-sasl-2.1.17/lib/server.c	2003-12-03 22:48:32.585083464 +0100
+@@ -436,15 +436,15 @@
+   size_t path_len;
    char *config_filename=NULL;
-   int len;
+   size_t len;
 -  const sasl_callback_t *getpath_cb=NULL;
 +  const sasl_callback_t *getconfpath_cb=NULL;
  
@@ -160,7 +145,7 @@ diff -durN cyrus-sasl-2.1.10.orig/lib/server.c cyrus-sasl-2.1.10/lib/server.c
 +  if (getconfpath_cb==NULL) return SASL_BADPARAM;
  
 -  /* getpath_cb->proc MUST be a sasl_getpath_t; if only c had a type
-+  /* getconfpath_cb->proc MUST be a sasl_getconfpath_t; if only c had a type
++  /* getconfpath_cb->proc MUST be a sasl_getpath_t; if only c had a type
       system */
 -  result = ((sasl_getpath_t *)(getpath_cb->proc))(getpath_cb->context,
 +  result = ((sasl_getconfpath_t *)(getconfpath_cb->proc))(getconfpath_cb->context,
@@ -218,16 +203,14 @@ diff -durN cyrus-sasl-2.1.10.orig/man/sasl_getconfpath_t.3 cyrus-sasl-2.1.10/man
 +.BR other sasl stuff
 +.BR 
 +.BR 
-\ No newline at end of file
-diff -durN cyrus-sasl-2.1.10.orig/win32/include/config.h cyrus-sasl-2.1.10/win32/include/config.h
---- cyrus-sasl-2.1.10.orig/win32/include/config.h	Fri Dec  6 17:24:48 2002
-+++ cyrus-sasl-2.1.10/win32/include/config.h	Thu Jan  9 11:44:41 2003
-@@ -96,7 +96,9 @@
+--- cyrus-sasl-2.1.17/win32/include/config.h.orig	2003-11-28 19:38:00.000000000 +0100
++++ cyrus-sasl-2.1.17/win32/include/config.h	2003-12-03 22:50:39.916726112 +0100
+@@ -91,7 +91,9 @@
  #define HAVE_MEMCPY 1
  
  #define SASL_PATH_ENV_VAR "SASL_PATH"
 +#define SASL_CONF_PATH_ENV_VAR "SASL_CONF_PATH"
- #define PLUGINDIR "C:\\SASL-PLUGINS"
+ #define PLUGINDIR "C:\\CMU\\bin\\sasl2"
 +#define CONFIGDIR "\\sasl-configs"
  
  /* Windows calls these functions something else
