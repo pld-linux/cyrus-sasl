@@ -5,6 +5,8 @@ Release:	3
 Copyright:	distributable
 Group:		Libraries
 Source:		ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
+BuildRequires:	gdbm-devel
+BuildRequires:	pam-devel
 URL:		http://asg.web.cmu.edu/cyrus/imapd/
 Buildroot:	/tmp/%{name}-%{version}-root
 
