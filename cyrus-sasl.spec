@@ -16,6 +16,7 @@ Group(pl):	Biblioteki
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
+Source3:	%{name}.pam
 Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-des.patch
 Patch2:		%{name}-mysql-ldap.patch
@@ -183,7 +184,7 @@ Cyrus SASL pwcheck helper.
 %patch4 -p1
 
 %build
-rm -f config/missing
+%{__rm} -f config/missing
 libtoolize --copy --force
 aclocal -I cmulocal
 autoheader
@@ -206,20 +207,21 @@ LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 %{__make}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/var/{state,lib}/sasl,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig}}
+%{__rm} -rf $RPM_BUILD_ROOT
+%{__install} -d $RPM_BUILD_ROOT{/var/{state,lib}/sasl,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,pam.d}}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 touch $RPM_BUILD_ROOT/var/lib/sasl/sasl.db
 
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
+%{__install} %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
+%{__install} %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
+%{__install} %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/cyrus
 
-gzip -9nf COPYING testing.txt NEWS TODO README doc/*.txt doc/*.html 
+%{__gzip} -9nf COPYING testing.txt NEWS TODO README doc/*.txt doc/*.html 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+%{__rm} -rf $RPM_BUILD_ROOT
 
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
@@ -319,3 +321,4 @@ fi
 %attr(755,root,root) %{_sbindir}/saslauthd
 %attr(755,root,root) /etc/rc.d/init.d/saslauthd
 %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/saslauthd
+%config(noreplace) %verify(not mtime md5 size) /etc/pam.d/cyrus
