@@ -224,7 +224,7 @@ libtoolize --copy --force
 aclocal -I cmulocal
 autoheader
 automake -a
-autoconf
+%{__autoconf}
 LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 %configure \
 	--enable-static \
