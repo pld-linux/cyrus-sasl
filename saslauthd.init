@@ -1,0 +1,68 @@
+#!/bin/sh
+#
+# saslauthd	SASL AUTH Daemon
+#
+# chkconfig:	2345 40 60
+# description:	SASL AUTH Daemon
+# processname:	saslauthd
+# pidfile:	/var/state/sasl/mux.pid
+
+# $Id$
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Get service config
+[ -f /etc/sysconfig/saslauthd ] && . /etc/sysconfig/saslauthd
+
+if [ "x$SASL_AUTHMECH" != "x" ]; then
+	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -a $SASL_AUTHMECH"
+fi
+
+if [ "x$SASL_RIMAP_HOSTNAME" != "x" ]; then
+	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -H $SASL_RIMAP_HOSTNAME"
+fi
+
+#if is_yes "$SASL_TIME_OF_DAY_LOGIN_RESTRICTIONS" ; then
+#	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -T"
+#fi
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/saslauthd ]; then
+		msg_starting saslauthd
+		daemon saslauthd $SASLAUTHD_OPTS
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/saslauthd
+	else
+		msg_already_running saslauthd
+	fi
+	;;
+  stop)
+	# Stop daemons.
+	if [ -f /var/lock/subsys/saslauthd ]; then
+		msg_stopping saslauthd
+		killproc saslauthd
+		rm -f /var/lock/subsys/saslauthd /var/run/saslauthd.pid >/dev/null 2>&1
+	else
+		msg_not_running saslauthd
+	fi
+	;;
+  status)
+	status saslauthd
+	exit $?
+	;;
+  restart|force-reload)
+	$0 stop
+	$0 start
+	exit $?
+	;;
+  *)
+	msg_usage "$0 {start|stop|restart|force-reload|status}"
+	exit 3
+esac
+
+exit $RETVAL
