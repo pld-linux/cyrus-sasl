@@ -136,6 +136,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%dir %{_sysconfdir}
 %dir %{_libdir}/sasl
 %dir /var/lib/sasl
 %attr(755,root,root) %{_libdir}/lib*.so.*.*
