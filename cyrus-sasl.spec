@@ -11,7 +11,7 @@ Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.11
-Release:	1
+Release:	2
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail//%{name}-%{version}.tar.gz
@@ -312,7 +312,6 @@ Cyrus SASL sasldb plugin.
 %description sasldb -l pl
 Wtyczka sasldb do Cyrus SASL.
 
-%if %{!?_without_mysql:1}%{?_without_mysql:0}
 %package mysql
 Summary:	Cyrus SASL mysql plugin
 Summary(pl):	Wtyczka mysql do Cyrus SASL
@@ -324,7 +323,6 @@ Cyrus SASL mysql plugin.
 
 %description mysql -l pl
 Wtyczka mysql do Cyrus SASL.
-%endif
 
 %prep
 %setup  -q
@@ -368,7 +366,7 @@ LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/var/lib/sasl2,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,pam.d}} \
+install -d $RPM_BUILD_ROOT{/var/lib/sasl2,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig}} \
 		$RPM_BUILD_ROOT%{_mandir}/man8
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
@@ -383,7 +381,7 @@ touch $RPM_BUILD_ROOT/var/lib/sasl2/sasl.db
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/cyrus
+install %{SOURCE3} ./cyrus.pam
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -488,8 +486,8 @@ fi
 
 %files saslauthd
 %defattr(644,root,root,755)
+%doc cyrus.pam
 %attr(755,root,root) %{_sbindir}/saslauthd
 %attr(754,root,root) /etc/rc.d/init.d/saslauthd
 %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/saslauthd
-%config(noreplace) %verify(not mtime md5 size) /etc/pam.d/cyrus
 %{_mandir}/man8/saslauthd.*
