@@ -33,8 +33,8 @@ BuildRequires:	automake
 BuildRequires:	db-devel
 BuildRequires:	ed
 BuildRequires:	libtool	>= 1.4
-%{!?_without_mysql:BuildRequires: mysql-devel}
-%{!?_without_ldap:BuildRequires: openldap-devel}
+%{!?_without_mysql:BuildRequires:	mysql-devel}
+%{!?_without_ldap:BuildRequires:	openldap-devel}
 BuildRequires:	openssl-devel >= 0.9.7
 BuildRequires:	pam-devel
 Requires(post):	/sbin/ldconfig
@@ -351,7 +351,7 @@ Cyrus SASL mysql plugin.
 Wtyczka mysql do Cyrus SASL.
 
 %prep
-%setup  -q
+%setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -384,17 +384,17 @@ LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 	--enable-static \
 	--enable-login \
 	%{?_with_srp:--enable-srp} \
-	%{?!_without_mysql: --with-mysql=%{_prefix}} \
-	%{?!_without_ldap: --with-ldap=%{_prefix}} \
-	%{?_with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
+	%{?!_without_mysql:--with-mysql=%{_prefix}} \
+	%{?!_without_ldap:--with-ldap=%{_prefix}} \
+	%{?_with_pwcheck:--with-pwcheck=/var/lib/sasl2} \
 	--with-saslauthd=/var/lib/sasl2 \
 	--with-pam \
 	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl2/sasl.db \
 	--with-configdir=%{_sysconfdir} \
 	--disable-krb4 \
-	%{?_with_gssapi: --enable-gssapi } \
-  %{?!_with_gssapi: --disable-gssapi }
+	%{?_with_gssapi:--enable-gssapi } \
+	%{?!_with_gssapi:--disable-gssapi }
 %{__make}
 
 cd doc
