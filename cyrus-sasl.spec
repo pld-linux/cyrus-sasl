@@ -7,6 +7,7 @@
 %bcond_without	ldap	# disable LDAP support for saslauthd
 %bcond_with	gssapi	# enable GSSAPI support for saslauthd and build gssapi plugin
 %bcond_without	mysql	# don't build mysql pluggin
+%bcond_with	pgsql	# don't build pgsql pluggin
 %bcond_with	srp	# build srp pluggin
 %bcond_with	pwcheck	# build pwcheck helper (deprecated)
 %bcond_with	x509	# build x509 plugin (no sources in package???)
@@ -38,6 +39,7 @@ BuildRequires:	ed
 %{?with_gssapi:BuildRequires:	heimdal-devel}
 BuildRequires:	libtool	>= 1.4
 %{?with_mysql:BuildRequires:	mysql-devel}
+%{?with_pgsql:BuildRequires:	postgresql-devel}
 %{?with_ldap:BuildRequires:	openldap-devel}
 BuildRequires:	openssl-devel >= 0.9.7c
 BuildRequires:	pam-devel
@@ -354,6 +356,18 @@ Cyrus SASL mysql plugin.
 %description mysql -l pl
 Wtyczka mysql do Cyrus SASL.
 
+%package pgsql
+Summary:	Cyrus SASL PostgreSQL plugin
+Summary(pl):	Wtyczka PostgreSQL do Cyrus SASL
+Group:		Libraries
+Requires:	%{name} = %{version}
+
+%description pgsql
+Cyrus SASL PostgreSQL plugin.
+
+%description pgsql -l pl
+Wtyczka PostgreSQL do Cyrus SASL.
+
 %prep
 %setup -q
 %patch0 -p1
@@ -395,6 +409,7 @@ cd ..
 	--with-dbpath=/var/lib/sasl2/sasl.db \
 	%{?with_ldap: --with-ldap=%{_prefix}} \
 	%{?with_mysql: --with-mysql=%{_prefix}} \
+	%{?with_pgsql: --with-pgsql=%{_prefix}} \
 	--with-pam \
 	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
 	--with-saslauthd=/var/lib/sasl2
@@ -515,6 +530,12 @@ fi
 
 %if %{with mysql}
 %files mysql
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libsql*.so*
+%endif
+
+%if %{with pgsql}
+%files pgsql
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libsql*.so*
 %endif
