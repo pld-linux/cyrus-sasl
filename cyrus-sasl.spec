@@ -4,7 +4,7 @@
 #
 # Conditional build:
 # _with_srp		- build srp pluggin
-# _without_myslq	- don't build mysql pluggin
+# _without_mysql	- don't build mysql pluggin
 # _without_ldap		- disable LDAP support for sasluthd
 # _with_gssapi		- enable GSSAPI support for sasluthd
 #
