@@ -36,7 +36,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_sysconfdir	/etc/sasl
 
 %description
-This is an implemention of the SASL API, useful for adding
+This is an implementation of the SASL API, useful for adding
 authentication, authorization, and security to network protocols. The
 SASL protocol itself is documented in rfc2222; the API standard is a
 work in progress.
