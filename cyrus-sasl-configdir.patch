@@ -53,18 +53,20 @@ diff -durN cyrus-sasl-2.1.10.orig/include/sasl.h cyrus-sasl-2.1.10/include/sasl.
 diff -durN cyrus-sasl-2.1.10.orig/lib/common.c cyrus-sasl-2.1.10/lib/common.c
 --- cyrus-sasl-2.1.10.orig/lib/common.c	Thu Dec  5 15:00:38 2002
 +++ cyrus-sasl-2.1.10/lib/common.c	Thu Jan  9 11:42:29 2003
-@@ -1040,6 +1040,20 @@
+@@ -1040,6 +1040,22 @@
  }
  
  static int
 +_sasl_getconfpath(void *context __attribute__((unused)),
 +	      char ** path_dest)
 +{
-+  char *path;
++  char *path = NULL;
 +
 +  if (! path_dest)
 +    return SASL_BADPARAM;
-+  path = getenv(SASL_CONF_PATH_ENV_VAR);
++  /* Honor external variable only in a safe environment */
++  if (getuid() == geteuid() && getgid() == getegid())
++    path = getenv(SASL_CONF_PATH_ENV_VAR);
 +  if (! path)
 +    path = CONFIGDIR;
 +  return _sasl_strdup(path, path_dest, NULL);
@@ -74,7 +76,7 @@ diff -durN cyrus-sasl-2.1.10.orig/lib/common.c cyrus-sasl-2.1.10/lib/common.c
  _sasl_verifyfile(void *context __attribute__((unused)),
  		 char *file  __attribute__((unused)),
  		 int type  __attribute__((unused)))
-@@ -1147,6 +1161,10 @@
+@@ -1147,6 +1163,10 @@
      *pproc = (int (*)()) &_sasl_getpath;
      *pcontext = NULL;
      return SASL_OK;
@@ -85,7 +87,7 @@ diff -durN cyrus-sasl-2.1.10.orig/lib/common.c cyrus-sasl-2.1.10/lib/common.c
    case SASL_CB_AUTHNAME:
      *pproc = (int (*)()) &_sasl_getsimple;
      *pcontext = conn;
-@@ -1475,6 +1493,30 @@
+@@ -1475,6 +1495,30 @@
  }
  
  const sasl_callback_t *
@@ -150,7 +152,7 @@ diff -durN cyrus-sasl-2.1.10.orig/lib/saslint.h cyrus-sasl-2.1.10/lib/saslint.h
 +  if (getconfpath_cb==NULL) return SASL_BADPARAM;
  
 -  /* getpath_cb->proc MUST be a sasl_getpath_t; if only c had a type
-+  /* getconfpath_cb->proc MUST be a sasl_getpath_t; if only c had a type
++  /* getconfpath_cb->proc MUST be a sasl_getconfpath_t; if only c had a type
       system */
 -  result = ((sasl_getpath_t *)(getpath_cb->proc))(getpath_cb->context,
 +  result = ((sasl_getconfpath_t *)(getconfpath_cb->proc))(getconfpath_cb->context,
