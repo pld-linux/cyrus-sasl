@@ -19,7 +19,7 @@ Release:	1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
-# Source0-md5:	76ea426e2e2da3b8d2e3a43af5488f3b
+# Source0-md5:	60710be040801e9aff7353563b636518
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
