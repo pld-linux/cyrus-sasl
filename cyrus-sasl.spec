@@ -278,8 +278,8 @@ Wtyczka x509 do Cyrus SASL.
 Summary:	Cyrus SASL authd
 Summary(pl):	Demon authd do Cyrus SASL
 Group:		Libraries
+Requires(post,postun):	/sbin/chkconfig
 Requires:	%{name} = %{version}
-Prereq:		/sbin/chkconfig
 
 %description saslauthd
 Cyrus SASL authd.
@@ -336,11 +336,9 @@ rm -f acinclude.m4 config/missing
 %{__aclocal} -I cmulocal -I config
 %{__autoheader}
 %{__automake}
-#-a
 %{__autoconf}
 
 cd saslauthd
-#%{__libtoolize}
 %{__aclocal} -I ../cmulocal -I ../config -I config
 %{__autoheader}
 automake -a
