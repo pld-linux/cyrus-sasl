@@ -105,7 +105,7 @@ LDFLAGS="-s"; export LDFLAGS
 	--enable-login \
 	--with-dblib=gdbm \
 	--with-dbpath=/var/lib/sasl/sasl.db
-make
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
