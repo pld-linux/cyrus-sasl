@@ -1,7 +1,7 @@
 #
 # TODO:
 # - add ldap plugin from openldap sources
-# - pgsql? (but sql plugin would require both libs...)
+# - cleaner solution for mysql/pgsql support
 #
 # Conditional build:
 %bcond_without	ldap	# disable LDAP support for saslauthd
@@ -19,7 +19,7 @@ Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.17
-Release:	0.1
+Release:	0.2
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
