@@ -25,6 +25,7 @@ Patch3:		%{name}-do_dlopen.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	db-devel
+BuildRequires:	ed
 BuildRequires:	libtool	>= 1.4
 %{!?_without_mysql:BuildRequires: mysql-devel}
 %{!?_without_ldap:BuildRequires: openldap-devel}
@@ -371,10 +372,10 @@ LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 %{__make}
 
 cd doc
-RFCLIST=`grep 'rfc.+\.txt' rfc-compliance`
+RFCLIST=`grep 'rfc.\+\.txt' rfc-compliance`
 for i in $RFCLIST; do
 	RFCDIR=../RFC/text/`echo $i | sed -e 's:^rfc::' -e 's:..\.txt$::' `00
-	echo -e ',s:'$i':'$RFCDIR/$i\n,w\nq' | ed index.html
+	echo -e ',s:'$i':'$RFCDIR/$i'\n,w\nq' | ed index.html
 done
 cd ..
 
