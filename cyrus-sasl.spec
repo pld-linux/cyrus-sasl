@@ -11,7 +11,7 @@ Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.12
-Release:	1
+Release:	2
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail//%{name}-%{version}.tar.gz
@@ -331,6 +331,12 @@ Wtyczka mysql do Cyrus SASL.
 %patch2 -p1
 %patch3 -p1
 
+cd doc
+echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
+ls rfc*.txt >> rfc-compliance
+rm -f rfc*.txt
+cd ..
+
 %build
 # acinclude.m4 contains only old libtool.m4
 rm -f acinclude.m4 config/missing
@@ -363,6 +369,14 @@ LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 	--disable-krb4 \
 	--disable-gssapi
 %{__make}
+
+cd doc
+RFCLIST=`grep 'rfc.+\.txt' rfc-compliance`
+for i in $RFCLIST; do
+	RFCDIR=../RFC/text/`echo $i | sed -e 's:^rfc::' -e 's:..\.txt$::' `00
+	echo -e ',s:'$i':'$RFCDIR/$i\n,w\nq' | ed index.html
+done
+cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -408,7 +422,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING ChangeLog NEWS README
-%doc doc/{ONEWS,TODO,*.txt,*.html,*.fig}
+%doc doc/{ONEWS,TODO,*.txt,*.html,*.fig,rfc-compliance}
 %dir %{_sysconfdir}
 %dir %{_libdir}/sasl2
 %dir /var/lib/sasl2
