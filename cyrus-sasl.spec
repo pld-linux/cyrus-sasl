@@ -217,7 +217,6 @@ anonimowego uwierzytelniania.
 Este plugin implementa o mecanismo SASL ANONYMOUS, usado para
 autenticação anônima.
 
-%if %{with gssapi}
 %package gssapi
 Summary:	GSSAPI Cyrus SASL plugin
 Summary(pl):	Wtyczka GSSAPI do Cyrus SASL
@@ -229,10 +228,13 @@ Requires:	%{name} = %{version}
 This plugin implements the SASL GSSAPI mechanism, used for
 GSSAPI/Kerberos5 authentication.
 
+%description gssapi -l pl
+Wtyczka dodaj±ca obs³ugê mechanizmu SASL GSSAPI, u¿ywanego do
+uwierzytelniania z u¿yciem GSSAPI/Kerberos5.
+
 %description gssapi -l pt_BR
 Este plugin implementa o mecanismo SASL GSSAPI, usado para
 autenticação Kerberos/GSSAPI.
-%endif
 
 %package login
 Summary:	Unsupported Login Cyrus SASL plugin
