@@ -440,7 +440,8 @@ install -d $RPM_BUILD_ROOT{/var/lib/sasl2,%{_sysconfdir},/etc/{rc.d/init.d,sysco
 rm -rf $RPM_BUILD_ROOT%{_mandir}/cat*
 rm -f $RPM_BUILD_ROOT%{_libdir}/sasl2/*.{la,a}
 
-install {utils,saslauthd}/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+install utils/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+install saslauthd/saslauthd.mdoc $RPM_BUILD_ROOT%{_mandir}/man8/saslauthd.8
 
 ln -sf libsasl2.so $RPM_BUILD_ROOT%{_libdir}/libsasl.so
 
