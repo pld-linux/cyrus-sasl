@@ -7,7 +7,7 @@
 %bcond_without	ldap	# disable LDAP support for saslauthd
 %bcond_with	gssapi	# enable GSSAPI support for saslauthd and build gssapi plugin
 %bcond_without	mysql	# don't build mysql pluggin
-%bcond_with	pgsql	# don't build pgsql pluggin
+%bcond_with	pgsql	# build pgsql pluggin
 %bcond_with	srp	# build srp pluggin
 %bcond_with	pwcheck	# build pwcheck helper (deprecated)
 %bcond_with	x509	# build x509 plugin (no sources in package???)
