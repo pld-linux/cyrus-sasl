@@ -28,6 +28,7 @@ Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-nolibs.patch
 Patch2:		%{name}-lt14d.patch
 Patch3:		%{name}-do_dlopen.patch
+Patch4:		%{name}-ldb4.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -357,6 +358,7 @@ Wtyczka mysql do Cyrus SASL.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
