@@ -1,13 +1,34 @@
---- cyrus-sasl-1.5.27/lib/common.c~	Thu Oct 14 19:42:38 2004
-+++ cyrus-sasl-1.5.27/lib/common.c	Thu Oct 14 19:44:57 2004
-@@ -682,7 +682,9 @@
+--- cyrus-sasl-1.5.27/lib/common.c.orig	2004-10-19 12:39:47.000000000 +0200
++++ cyrus-sasl-1.5.27/lib/common.c	2004-10-19 12:43:35.000000000 +0200
+@@ -678,11 +678,13 @@
+ _sasl_getpath(void *context __attribute__((unused)),
+ 	      char ** path_dest)
+ {
+-  char *path;
++  char *path = NULL;
  
    if (! path_dest)
      return SASL_BADPARAM;
 -  path = getenv(SASL_PATH_ENV_VAR);
 +  /* Honor external variable only in a safe environment */
 +  if (getuid() == geteuid() && getgid() == getegid())
-+	  *path = getenv(SASL_PATH_ENV_VAR);
++    path = getenv(SASL_PATH_ENV_VAR);
    if (! path)
      path = PLUGINDIR;
+   return _sasl_strdup(path, path_dest, NULL);
+@@ -692,11 +694,13 @@
+ _sasl_getconfpath(void *context __attribute__((unused)),
+ 	      char ** path_dest)
+ {
+-  char *path;
++  char *path = NULL;
+ 
+   if (! path_dest)
+     return SASL_BADPARAM;
+-  path = getenv(SASL_CONF_PATH_ENV_VAR);
++  /* Honor external variable only in a safe environment */
++  if (getuid() == geteuid() && getgid() == getegid())
++    path = getenv(SASL_CONF_PATH_ENV_VAR);
+   if (! path)
+     path = CONFIGDIR;
    return _sasl_strdup(path, path_dest, NULL);
