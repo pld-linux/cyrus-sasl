@@ -58,16 +58,16 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %dir %{_libdir}/sasl
-%attr(755,root,toot) %{_libdir}/lib*.so.*.*
-%attr(755,root,toot) %{_libdir}/sasl/lib*.so*
-%attr(755,root,toot) %{_sbindir}/saslpasswd
+%attr(755,root,root) %{_libdir}/lib*.so.*.*
+%attr(755,root,root) %{_libdir}/sasl/lib*.so*
+%attr(755,root,root) %{_sbindir}/saslpasswd
 %{_mandir}/man[18]/*
 
 %files devel
 %defattr(644,root,root,755)
 %{_includedir}/*.h
-%attr(755,root,toot) %{_libdir}/lib*.so
-%attr(755,root,toot) %{_libdir}/lib*.la
+%attr(755,root,root) %{_libdir}/lib*.so
+%attr(755,root,root) %{_libdir}/lib*.la
 
 %files static
 %defattr(644,root,root,755)
