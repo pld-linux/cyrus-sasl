@@ -8,7 +8,7 @@ Summary(pl):	Biblioteka Cyrus SASL
 Name:		cyrus-sasl
 Version:	1.5.27
 Release:	7
-LIcense:	Distributable
+License:	distributable
 Group:		Libraries
 Group(de):	Libraries
 Group(es):	Bibliotecas
