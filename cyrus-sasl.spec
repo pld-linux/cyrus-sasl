@@ -450,7 +450,7 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
 install %{SOURCE3} ./cyrus.pam
 
-install saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT/%{_sbindir}
+install saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT%{_sbindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
