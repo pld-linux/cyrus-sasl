@@ -253,8 +253,6 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/cyrus
 
-gzip -9nf COPYING testing.txt NEWS TODO README doc/*.txt
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -279,6 +277,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
+%doc COPYING testing.txt NEWS TODO README doc/*.txt doc/*.html
 %dir %{_sysconfdir}
 %dir %{_libdir}/sasl
 %dir /var/lib/sasl
@@ -288,7 +287,6 @@ fi
 
 %attr(640,root,mail) %ghost %config(noreplace) %verify(not mtime md5 size) /var/lib/sasl/sasl.db
 %{_mandir}/man[18]/*
-%doc *.gz doc/*.gz doc/*.html
 
 %files devel
 %defattr(644,root,root,755)
