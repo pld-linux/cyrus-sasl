@@ -392,6 +392,6 @@ fi
 %files saslauthd
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/saslauthd
-%attr(755,root,root) /etc/rc.d/init.d/saslauthd
+%attr(754,root,root) /etc/rc.d/init.d/saslauthd
 %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/saslauthd
 %config(noreplace) %verify(not mtime md5 size) /etc/pam.d/cyrus
