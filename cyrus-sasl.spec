@@ -40,13 +40,16 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 This is an implemention of the SASL API, useful for adding
-authentication, authorization, and security to network protocols.  The
+authentication, authorization, and security to network protocols. The
 SASL protocol itself is documented in rfc2222; the API standard is a
 work in progress.
 
 %description -l pl
 Pakiet cyrus-sasl zawiera implementacjê biblioteki API SASL dla
-systemu poczty elektronicznej Cyrusa.
+systemu poczty elektronicznej Cyrusa. Biblioteka ta jest przydatna
+tak¿e do dodawania uwierzytelniania, autoryzacji oraz zwiêkszania
+bezpieczeñstwa protoko³ów sieciowych. Sam protokó³ SASL jest opisany
+w RFC 2222; standaryzacja API jest w toku.
 
 %description -l pt_BR
 Esta é uma implementação da API SASL, útil para acrescentar autenticação,
@@ -122,13 +125,16 @@ Group:		Libraries
 Requires:	%{name} = %{version}
 
 %description cram-md5
-This plugin implements the SASL CRAM-MD5 mechanism.
-CRAM-MD5 is the mandatory-to-implement authentication mechanism for a
-number of protocols; it uses MD5 with a challenge/response system to
+This plugin implements the SASL CRAM-MD5 mechanism. CRAM-MD5 is the
+mandatory-to-implement authentication mechanism for a number of
+protocols; it uses MD5 with a challenge/response system to
 authenticate the user.
 
 %description cram-md5 -l pl
-Wtyczka Cram-MD5 do Cyrus SASL.
+Wtyczka dodaj±ca obs³ugê mechanizmu CRAM-MD5 do Cyrus SASL. CRAM-MD5
+jest obowi±zkowym do zaimplementowania mechanizmem uwierzytelniania
+dla wielu protoko³ów; do uwierzytelnienia u¿ytkownika u¿ywa MD5 wraz
+z systemem challenge/response.
 
 %description cram-md5 -l pt_BR
 Este plugin implementa o mecanismo SASL CRAM-MD5. CRAM-MD5 é o
@@ -145,12 +151,16 @@ Requires:	%{name} = %{version}
 
 %description digest-md5
 This plugin implements the latest draft of the SASL DIGEST-MD5
-mechanism.  Although not yet finalized, this is likely to become the
+mechanism. Although not yet finalized, this is likely to become the
 new mandatory-to-implement authentication system in all new protocols.
 It's based on the digest md5 authentication system designed for HTTP.
 
 %description digest-md5 -l pl
-Wtyczka Digest-MD5 do Cyrus SASL.
+Wtyczka dodaj±ca najnowsz± wersjê mechanizmu DIGEST-MD5 do Cyrus SASL.
+Pomimo tego, ¿e nie jest jeszcze ukoñczony, najprawdopodobniej stanie
+siê obowi±zkowym do zaimplementowania systemem uwierzytelniania we
+wszystkich nowych protoko³ach. Bazuje na systemie uwierzytelniania
+Digest-MD5 zaprojektowanym dla HTTP.
 
 %description digest-md5 -l pt_BR
 Este plugin implementa a última versão da especificação do
@@ -167,13 +177,16 @@ Group:		Libraries
 Requires:	%{name} = %{version}
 
 %description plain
-This plugin implements the SASL PLAIN mechanism.  Although insecure,
+This plugin implements the SASL PLAIN mechanism. Although insecure,
 PLAIN is useful for transitioning to new security mechanisms, as this
 is the only mechanism which gives the server a copy of the user's
 password.
 
 %description plain -l pl
-Wtyczka plain do Cyrus SASL.
+Wtyczka dodaj±ca obs³ugê mechanizmu PLAIN do Cyrus SASL. Pomimo tego,
+¿e nie jest bezpieczny, PLAIN jest przydatny przy przechodzeniu na
+nowe mechanizmu bezpieczeñstwa, jako ¿e jest to jedyny mechanizm,
+który udostêpnia serwerowi kopiê has³a u¿ytkownika.
 
 %description plain -l pt_BR
 Este plugin implementa o mecanismo SASL PLAIN. Embora inseguro,
@@ -193,7 +206,8 @@ This plugin implements the SASL ANONYMOUS mechanism,
 used for anonymous authentication.
 
 %description anonymous -l pl
-Wtyczka anonymous do Cyrus SASL.
+Wtyczka dodaj±ca obs³ugê mechanizmu ANONYMOUS do Cyrus SASL. S³u¿y do
+anonimowego uwierzytelniania.
 
 %description anonymous -l pt_BR
 Este plugin implementa o mecanismo SASL ANONYMOUS, usado
@@ -201,15 +215,16 @@ para autenticação anônima.
 
 %package login
 Summary:	Unsupported Login Cyrus SASL plugin
-Summary(pl):	Wtyczka Unsupported Login do Cyrus SASL
+Summary(pl):	Nie wspierana wtyczka Login do Cyrus SASL
 Group:		Libraries
 Requires:	%{name} = %{version}
 
 %description login
-Unsupported Login Cyrus SASL plugin.
+Unsupported LOGIN Cyrus SASL plugin.
 
 %description login -l pl
-Wtyczka Unsupported Login do Cyrus SASL.
+Wtyczka dodaj±ca obs³ugê nie wspieranego mechanizmu LOGIN do Cyrus
+SASL.
 
 %package srp
 Summary:	SRP Cyrus SASL plugin
@@ -226,7 +241,10 @@ detection, integrity protection and/or condifentiality
 protection.
 
 %description srp -l pl
-Wtyczka SRP do Cyrus SASL.
+Wtyczka dodaj±ca obs³ugê mechanizmu SRP do Cyrus SASL. Bazuje na
+protokole Secure Remote Password. Ten mechanizm dokonuje wzajemnego
+uwierzytelnienia i mo¿e dodawaæ warstwê bezpieczeñstwa z wykrywaniem
+powtarzania, zabezpieczeniem integralno¶ci i/lub poufno¶ci.
 
 %description srp -l pt_BR
 Este plugin implementa o mecanismo SASL SRP, baseado no protocolo SRP (Secure
