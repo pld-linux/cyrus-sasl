@@ -5,6 +5,8 @@
 #
 Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
+Summary(ru):	Библиотека Cyrus SASL
+Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	1.5.27
 Release:	13
@@ -43,9 +45,21 @@ for the Cyrus mail system.
 Pakiet cyrus-sasl zawiera implementacjЙ biblioteki API SASL dla
 systemu poczty elektronicznej Cyrusa.
 
+%description -l ru
+Пакет cyrus-sasl содержит реализацию Cyrus SASL. SASL - это Simple
+Authentication and Security Layer, метод для добавления поддержки
+аутентикации к протоколам, основанным на соединениях.
+
+%description -l uk
+Пакет cyrus-sasl м╕стить реал╕зац╕ю Cyrus SASL. SASL - це Simple
+Authentication and Security Layer, метод для додання п╕дтримки
+аутентикац╕╖ до протокол╕в, базованих на з'╓днаннях.
+
 %package devel
 Summary:	Header files and documentation for cyrus-sasl
 Summary(pl):	Pliki nagЁСwkowe i dokumentacja dla cyrus-sasl
+Summary(ru):	Файлы для программирования с библиотекой Cyrus SASL
+Summary(ru):	Файли для програмування з б╕бл╕отекою Cyrus SASL
 Group:		Development/Libraries
 Requires:	%{name} = %{version}
 
@@ -55,9 +69,19 @@ Header files and documentation for cyrus-sasl.
 %description devel -l pl
 Pliki nagЁСwkowe i dokumentacja dla cyrus-sasl.
 
+%description devel -l ru
+Хедеры и библиотеки, необходимые для разработки приложений,
+использующих Cyrus SASL.
+
+%description devel -l uk
+Хедери та б╕бл╕отеки, необх╕дн╕ для розробки програм, що
+використовують Cyrus SASL.
+
 %package static
 Summary:	Static cyrus-sasl libraries
 Summary(pl):	Statyczne biblioteki cyrus-sasl
+Summary(ru):	Статические библиотеки Cyrus SASL
+Summary(uk):	Статичн╕ б╕бл╕отеки Cyrus SASL
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}
 
@@ -66,6 +90,14 @@ Static cyrus-sasl libraries.
 
 %description static -l pl
 Statyczne biblioteki cyrus-sasl.
+
+%description static -l ru
+Статические библиотеки, необходимые для разработки приложений,
+использующих Cyrus SASL.
+
+%description static -l uk
+Статичн╕ б╕бл╕отеки, необх╕дн╕ для розробки програм, що використовують
+Cyrus SASL.
 
 %package cram-md5
 Summary:	Cram-MD5 Cyrus SASL plugin
