@@ -1,3 +1,8 @@
+#
+# Conditional builds:
+# x509 - build x509 pluggin
+# srp - build srp pluggin
+#
 Summary:	The SASL library API for the Cyrus mail system.
 Name:		cyrus-sasl
 Version:	1.5.24
@@ -8,7 +13,7 @@ Group(fr):	Librairies
 Group(pl):	Biblioteki
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
 Patch0:		cyrus-sasl-configdir.patch
-BuildRequires:	gdbm-devel
+BuildRequires:	db3-devel
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel
 URL:		http://asg.web.cmu.edu/sasl/
@@ -94,6 +99,32 @@ Requires:	%{name} = %{version}
 %description login
 Unsupported Login Cyrus SASL pluggin.
 
+%if %{?srp:1}%{?!srp:0}
+%package srp
+Summary:	SRP Cyrus SASL pluggin
+Group:		Libraries
+Group(fr):	Librairies
+Group(pl):	Biblioteki
+Requires:	%{name} = %{version}
+
+%description srp
+SRP Cyrus SASL pluggin.
+
+%endif
+
+%if %{?x509:1}%{?!x509:0}
+%package x509
+Summary:	x509 Cyrus SASL pluggin
+Group:		Libraries
+Group(fr):	Librairies
+Group(pl):	Biblioteki
+Requires:	%{name} = %{version}
+
+%description x509
+x509 Cyrus SASL pluggin.
+
+%endif
+
 %prep
 %setup  -q
 %patch0 -p1
@@ -107,8 +138,10 @@ LDFLAGS="-s"; export LDFLAGS
 %configure \
 	--enable-static \
 	--enable-login \
+	%{?srp:--enable-srp} \
+	%{?x509:--enable-x509} \
 	--with-pam \
-	--with-dblib=gdbm \
+	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl/sasl.db \
 	--with-configdir=%{_sysconfdir}
 %{__make}
@@ -175,3 +208,15 @@ rm -rf $RPM_BUILD_ROOT
 %files login
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/liblogin.so*
+
+%if %{?srp:1}%{?!srp:0}
+%files srp
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl/libsrp.so*
+%endif
+
+%if %{?x509:1}%{?!x509:0}
+%files x509
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl/libx509.so*
+%endif
