@@ -120,7 +120,7 @@ rm -rf $RPM_BUILD_ROOT
 #%attr(755,root,root) %{_libdir}/sasl/lib*.so*
 %attr(755,root,root) %{_sbindir}/*
 
-%ghost /var/lib/sasl/sasl.db
+%config(noreplace) %verify(not mtime md5 size) /var/lib/sasl/sasl.db
 %{_mandir}/man[18]/*
 
 %files devel
