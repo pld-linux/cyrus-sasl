@@ -42,7 +42,6 @@ BuildRequires:	libtool	>= 1.4
 %{?with_ldap:BuildRequires:	openldap-devel}
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pam-devel
-Requires(post):	/sbin/ldconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/sasl
@@ -53,12 +52,18 @@ authentication, authorization, and security to network protocols. The
 SASL protocol itself is documented in rfc2222; the API standard is a
 work in progress.
 
+Note: remember to install appropriate plugins, or you won't have any
+authentication mechanisms available.
+
 %description -l pl
 Pakiet cyrus-sasl zawiera implementacjê biblioteki API SASL dla
 systemu poczty elektronicznej Cyrusa. Biblioteka ta jest przydatna
 tak¿e do dodawania uwierzytelniania, autoryzacji oraz zwiêkszania
 bezpieczeñstwa protoko³ów sieciowych. Sam protokó³ SASL jest opisany w
 RFC 2222; standaryzacja API jest w toku.
+
+Uwaga: aby by³y dostêpne jakiekolwiek mechanizmy autoryzacji, nale¿y
+doinstalowaæ odpowiednie wtyczki.
 
 %description -l pt_BR
 Esta é uma implementação da API SASL, útil para acrescentar
@@ -456,10 +461,7 @@ install saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT%{_sbindir}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-/sbin/ldconfig
-echo "Remember to install appropriate plugins, or you won't have any mechs available."
-
+%post	-p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
 %post saslauthd
