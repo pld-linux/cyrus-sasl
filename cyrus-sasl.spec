@@ -14,12 +14,12 @@ URL:		http://asg.web.cmu.edu/cyrus/imapd/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-The cyrus-sasl package contains the SASL library API implementation for the
-Cyrus mail system.
+The cyrus-sasl package contains the SASL library API implementation
+for the Cyrus mail system.
 
 %description -l pl
-Pakiet cyrus-sasl zawiera implementacjê biblioteki API SASL dla systemu
-poczty elektronicznej Cyrusa.
+Pakiet cyrus-sasl zawiera implementacjê biblioteki API SASL dla
+systemu poczty elektronicznej Cyrusa.
 
 %package devel
 Summary:	Header files and documentation for cyrus-sasl
@@ -150,16 +150,21 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/sasl/lib*.a
 
 %files cram-md5
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libcrammd5.so*
 
 %files digest-md5
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libdigestmd5.so*
 
 %files plain
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libplain.so*
 
 %files anonymous
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libanonymous.so*
 
 %files login
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/liblogin.so*
