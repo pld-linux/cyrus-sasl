@@ -1,5 +1,5 @@
 #
-# Conditional builds:	
+# Conditional builds:
 # x509 - build x509 pluggin
 # srp - build srp pluggin
 #
@@ -219,7 +219,7 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/cyrus
 
-gzip -9nf COPYING testing.txt NEWS TODO README doc/*.txt doc/*.html 
+gzip -9nf COPYING testing.txt NEWS TODO README doc/*.txt doc/*.html
 
 %clean
 rm -rf $RPM_BUILD_ROOT
