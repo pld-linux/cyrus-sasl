@@ -126,7 +126,6 @@ Requires:	%{name} = %{version}
 %description login
 Unsupported Login Cyrus SASL pluggin.
 
-%if %{?bcond_on_srp:1}%{?!bcond_on_srp:0}
 %package srp
 Summary:	SRP Cyrus SASL pluggin
 Group:		Libraries
@@ -139,9 +138,6 @@ Requires:	%{name} = %{version}
 %description srp
 SRP Cyrus SASL pluggin.
 
-%endif
-
-%if %{?bcond_on_x509:1}%{?!bcond_on_x509:0}
 %package x509
 Summary:	x509 Cyrus SASL pluggin
 Group:		Libraries
@@ -153,8 +149,6 @@ Requires:	%{name} = %{version}
 
 %description x509
 x509 Cyrus SASL pluggin.
-
-%endif
 
 %package saslauthd
 Summary:	Cyrus SASL authd
@@ -168,8 +162,6 @@ Requires:	%{name} = %{version}
 %description saslauthd
 Cyrus SASL authd.
 
-
-%if %{?bcond_on_pwcheck:1}%{?!bcond_on_pwcheck:0}
 %package pwcheck
 Summary:	Cyrus SASL pwcheck helper
 Group:		Libraries
@@ -181,8 +173,6 @@ Requires:	%{name} = %{version}
 
 %description pwcheck
 Cyrus SASL pwcheck helper.
-
-%endif
 
 %prep
 %setup  -q
@@ -223,8 +213,8 @@ install -d $RPM_BUILD_ROOT{/var/{state,lib}/sasl,%{_sysconfdir},/etc/{rc.d/init.
 
 touch $RPM_BUILD_ROOT/var/lib/sasl/sasl.db
 
-install -m755 %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
-install -m644 %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
