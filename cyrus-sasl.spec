@@ -88,7 +88,7 @@ LDFLAGS="-s"; export LDFLAGS
 	--enable-static \
 	--enable-login \
 	--with-dblib=gdbm \
-	--with-dbpath=/var/state/sasl/sasl.db
+	--with-dbpath=/var/lib/sasl/sasl.db
 make
 
 %install
@@ -101,7 +101,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.* \
 	$RPM_BUILD_ROOT%{_libdir}/sasl/lib*.so.*.*
 
-touch $RPM_BUILD_ROOT/var/state/sasl/sasl.db
+touch $RPM_BUILD_ROOT/var/lib/sasl/sasl.db
 
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man?/*
 
@@ -119,7 +119,7 @@ rm -rf $RPM_BUILD_ROOT
 #%attr(755,root,root) %{_libdir}/sasl/lib*.so*
 %attr(755,root,root) %{_sbindir}/*
 
-%ghost /var/state/sasl/sasl.db
+%ghost /var/lib/sasl/sasl.db
 %{_mandir}/man[18]/*
 
 %files devel
