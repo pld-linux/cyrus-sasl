@@ -33,7 +33,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	db3-devel >= 3.1.17-8
 BuildRequires:	pam-devel
-BuildRequires:	openssl-devel >= 0.9.6a
+BuildRequires:	openssl-devel >= 0.9.6m
 BuildRequires:	libtool	>= 1.4
 %{?_with_mysql:BuildRequires: mysql-devel}
 %{?_with_ldap:BuildRequires: openldap-devel}
