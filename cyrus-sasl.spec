@@ -5,8 +5,8 @@
 #
 Summary:	The SASL library API for the Cyrus mail system.
 Name:		cyrus-sasl
-Version:	1.5.24
-Release:	18
+Version:	1.5.27
+Release:	0.1
 LIcense:	Distributable
 Group:		Libraries
 Group(de):	Libraries
@@ -16,12 +16,15 @@ Group(pl):	Biblioteki
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
 Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-des.patch
-Patch2:		%{name}-external.patch
+Patch2:		%{name}-mysql-ldap.patch
+Patch3:		%{name}-saslauthd.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	db3-devel
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel
+%{?bcond_on_mysql:BuildRequires: mysql-devel}
+%{?bcond_on_ldap:BuildRequires: openldap-devel}
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -118,7 +121,7 @@ Requires:	%{name} = %{version}
 %description login
 Unsupported Login Cyrus SASL pluggin.
 
-%if %{?srp:1}%{?!srp:0}
+%if %{?bcond_on_srp:1}%{?!bcond_on_srp:0}
 %package srp
 Summary:	SRP Cyrus SASL pluggin
 Group:		Libraries
@@ -133,7 +136,7 @@ SRP Cyrus SASL pluggin.
 
 %endif
 
-%if %{?x509:1}%{?!x509:0}
+%if %{?bcond_on_x509:1}%{?!bcond_on_x509:0}
 %package x509
 Summary:	x509 Cyrus SASL pluggin
 Group:		Libraries
@@ -148,22 +151,59 @@ x509 Cyrus SASL pluggin.
 
 %endif
 
+%if %{?bcond_on_saslauthd:1}%{?!bcond_on_saslauthd:0}
+%package saslauthd
+Summary:	Cyrus SASL authd
+Group:		Libraries
+Group(de):	Libraries
+Group(es):	Bibliotecas
+Group(fr):	Librairies
+Group(pl):	Biblioteki
+Requires:	%{name} = %{version}
+
+%description saslauthd
+Cyrus SASL authd.
+
+%endif
+
+%if %{?bcond_on_pwcheck:1}%{?!bcond_on_pwcheck:0}
+%package pwcheck
+Summary:	Cyrus SASL pwcheck helper
+Group:		Libraries
+Group(de):	Libraries
+Group(es):	Bibliotecas
+Group(fr):	Librairies
+Group(pl):	Biblioteki
+Requires:	%{name} = %{version}
+
+%description pwcheck
+Cyrus SASL pwcheck helper.
+
+%endif
+
 %prep
 %setup  -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
+rm -f config/missing
 aclocal -I cmulocal
 autoheader
 automake -a
 autoconf
+LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 %configure \
 	--enable-static \
 	--enable-login \
-	%{?srp:--enable-srp} \
-	%{?x509:--enable-x509} \
+	%{?bcond_on_srp:--enable-srp} \
+	%{?bcond_on_x509:--enable-x509} \
+	%{?bcond_on_mysql: --with-mysql=/usr} \
+	%{?bcond_on_ldap: --with-ldap=/usr} \
+	%{?bcond_on_saslauthd: --with-saslauthd=/var/state/sasl} \
+	%{?bcond_on_pwcheck: --with-pwcheck=/var/state/sasl} \
 	--with-pam \
 	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl/sasl.db \
@@ -172,7 +212,7 @@ autoconf
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/var/lib/sasl,%{_sysconfdir}}
+install -d $RPM_BUILD_ROOT{/var/{state,lib}/sasl,%{_sysconfdir}}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
@@ -189,9 +229,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}
 %dir %{_libdir}/sasl
 %dir /var/lib/sasl
+%dir /var/state/sasl
 %attr(755,root,root) %{_libdir}/lib*.so.*.*
 #%attr(755,root,root) %{_libdir}/sasl/lib*.so*
-%attr(755,root,root) %{_sbindir}/*
+%attr(755,root,root) %{_sbindir}/sasldblistusers
+%attr(755,root,root) %{_sbindir}/saslpasswd
+
 
 %config(noreplace) %verify(not mtime md5 size) /var/lib/sasl/sasl.db
 %{_mandir}/man[18]/*
@@ -227,14 +270,26 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/liblogin.so*
 
-%if %{?srp:1}%{?!srp:0}
+%if %{?bcond_on_srp:1}%{?!bcond_on_srp:0}
 %files srp
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libsrp.so*
 %endif
 
-%if %{?x509:1}%{?!x509:0}
+%if %{?bcond_on_x509:1}%{?!bcond_on_x509:0}
 %files x509
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libx509.so*
+%endif
+
+%if %{?bcond_on_pwcheck:1}%{?!bcond_on_pwcheck:0}
+%files pwcheck
+%defattr(644,root,root,755) 
+%attr(755,root,root) %{_sbindir}/pwcheck
+%endif
+
+%if %{?bcond_on_saslauthd:1}%{?!bcond_on_saslauthd:0}
+%files saslauthd
+%defattr(644,root,root,755) 
+%attr(755,root,root) %{_sbindir}/saslauthd
 %endif
