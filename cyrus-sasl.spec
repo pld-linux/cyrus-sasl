@@ -6,7 +6,7 @@
 Summary:	The SASL library API for the Cyrus mail system.
 Name:		cyrus-sasl
 Version:	1.5.27
-Release:	0.1
+Release:	0.2
 LIcense:	Distributable
 Group:		Libraries
 Group(de):	Libraries
@@ -18,6 +18,8 @@ Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-des.patch
 Patch2:		%{name}-mysql-ldap.patch
 Patch3:		%{name}-saslauthd.patch
+#Patch4:		http://www.imasy.or.jp/~ume/ipv6/cyrus-sasl-1.5.24-ipv6-20010321.diff.gz
+Patch4:		%{name}-ipv6.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	db3-devel
@@ -151,7 +153,6 @@ x509 Cyrus SASL pluggin.
 
 %endif
 
-%if %{?bcond_on_saslauthd:1}%{?!bcond_on_saslauthd:0}
 %package saslauthd
 Summary:	Cyrus SASL authd
 Group:		Libraries
@@ -164,7 +165,6 @@ Requires:	%{name} = %{version}
 %description saslauthd
 Cyrus SASL authd.
 
-%endif
 
 %if %{?bcond_on_pwcheck:1}%{?!bcond_on_pwcheck:0}
 %package pwcheck
@@ -187,6 +187,7 @@ Cyrus SASL pwcheck helper.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 rm -f config/missing
@@ -202,8 +203,8 @@ LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 	%{?bcond_on_x509:--enable-x509} \
 	%{?bcond_on_mysql: --with-mysql=/usr} \
 	%{?bcond_on_ldap: --with-ldap=/usr} \
-	%{?bcond_on_saslauthd: --with-saslauthd=/var/state/sasl} \
 	%{?bcond_on_pwcheck: --with-pwcheck=/var/state/sasl} \
+	--with-saslauthd=/var/state/sasl \
 	--with-pam \
 	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl/sasl.db \
@@ -288,8 +289,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/pwcheck
 %endif
 
-%if %{?bcond_on_saslauthd:1}%{?!bcond_on_saslauthd:0}
 %files saslauthd
 %defattr(644,root,root,755) 
 %attr(755,root,root) %{_sbindir}/saslauthd
-%endif
