@@ -13,12 +13,12 @@ Summary(pt_BR):	ImplementaÁ„o da API SASL
 Summary(ru):	‚…¬Ã…œ‘≈À¡ Cyrus SASL
 Summary(uk):	‚¶¬Ã¶œ‘≈À¡ Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.13
-Release:	0.2
+Version:	2.1.15
+Release:	0.1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
-# Source0-md5: 1114d59d970791932e96de8557472672
+# Source0-md5:	82c7f82a777b7bc10cc1ef68fb8e2a37
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
