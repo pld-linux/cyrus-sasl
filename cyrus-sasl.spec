@@ -2,6 +2,10 @@
 # Conditional builds:
 # x509 - build x509 pluggin
 # srp - build srp pluggin
+# _with_mysql - with mysql support
+# _with_ldap - with ldap support
+# _with_pwcheck - build pwcheck pluggin
+		
 #
 Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
