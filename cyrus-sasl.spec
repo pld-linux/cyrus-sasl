@@ -19,7 +19,7 @@ Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.19
-Release:	1
+Release:	2
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -30,6 +30,7 @@ Source3:	%{name}.pam
 Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-nolibs.patch
 Patch2:		%{name}-lt.patch
+Patch3:		%{name}-unchecked_env.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -372,6 +373,7 @@ Wtyczka PostgreSQL do Cyrus SASL.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
