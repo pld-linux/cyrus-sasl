@@ -404,6 +404,7 @@ cd ..
 	--enable-sql \
 	%{?with_srp: --enable-srp} \
 	--enable-static \
+	--with-plugindir=%{_libdir}/sasl2 \
 	--with-configdir=%{_sysconfdir} \
 	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl2/sasl.db \
@@ -428,6 +429,7 @@ install -d $RPM_BUILD_ROOT{/var/lib/sasl2,%{_sysconfdir},/etc/{rc.d/init.d,sysco
 		$RPM_BUILD_ROOT%{_mandir}/man8
 
 %{__make} install \
+	sasldir=%{_libdir}/sasl2 \
 	DESTDIR=$RPM_BUILD_ROOT
 
 rm -rf $RPM_BUILD_ROOT%{_mandir}/cat*
