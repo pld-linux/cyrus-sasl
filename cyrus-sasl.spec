@@ -28,8 +28,8 @@ BuildRequires:	db3-devel >= 3.1.17-8
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel >= 0.9.6a
 BuildRequires:	libtool	>= 1.4
-%{?bcond_on_mysql:BuildRequires: mysql-devel}
-%{?bcond_on_ldap:BuildRequires: openldap-devel}
+%{?_with_mysql:BuildRequires: mysql-devel}
+%{?_with_ldap:BuildRequires: openldap-devel}
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -193,11 +193,11 @@ LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 %configure \
 	--enable-static \
 	--enable-login \
-	%{?bcond_on_srp:--enable-srp} \
-	%{?bcond_on_x509:--enable-x509} \
-	%{?bcond_on_mysql: --with-mysql=/usr} \
-	%{?bcond_on_ldap: --with-ldap=/usr} \
-	%{?bcond_on_pwcheck: --with-pwcheck=/var/state/sasl} \
+	%{?_with_srp:--enable-srp} \
+	%{?_with_x509:--enable-x509} \
+	%{?_with_mysql: --with-mysql=/usr} \
+	%{?_with_ldap: --with-ldap=/usr} \
+	%{?_with_pwcheck: --with-pwcheck=/var/state/sasl} \
 	--with-saslauthd=/var/state/sasl \
 	--with-pam \
 	--with-dblib=berkeley \
@@ -284,19 +284,19 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/liblogin.so*
 
-%if %{?bcond_on_srp:1}%{?!bcond_on_srp:0}
+%if %{?_with_srp:1}%{?!_with_srp:0}
 %files srp
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libsrp.so*
 %endif
 
-%if %{?bcond_on_x509:1}%{?!bcond_on_x509:0}
+%if %{?_with_x509:1}%{?!_with_x509:0}
 %files x509
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libx509.so*
 %endif
 
-%if %{?bcond_on_pwcheck:1}%{?!bcond_on_pwcheck:0}
+%if %{?_with_pwcheck:1}%{?!_with_pwcheck:0}
 %files pwcheck
 %defattr(644,root,root,755) 
 %attr(755,root,root) %{_sbindir}/pwcheck
