@@ -1,3 +1,5 @@
+# TODO:
+# - possible SECURITY: http://securitytracker.com/alerts/2004/Oct/1011568.html
 #
 # Conditional builds:
 # x509 - build x509 pluggin
