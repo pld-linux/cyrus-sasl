@@ -1,13 +1,14 @@
 #
 # TODO:
 # - add ldap plugin from openldap sources
-# - cleaner solution for mysql/pgsql support
 #
 # Conditional build:
 %bcond_without	ldap	# disable LDAP support for saslauthd
-%bcond_with	gssapi	# enable GSSAPI support for saslauthd and build gssapi plugin
+%bcond_without	gssapi	# do not enable GSSAPI support for saslauthd and build gssapi plugin
 %bcond_without	mysql	# don't build MySQL pluggin
-%bcond_with	pgsql	# build PostgreSQL pluggin
+%bcond_without	pgsql	# do not build PostgreSQL pluggin
+%bcond_without	sqlite	# do not enable sqlite plugin
+%bcond_with	opie	# enable opie plugin
 %bcond_with	srp	# build srp pluggin
 %bcond_with	pwcheck	# build pwcheck helper (deprecated)
 %bcond_with	x509	# build x509 plugin (no sources in package???)
@@ -19,7 +20,7 @@ Summary(ru):	âÉÂÌÉÏÔÅËÁ Cyrus SASL
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÁ Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.20
-Release:	2
+Release:	2.1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -31,6 +32,8 @@ Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-nolibs.patch
 Patch2:		%{name}-lt.patch
 Patch3:		%{name}-db.patch
+Patch4:		%{name}-split-sql.patch
+Patch5:		%{name}-opie.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -42,6 +45,8 @@ BuildRequires:	libtool	>= 1.4
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 %{?with_ldap:BuildRequires:	openldap-devel}
+%{?with_sqlite:BuildRequires:	sqlite-devel}
+%{?with_opie:BuildRequires:	opie-devel}
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pam-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -301,6 +306,20 @@ This plugin implements the SASL OTP (One Time Password) mechanism.
 Wtyczka dodaj±ca obs³ugê mechanizmu OTP (has³a jednorazowe) do Cyrus
 SASL.
 
+%package opie
+Summary:        OPIE Cyrus SASL plugin
+Summary(pl):    Wtyczka OPIE do Cyrus SASL
+Summary(pt_BR): Mecanismo SASL OPIE
+Group:          Libraries
+Requires:       %{name} = %{version}-%{release}
+
+%description opie
+This plugin implements the SASL OPIE (One Time Password) mechanism.
+
+%description opie -l pl
+Wtyczka dodaj±ca obs³ugê mechanizmu OPIE (has³a jednorazowe) do Cyrus
+SASL.
+
 %package x509
 Summary:	x509 Cyrus SASL plugin
 Summary(pl):	Wtyczka x509 do Cyrus SASL
@@ -374,12 +393,26 @@ Cyrus SASL PostgreSQL plugin.
 %description pgsql -l pl
 Wtyczka PostgreSQL do Cyrus SASL.
 
+%package sqlite
+Summary:        Cyrus SQLite PostgreSQL plugin
+Summary(pl):    Wtyczka SQLite do Cyrus SASL
+Group:          Libraries
+Requires:       %{name} = %{version}-%{release}
+
+%description sqlite
+Cyrus SASL SQLite plugin.
+
+%description sqlite -l pl
+Wtyczka SQLite do Cyrus SASL.
+
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
@@ -421,6 +454,8 @@ cd ..
 	%{?with_ldap: --with-ldap=%{_prefix}} \
 	%{?with_mysql: --with-mysql=%{_prefix}} \
 	%{?with_pgsql: --with-pgsql=%{_prefix}} \
+	%{?with_sqlite: --with-sqlite=%{_prefix}} \
+	%{?with_opie: --with-opie=%{_prefix}} \
 	--with-pam \
 	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
 	--with-saslauthd=/var/lib/sasl2
@@ -535,6 +570,12 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libotp.so*
 
+%if %{with opie}
+%files opie
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libopie.so*
+%endif
+
 %files plain
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libplain.so*
@@ -546,13 +587,19 @@ fi
 %if %{with mysql}
 %files mysql
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl2/libsql*.so*
+%attr(755,root,root) %{_libdir}/sasl2/libmysql.so*
 %endif
 
 %if %{with pgsql}
 %files pgsql
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl2/libsql*.so*
+%attr(755,root,root) %{_libdir}/sasl2/libpgsql.so*
+%endif
+
+%if %{with sqlite}
+%files sqlite
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libsqlite.so*
 %endif
 
 %if %{with srp}
