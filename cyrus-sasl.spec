@@ -75,7 +75,7 @@ Summary(ru):	Файлы для программирования с библиотекой Cyrus SASL
 Summary(ru):	Файли для програмування з б╕бл╕отекою Cyrus SASL
 Group:		Development/Libraries
 Requires:	%{name} = %{version}
-Requires:	db-devel
+Requires:	db3-devel
 Requires:	pam-devel
 
 %description devel
