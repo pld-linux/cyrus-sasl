@@ -1,0 +1,18 @@
+--- sasldb/Makefile.am~	2003-10-14 22:06:54.000000000 +0200
++++ sasldb/Makefile.am	2004-01-24 23:36:13.763462739 +0100
+@@ -49,7 +49,6 @@
+ extra_common_sources = db_none.c db_ndbm.c db_gdbm.c db_berkeley.c db_testw32.c
+ 
+ noinst_LTLIBRARIES = libsasldb.la
+-noinst_LIBRARIES = libsasldb.a
+ 
+ libsasldb_la_SOURCES = allockey.c sasldb.h
+ EXTRA_libsasldb_la_SOURCES = $(extra_common_sources)
+@@ -61,7 +60,3 @@
+ # Prevent make dist stupidity
+ libsasldb_a_SOURCES =
+ EXTRA_libsasldb_a_SOURCES =
+-
+-libsasldb.a: libsasldb.la $(LOCAL_SASL_DB_BACKEND_STATIC)
+-	$(AR) cru .libs/$@ $(LOCAL_SASL_DB_BACKEND_STATIC)
+-
