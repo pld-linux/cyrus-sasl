@@ -10,7 +10,7 @@ Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	1.5.27
-Release:	14
+Release:	15
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
@@ -374,6 +374,7 @@ fi
 %{_includedir}/*.h
 %attr(755,root,root) %{_libdir}/lib*.so
 %attr(755,root,root) %{_libdir}/lib*.la
+%{_mandir}/man3/*
 
 %files static
 %defattr(644,root,root,755)
