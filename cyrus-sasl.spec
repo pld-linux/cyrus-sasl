@@ -6,7 +6,7 @@
 Summary:	The SASL library API for the Cyrus mail system.
 Name:		cyrus-sasl
 Version:	1.5.27
-Release:	3
+Release:	4
 LIcense:	Distributable
 Group:		Libraries
 Group(de):	Libraries
@@ -184,7 +184,7 @@ Cyrus SASL pwcheck helper.
 %patch4 -p1
 
 %build
-%{__rm} -f config/missing
+rm -f config/missing
 libtoolize --copy --force
 aclocal -I cmulocal
 autoheader
@@ -207,21 +207,21 @@ LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 %{__make}
 
 %install
-%{__rm} -rf $RPM_BUILD_ROOT
-%{__install} -d $RPM_BUILD_ROOT{/var/{state,lib}/sasl,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,pam.d}}
+rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{/var/{state,lib}/sasl,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,pam.d}}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 touch $RPM_BUILD_ROOT/var/lib/sasl/sasl.db
 
-%{__install} %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
-%{__install} %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
-%{__install} %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/cyrus
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/cyrus
 
 %{__gzip} -9nf COPYING testing.txt NEWS TODO README doc/*.txt doc/*.html 
 
 %clean
-%{__rm} -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
