@@ -1,6 +1,6 @@
-diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/acconfig.h cyrus-sasl-1.5.27/acconfig.h
---- cyrus-sasl-1.5.27.noipv6/acconfig.h	Thu Apr 26 16:20:50 2001
-+++ cyrus-sasl-1.5.27/acconfig.h	Thu Apr 26 16:21:12 2001
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/acconfig.h cyrus-sasl-1.5.27.ipv6/acconfig.h
+--- cyrus-sasl-1.5.27.orig/acconfig.h	Thu Apr 26 18:33:15 2001
++++ cyrus-sasl-1.5.27.ipv6/acconfig.h	Thu Apr 26 18:33:48 2001
 @@ -137,8 +137,20 @@
  /* define if your system has getpid() */
  #undef HAVE_GETPID
@@ -45,9 +45,9 @@ diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/acconfig.h cyrus-sasl-1.5.2
 +#endif
  
  #endif /* CONFIG_H */
-diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/aclocal.m4 cyrus-sasl-1.5.27/aclocal.m4
---- cyrus-sasl-1.5.27.noipv6/aclocal.m4	Sat Mar 24 02:48:12 2001
-+++ cyrus-sasl-1.5.27/aclocal.m4	Thu Apr 26 16:21:12 2001
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/aclocal.m4 cyrus-sasl-1.5.27.ipv6/aclocal.m4
+--- cyrus-sasl-1.5.27.orig/aclocal.m4	Sat Mar 24 02:48:12 2001
++++ cyrus-sasl-1.5.27.ipv6/aclocal.m4	Thu Apr 26 18:33:48 2001
 @@ -692,3 +692,72 @@
  	AC_SUBST(LIB_SOCKET)
  	])
@@ -121,9 +121,9 @@ diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/aclocal.m4 cyrus-sasl-1.5.2
 +fi
 +AC_MSG_RESULT($ipv6_cv_ss_family)])
 +
-diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/cmulocal/ipv6.m4 cyrus-sasl-1.5.27/cmulocal/ipv6.m4
---- cyrus-sasl-1.5.27.noipv6/cmulocal/ipv6.m4	Thu Jan  1 01:00:00 1970
-+++ cyrus-sasl-1.5.27/cmulocal/ipv6.m4	Thu Apr 26 16:21:12 2001
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/cmulocal/ipv6.m4 cyrus-sasl-1.5.27.ipv6/cmulocal/ipv6.m4
+--- cyrus-sasl-1.5.27.orig/cmulocal/ipv6.m4	Thu Jan  1 01:00:00 1970
++++ cyrus-sasl-1.5.27.ipv6/cmulocal/ipv6.m4	Thu Apr 26 18:33:48 2001
 @@ -0,0 +1,68 @@
 +dnl See whether we can use IPv6 related functions
 +AC_DEFUN(IPv6_CHECK_FUNC, [
@@ -193,9 +193,9 @@ diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/cmulocal/ipv6.m4 cyrus-sasl
 +  ifelse([$2], , :, [$2])
 +fi
 +AC_MSG_RESULT($ipv6_cv_ss_family)])
-diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/config.h.in cyrus-sasl-1.5.27/config.h.in
---- cyrus-sasl-1.5.27.noipv6/config.h.in	Wed Mar 14 05:49:33 2001
-+++ cyrus-sasl-1.5.27/config.h.in	Thu Apr 26 16:21:12 2001
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/config.h.in cyrus-sasl-1.5.27.ipv6/config.h.in
+--- cyrus-sasl-1.5.27.orig/config.h.in	Wed Mar 14 05:49:33 2001
++++ cyrus-sasl-1.5.27.ipv6/config.h.in	Thu Apr 26 18:33:48 2001
 @@ -119,6 +119,9 @@
  /* do we have a preferred mechanism, or should we just pick the highest ssf? */
  #undef PREFER_MECH
@@ -245,10 +245,10 @@ diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/config.h.in cyrus-sasl-1.5.
 +#endif
  
  #endif /* CONFIG_H */
-diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/configure.in cyrus-sasl-1.5.27/configure.in
---- cyrus-sasl-1.5.27.noipv6/configure.in	Thu Apr 26 16:20:50 2001
-+++ cyrus-sasl-1.5.27/configure.in	Thu Apr 26 16:21:12 2001
-@@ -782,6 +782,19 @@
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/configure.in cyrus-sasl-1.5.27.ipv6/configure.in
+--- cyrus-sasl-1.5.27.orig/configure.in	Thu Apr 26 18:33:15 2001
++++ cyrus-sasl-1.5.27.ipv6/configure.in	Thu Apr 26 19:24:16 2001
+@@ -782,6 +782,27 @@
      AC_DEFINE_UNQUOTED(PREFER_MECH, "KERBEROS_V4")
  fi
  
@@ -256,21 +256,70 @@ diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/configure.in cyrus-sasl-1.5
 +              ipv6="$enableval", ipv6="yes")
 +if test "$ipv6" != "yes"; then
 +    AC_MSG_RESULT(IPv6 support is disabled)
++	SASL_IPVSIX="#undef SASL_IPV6"
 +else
 +    IPv6_CHECK_FUNC(getnameinfo)
-+    AC_EGREP_HEADER(sockaddr_storage, sys/socket.h,
-+		    AC_DEFINE(HAVE_SOCKADDR_STORAGE))
++    AC_EGREP_HEADER(sockaddr_storage, sys/socket.h, [ 
++		AC_DEFINE(HAVE_SOCKADDR_STORAGE)
++		have_sockaddr_storage="yes" ])
 +    IPv6_CHECK_SS_FAMILY()
++	if test "x$have_sockaddr_storage" = "xyes" -a "x$ac_cv_func_getnameinfo" = "xyes"; then
++		SASL_IPVSIX="#define SASL_IPV6 1"
++	else
++		SASL_IPVSIX="#undef SASL_IPV6"
++	fi
 +fi
++AC_SUBST(SASL_IPVSIX)
 +
 +AC_EGREP_HEADER(socklen_t, sys/socket.h, AC_DEFINE(HAVE_SOCKLEN_T))
 +
  AC_SUBST(DIRS)
  
  AC_OUTPUT(Makefile
-diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/lib/checkpw.c cyrus-sasl-1.5.27/lib/checkpw.c
---- cyrus-sasl-1.5.27.noipv6/lib/checkpw.c	Thu Apr 26 16:20:50 2001
-+++ cyrus-sasl-1.5.27/lib/checkpw.c	Thu Apr 26 16:23:39 2001
+@@ -800,4 +821,5 @@
+ pwcheck/Makefile
+ saslauthd/Makefile
+ saslauthd/saslauthd.8
+-man/Makefile)
++man/Makefile
++include/saslconfig.h)
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/include/Makefile.am cyrus-sasl-1.5.27.ipv6/include/Makefile.am
+--- cyrus-sasl-1.5.27.orig/include/Makefile.am	Tue Mar  7 06:19:52 2000
++++ cyrus-sasl-1.5.27.ipv6/include/Makefile.am	Thu Apr 26 18:44:08 2001
+@@ -42,7 +42,7 @@
+ #
+ ################################################################
+ 
+-include_HEADERS = hmac-md5.h md5.h md5global.h sasl.h saslplug.h saslutil.h
++include_HEADERS = hmac-md5.h md5.h md5global.h sasl.h saslplug.h saslutil.h saslconfig.h
+ 
+ noinst_PROGRAMS = makemd5
+ 
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/include/sasl.h cyrus-sasl-1.5.27.ipv6/include/sasl.h
+--- cyrus-sasl-1.5.27.orig/include/sasl.h	Thu Apr 26 18:33:15 2001
++++ cyrus-sasl-1.5.27.ipv6/include/sasl.h	Thu Apr 26 18:35:58 2001
+@@ -88,6 +88,8 @@
+ #ifndef SASL_H
+ #define SASL_H 1
+ 
++#include <saslconfig.h>
++
+ #define SASL_VERSION_MAJOR 1
+ #define SASL_VERSION_MINOR 5
+ #define SASL_VERSION_STEP 27
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/include/saslconfig.h.in cyrus-sasl-1.5.27.ipv6/include/saslconfig.h.in
+--- cyrus-sasl-1.5.27.orig/include/saslconfig.h.in	Thu Jan  1 01:00:00 1970
++++ cyrus-sasl-1.5.27.ipv6/include/saslconfig.h.in	Thu Apr 26 19:15:42 2001
+@@ -0,0 +1,6 @@
++#ifndef SASLCONFIG_H
++#define SASLCONFIG_H
++
++@SASL_IPVSIX@
++
++#endif
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/lib/checkpw.c cyrus-sasl-1.5.27.ipv6/lib/checkpw.c
+--- cyrus-sasl-1.5.27.orig/lib/checkpw.c	Thu Apr 26 18:33:15 2001
++++ cyrus-sasl-1.5.27.ipv6/lib/checkpw.c	Thu Apr 26 18:33:48 2001
 @@ -571,7 +571,12 @@
  				  const char **reply)
  {
@@ -307,9 +356,9 @@ diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/lib/checkpw.c cyrus-sasl-1.
  
    /* Try to validate */
    if (sia_ses_init (&ent, 1, argv, host, userid, NULL, 0, NULL) != SIASUCCESS)
-diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/lib/common.c cyrus-sasl-1.5.27/lib/common.c
---- cyrus-sasl-1.5.27.noipv6/lib/common.c	Thu Apr 26 16:20:49 2001
-+++ cyrus-sasl-1.5.27/lib/common.c	Thu Apr 26 16:21:12 2001
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/lib/common.c cyrus-sasl-1.5.27.ipv6/lib/common.c
+--- cyrus-sasl-1.5.27.orig/lib/common.c	Thu Apr 26 18:33:15 2001
++++ cyrus-sasl-1.5.27.ipv6/lib/common.c	Thu Apr 26 18:33:48 2001
 @@ -359,13 +359,21 @@
        if (! conn->got_ip_local)
  	result = SASL_NOTDONE;
@@ -386,9 +435,9 @@ diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/lib/common.c cyrus-sasl-1.5
        break;
      default:
        result = SASL_BADPARAM;
-diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/lib/saslint.h cyrus-sasl-1.5.27/lib/saslint.h
---- cyrus-sasl-1.5.27.noipv6/lib/saslint.h	Thu Apr 26 16:20:49 2001
-+++ cyrus-sasl-1.5.27/lib/saslint.h	Thu Apr 26 16:21:12 2001
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/lib/saslint.h cyrus-sasl-1.5.27.ipv6/lib/saslint.h
+--- cyrus-sasl-1.5.27.orig/lib/saslint.h	Thu Apr 26 18:33:15 2001
++++ cyrus-sasl-1.5.27.ipv6/lib/saslint.h	Thu Apr 26 18:33:48 2001
 @@ -95,7 +95,11 @@
  
    int secflags;  /* security layer flags passed to sasl_*_new */
@@ -401,9 +450,9 @@ diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/lib/saslint.h cyrus-sasl-1.
    sasl_external_properties_t external;
  
    void *context;
-diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/plugins/anonymous.c cyrus-sasl-1.5.27/plugins/anonymous.c
---- cyrus-sasl-1.5.27.noipv6/plugins/anonymous.c	Sat Mar 10 06:56:44 2001
-+++ cyrus-sasl-1.5.27/plugins/anonymous.c	Thu Apr 26 16:21:12 2001
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/plugins/anonymous.c cyrus-sasl-1.5.27.ipv6/plugins/anonymous.c
+--- cyrus-sasl-1.5.27.orig/plugins/anonymous.c	Sat Mar 10 06:56:44 2001
++++ cyrus-sasl-1.5.27.ipv6/plugins/anonymous.c	Thu Apr 26 18:33:48 2001
 @@ -101,7 +101,11 @@
  	       const char **errstr)
  {
@@ -448,9 +497,9 @@ diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/plugins/anonymous.c cyrus-s
    } else {
      sparams->utils->log(sparams->utils->conn,
  			SASL_LOG_INFO,
-diff -ruN --exclude *.wiget cyrus-sasl-1.5.27.noipv6/plugins/kerberos4.c cyrus-sasl-1.5.27/plugins/kerberos4.c
---- cyrus-sasl-1.5.27.noipv6/plugins/kerberos4.c	Thu Apr 26 16:20:50 2001
-+++ cyrus-sasl-1.5.27/plugins/kerberos4.c	Thu Apr 26 16:21:12 2001
+diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/plugins/kerberos4.c cyrus-sasl-1.5.27.ipv6/plugins/kerberos4.c
+--- cyrus-sasl-1.5.27.orig/plugins/kerberos4.c	Thu Apr 26 18:33:15 2001
++++ cyrus-sasl-1.5.27.ipv6/plugins/kerberos4.c	Thu Apr 26 18:33:48 2001
 @@ -131,10 +131,17 @@
    des_key_schedule dec_keysched;   /* decryption key schedule */
  
