@@ -227,10 +227,20 @@ rm -rf $RPM_BUILD_ROOT
 %postun -p /sbin/ldconfig
 
 %post saslauthd
-NAME=saslauthd; %chkconfig_add
+/sbin/chkconfig --add saslauthd
+if [ -f /var/lock/subsys/saslauthd ]; then
+	/etc/rc.d/init.d/saslauthd restart 1>&2
+else
+	echo "Run \"/etc/rc.d/init.d/saslauthd start\" to start saslauthd."
+fi
 
-%preun saslauthd
-NAME=saslauthd; %chkconfig_del
+%postun saslauthd
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/saslauthd ]; then
+		/etc/rc.d/init.d/saslauthd stop 1>&2
+	fi
+	/sbin/chkconfig --del saslauthd
+fi
 
 %files
 %defattr(644,root,root,755)
