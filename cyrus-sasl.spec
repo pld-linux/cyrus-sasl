@@ -312,6 +312,7 @@ Cyrus SASL sasldb plugin.
 %description sasldb -l pl
 Wtyczka sasldb do Cyrus SASL.
 
+%if %{!?_without_mysql:1}%{?_without_mysql:0}
 %package mysql
 Summary:	Cyrus SASL mysql plugin
 Summary(pl):	Wtyczka mysql do Cyrus SASL
@@ -323,6 +324,7 @@ Cyrus SASL mysql plugin.
 
 %description mysql -l pl
 Wtyczka mysql do Cyrus SASL.
+%endif
 
 %prep
 %setup  -q
@@ -460,9 +462,11 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libsasldb.so*
 
+%if %{!?_without_mysql:1}%{?_without_mysql:0}
 %files mysql
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libmysql*.so*
+%endif
 
 %if %{?_with_srp:1}%{?!_with_srp:0}
 %files srp
