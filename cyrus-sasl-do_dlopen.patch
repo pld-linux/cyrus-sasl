@@ -1,0 +1,14 @@
+diff -durN cyrus-sasl-2.1.10.orig/configure.in cyrus-sasl-2.1.10/configure.in
+--- cyrus-sasl-2.1.10.orig/configure.in	Fri Jan 10 10:55:16 2003
++++ cyrus-sasl-2.1.10/configure.in	Fri Jan 10 10:55:47 2003
+@@ -649,9 +649,7 @@
+ # simon finishes trying to do autoconf
+ ###############################################################################
+ 
+-if test "$ac_cv_can_build_shared" = yes; then
+-	AC_DEFINE(DO_DLOPEN)
+-fi
++AC_DEFINE(DO_DLOPEN)
+ 
+ AC_SUBST(SASL_MECHS)
+ AC_SUBST(SASL_STATIC_OBJS)
