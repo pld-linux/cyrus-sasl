@@ -407,7 +407,11 @@ install %{SOURCE3} ./cyrus.pam
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post   -p /sbin/ldconfig
+%post
+/sbin/ldconfig
+
+echo "Remember to install apropriate plugins, or you won't have any mechs available."
+
 %postun -p /sbin/ldconfig
 
 %post saslauthd
