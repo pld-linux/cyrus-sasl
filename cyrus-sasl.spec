@@ -232,6 +232,7 @@ Group(pt_BR):	Bibliotecas
 Group(ru):	Библиотеки
 Group(uk):	Б╕бл╕отеки
 Requires:	%{name} = %{version}
+Prereq:		/sbin/chkconfig
 
 %description saslauthd
 Cyrus SASL authd.
