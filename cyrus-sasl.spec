@@ -1,20 +1,24 @@
 #
-# Conditional builds:
+# Conditional builds:	
 # x509 - build x509 pluggin
 # srp - build srp pluggin
 #
 Summary:	The SASL library API for the Cyrus mail system.
 Name:		cyrus-sasl
 Version:	1.5.24
-Release:	7
+Release:	18
 LIcense:	Distributable
 Group:		Libraries
 Group(de):	Libraries
+Group(es):	Bibliotecas
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
 Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-des.patch
+Patch2:		%{name}-external.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	db3-devel
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel
@@ -46,6 +50,7 @@ Header files and documentation for cyrus-sasl.
 Summary:	Static cyrus-sasl libraries
 Group:		Libraries
 Group(de):	Libraries
+Group(es):	Bibliotecas
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name}-devel = %{version}
@@ -57,6 +62,7 @@ Static cyrus-sasl libraries.
 Summary:	Cram-MD5 Cyrus SASL pluggin
 Group:		Libraries
 Group(de):	Libraries
+Group(es):	Bibliotecas
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
@@ -68,6 +74,7 @@ Cram-MD5 Cyrus SASL pluggin.
 Summary:	Digest-MD5 Cyrus SASL pluggin
 Group:		Libraries
 Group(de):	Libraries
+Group(es):	Bibliotecas
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
@@ -79,6 +86,7 @@ Digest-MD5 Cyrus SASL pluggin.
 Summary:	Plain Cyrus SASL pluggin
 Group:		Libraries
 Group(de):	Libraries
+Group(es):	Bibliotecas
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
@@ -90,6 +98,7 @@ Plain Cyrus SASL pluggin.
 Summary:	Anonymous Cyrus SASL pluggin
 Group:		Libraries
 Group(de):	Libraries
+Group(es):	Bibliotecas
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
@@ -101,6 +110,7 @@ Anonymous Cyrus SASL pluggin.
 Summary:	Unsupported Login Cyrus SASL pluggin
 Group:		Libraries
 Group(de):	Libraries
+Group(es):	Bibliotecas
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
@@ -112,6 +122,8 @@ Unsupported Login Cyrus SASL pluggin.
 %package srp
 Summary:	SRP Cyrus SASL pluggin
 Group:		Libraries
+Group(de):	Libraries
+Group(es):	Bibliotecas
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
@@ -125,6 +137,8 @@ SRP Cyrus SASL pluggin.
 %package x509
 Summary:	x509 Cyrus SASL pluggin
 Group:		Libraries
+Group(de):	Libraries
+Group(es):	Bibliotecas
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
@@ -138,6 +152,7 @@ x509 Cyrus SASL pluggin.
 %setup  -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 aclocal -I cmulocal
