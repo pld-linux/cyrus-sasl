@@ -1,6 +1,23 @@
---- cyrus-sasl-1.5.27/configure.in.orig	Sun Aug 12 17:41:40 2001
-+++ cyrus-sasl-1.5.27/configure.in	Sun Aug 12 17:41:57 2001
-@@ -169,8 +169,8 @@
+--- cyrus-sasl-1.5.28/configure.in.orig	Fri Oct 15 12:47:12 2004
++++ cyrus-sasl-1.5.28/configure.in	Fri Oct 15 12:52:00 2004
+@@ -164,10 +164,12 @@
+                        BERKELEY_DB_CHK_LIB()
+                        if test "$dblib" = "berkeley"; then
+                          AC_DEFINE(HAVE_DB3_DB_H)
+-                       fi,
+-               AC_CHECK_HEADER(db.h,
+-                       	       BERKELEY_DB_CHK_LIB(),
+-                               dblib="no"))
++                       fi, db3dbhnotfound="yes")
++       if test "$db3dbhnotfound" = "yes"; then
++	       AC_CHECK_HEADER(db.h,
++    	           	       BERKELEY_DB_CHK_LIB(),
++        	               dblib="no")
++       fi
+ ])
+ 
+ case "$dblib" in
+@@ -184,8 +186,8 @@
  	dnl We want to attempt to use -lndbm if we can, just in case
  	dnl there's some version of it installed and overriding libc
  	AC_CHECK_HEADER(ndbm.h,
@@ -11,7 +28,7 @@
  				dblib="no")
  	;;
    auto_detect)
-@@ -278,8 +278,8 @@
+@@ -288,8 +290,8 @@
    fi
    cmu_save_LIBS="$LIBS"
    AC_CHECK_LIB(pam, pam_start,
@@ -22,7 +39,7 @@
  		with_pam=no, $SASL_DL_LIB)
    LIBS="$cmu_save_LIBS"
  fi
-@@ -466,10 +466,10 @@
+@@ -483,10 +485,10 @@
                   cmu_have_rsaref=no)
  
      AC_CHECK_LIB(crypto, des_pcbc_encrypt, 
@@ -35,7 +52,7 @@
          with_des=no, $LIB_RSAREF)
    fi
  fi
-@@ -567,7 +567,7 @@
+@@ -599,7 +601,7 @@
       LDFLAGS="$LDFLAGS -L$gssapi/lib"
    fi
    AC_CHECK_HEADER(gssapi.h, AC_DEFINE(HAVE_GSSAPI_H),
@@ -44,7 +61,7 @@
  fi
  
  if test "$gssapi" != no; then
-@@ -737,7 +737,7 @@
+@@ -780,7 +782,7 @@
  sasl_cv_getsubopt=no
  AC_CHECK_FUNC(getsubopt, [AC_DEFINE(HAVE_GETSUBOPT)], [sasl_cv_getsubopt=yes])
  if test $sasl_cv_getsubopt = yes; then
@@ -53,7 +70,7 @@
  	GETSUBOPT="getsubopt.lo"
  fi
  AC_SUBST(GETSUBOPT)
-@@ -748,12 +748,12 @@
+@@ -791,12 +793,12 @@
  AC_CHECK_FUNC(snprintf, [AC_DEFINE(HAVE_SNPRINTF)], [sasl_cv_snprintf=yes])
  AC_CHECK_FUNC(vsnprintf, [AC_DEFINE(HAVE_VSNPRINTF)], [sasl_cv_snprintf=yes])
  if test $sasl_cv_snprintf = yes; then

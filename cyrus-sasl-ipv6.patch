@@ -277,9 +277,9 @@ diff -ruN --exclude *.orig --exclude configure cyrus-sasl-1.5.27.orig/configure.
  
  AC_OUTPUT(Makefile
 @@ -800,4 +821,5 @@
+ java/javax/security/auth/callback/Makefile
  pwcheck/Makefile
  saslauthd/Makefile
- saslauthd/saslauthd.8
 -man/Makefile)
 +man/Makefile
 +include/saslconfig.h)
