@@ -14,6 +14,10 @@ Buildroot:	/tmp/%{name}-%{version}-root
 The cyrus-sasl package contains the SASL library API implementation
 for the Cyrus mail system.
 
+%description -l pl
+Pakiet cyrus-sasl zawiera implementacjê biblioteki API SASL dla systemu 
+poczty elektronicznej Cyrusa.
+
 %package devel
 Summary:	Header files and documentation for cyrus-sasl
 Group:		Development/Libraries
