@@ -8,7 +8,7 @@ Source:		ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
 BuildRequires:	gdbm-devel
 BuildRequires:	pam-devel
 URL:		http://asg.web.cmu.edu/cyrus/imapd/
-Buildroot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 The cyrus-sasl package contains the SASL library API implementation
