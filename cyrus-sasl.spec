@@ -1,17 +1,20 @@
 Summary:	The SASL library API for the Cyrus mail system.
 Name:		cyrus-sasl
 Version:	1.5.21
-Release:	2
+Release:	3
 Copyright:	distributable
 Group:		Libraries
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
+Patch0:		cyrus-sasl-configdir.patch
 BuildRequires:	gdbm-devel
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_sysconfdir	/etc/sasl
 
 %description
 The cyrus-sasl package contains the SASL library API implementation
@@ -93,6 +96,7 @@ Unsupported Login Cyrus SASL pluggin.
 
 %prep
 %setup  -q
+%patch0 -p1
 
 %build
 aclocal -I cmulocal
@@ -103,7 +107,10 @@ LDFLAGS="-s"; export LDFLAGS
 %configure \
 	--enable-static \
 	--enable-login \
+	--with-pam \
 	--with-dblib=gdbm \
+	--with-dbpath=/var/lib/sasl/sasl.db \
+	--with-configdir=%{_sysconfdir}
 	--with-dbpath=/var/lib/sasl/sasl.db
 %{__make}
 
