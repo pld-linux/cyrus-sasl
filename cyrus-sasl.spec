@@ -4,7 +4,9 @@ Version:	1.5.20
 Release:	1
 Copyright:	distributable
 Group:		Libraries
-Source:		ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
+Group(fr):	Librairies
+Group(pl):	Biblioteki
+Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
 BuildRequires:	gdbm-devel
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel
@@ -12,16 +14,18 @@ URL:		http://asg.web.cmu.edu/cyrus/imapd/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-The cyrus-sasl package contains the SASL library API implementation
-for the Cyrus mail system.
+The cyrus-sasl package contains the SASL library API implementation for the
+Cyrus mail system.
 
 %description -l pl
-Pakiet cyrus-sasl zawiera implementacjê biblioteki API SASL dla systemu 
+Pakiet cyrus-sasl zawiera implementacjê biblioteki API SASL dla systemu
 poczty elektronicznej Cyrusa.
 
 %package devel
 Summary:	Header files and documentation for cyrus-sasl
 Group:		Development/Libraries
+Group(fr):	Development/Librairies
+Group(pl):	Programowanie/Biblioteki
 Requires:	%{name} = %{version}
 
 %description devel
@@ -29,7 +33,9 @@ Header files and documentation for cyrus-sasl.
 
 %package static
 Summary:	Static cyrus-sasl libraries
-Group:		Development/Libraries
+Group:		Libraries
+Group(fr):	Librairies
+Group(pl):	Biblioteki
 Requires:	%{name}-devel = %{version}
 
 %description static
@@ -37,44 +43,53 @@ Static cyrus-sasl libraries.
 
 %package cram-md5
 Summary:	Cram-MD5 Cyrus SASL pluggin
-Group:		l
+Group:		Libraries
+Group(fr):	Librairies
+Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
 
 %description cram-md5
-Cram-MD5 Cyrus SASL pluggin
+Cram-MD5 Cyrus SASL pluggin.
 
 %package digest-md5
 Summary:	Digest-MD5 Cyrus SASL pluggin
-Group:		l
+Group:		Libraries
+Group(fr):	Librairies
+Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
 
 %description digest-md5
-Digest-MD5 Cyrus SASL pluggin
+Digest-MD5 Cyrus SASL pluggin.
 
 %package plain
 Summary:	Plain Cyrus SASL pluggin
-Group:		l
+Group:		Libraries
+Group(fr):	Librairies
+Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
 
 %description plain
-Plain Cyrus SASL pluggin
+Plain Cyrus SASL pluggin.
 
 %package anonymous
 Summary:	Anonymous Cyrus SASL pluggin
-Group:		l
+Group:		Libraries
+Group(fr):	Librairies
+Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
 
 %description anonymous
-Anonymous Cyrus SASL pluggin
+Anonymous Cyrus SASL pluggin.
 
 %package login
 Summary:	Unsupported Login Cyrus SASL pluggin
-Group:		l
+Group:		Libraries
+Group(fr):	Librairies
+Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
 
 %description login
-Unsupported Login Cyrus SASL pluggin
-
+Unsupported Login Cyrus SASL pluggin.
 
 %prep
 %setup  -q
@@ -135,21 +150,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/sasl/lib*.a
 
 %files cram-md5
-%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libcrammd5.so*
 
 %files digest-md5
-%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libdigestmd5.so*
 
 %files plain
-%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libplain.so*
 
 %files anonymous
-%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libanonymous.so*
 
 %files login
-%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/liblogin.so*
