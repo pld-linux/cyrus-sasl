@@ -1,6 +1,6 @@
 Summary:	The SASL library API for the Cyrus mail system.
 Name:		cyrus-sasl
-Version:	1.5.20
+Version:	1.5.21
 Release:	1
 Copyright:	distributable
 Group:		Libraries
