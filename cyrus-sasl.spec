@@ -7,7 +7,7 @@ Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
 Name:		cyrus-sasl
 Version:	1.5.27
-Release:	7
+Release:	8
 License:	distributable
 Group:		Libraries
 Group(de):	Libraries
@@ -336,7 +336,7 @@ fi
 %attr(755,root,root) %{_sbindir}/sasldblistusers
 %attr(755,root,root) %{_sbindir}/saslpasswd
 
-%attr(600,root,root) %ghost %config(noreplace) %verify(not mtime md5 size) /var/lib/sasl/sasl.db
+%attr(640,root,mail) %ghost %config(noreplace) %verify(not mtime md5 size) /var/lib/sasl/sasl.db
 %{_mandir}/man[18]/*
 %doc *.gz doc/*.gz
 
