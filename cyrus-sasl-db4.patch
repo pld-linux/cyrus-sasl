@@ -1,0 +1,49 @@
+--- cyrus-sasl-1.5.27/configure.in~	Fri Nov 22 20:20:37 2002
++++ cyrus-sasl-1.5.27/configure.in	Fri Nov 22 20:23:14 2002
+@@ -147,10 +147,10 @@
+ dnl named.  arg.
+   berkeley)
+ 	AC_CHECK_HEADER(db.h,
+-			AC_CHECK_LIB(db-3, db_create, SASL_DB_LIB="-ldb-3";
+-			   dblib="berkeley",
+ 			AC_CHECK_LIB(db, db_create, SASL_DB_LIB="-ldb";
+ 			   dblib="berkeley",
++			AC_CHECK_LIB(db-3, db_create, SASL_DB_LIB="-ldb-3";
++			   dblib="berkeley",
+ 			AC_CHECK_LIB(db, db_open, SASL_DB_LIB="-ldb"; 
+ 			   dblib="berkeley",
+                         dblib="no"))),
+@@ -173,9 +173,9 @@
+   auto_detect)
+         dnl How about berkeley db?
+ 	AC_CHECK_HEADER(db.h,
+-			AC_CHECK_LIB(db-3, db_create, SASL_DB_LIB="-ldb-3";
+-			   dblib="berkeley",
+ 			AC_CHECK_LIB(db, db_create, SASL_DB_LIB="-ldb";
++			   dblib="berkeley",
++			AC_CHECK_LIB(db-3, db_create, SASL_DB_LIB="-ldb-3";
+ 			   dblib="berkeley",
+ 			AC_CHECK_LIB(db, db_open, SASL_DB_LIB="-ldb"; 
+ 			   dblib="berkeley",
+--- cyrus-sasl-1.5.27/lib/db_berkeley.c~	Sat Feb 17 06:06:49 2001
++++ cyrus-sasl-1.5.27/lib/db_berkeley.c	Fri Nov 22 20:27:14 2002
+@@ -85,7 +85,7 @@
+     ret = db_create(mbdb, NULL, 0);
+     if (ret == 0 && *mbdb != NULL)
+     {
+-	    ret = (*mbdb)->open(*mbdb, path, NULL, DB_HASH, flags, 0660);
++	    ret = (*mbdb)->open(*mbdb, NULL, path, NULL, DB_HASH, flags, 0660);
+ 	    if (ret != 0)
+ 	    {
+ 		    (void) (*mbdb)->close(*mbdb, 0);
+--- cyrus-sasl-1.5.27/utils/sasldblistusers.c~	Sun Mar 11 20:33:10 2001
++++ cyrus-sasl-1.5.27/utils/sasldblistusers.c	Fri Nov 22 20:30:30 2002
+@@ -178,7 +178,7 @@
+     ret = db_create(mbdb, NULL, 0);
+     if (ret == 0 && *mbdb != NULL)
+     {
+-	    ret = (*mbdb)->open(*mbdb, path, NULL, DB_HASH, DB_CREATE, 0664);
++	    ret = (*mbdb)->open(*mbdb, NULL, path, NULL, DB_HASH, DB_CREATE, 0664);
+ 	    if (ret != 0)
+ 	    {
+ 		    (void) (*mbdb)->close(*mbdb, 0);
