@@ -27,29 +27,30 @@ fi
 #	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -T"
 #fi
 
+
 # See how we were called.
 case "$1" in
   start)
 	# Check if the service is already running?
-        if [ ! -f /var/lock/subsys/saslauthd ]; then
+	if [ ! -f /var/lock/subsys/saslauthd ]; then
 		msg_starting salsauthd
 		daemon saslauthd $SASLAUTHD_OPTS
-	        RETVAL=$?
-    		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/saslauthd
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/saslauthd
 	else
-        	msg_already_running saslauthd
-	        exit 1
+		msg_already_running saslauthd
+		exit 1
 	fi
 	;;
   stop)
-        # Stop daemons.
+	# Stop daemons.
 	if [ -f /var/lock/subsys/saslauthd ]; then
-                msg_stopping saslauthd
-                killproc saslauthd
-                rm -f /var/lock/subsys/saslauthd /var/run/saslauthd.pid >/dev/null 2>&1
-        else
+		msg_stopping saslauthd
+		killproc saslauthd
+		rm -f /var/lock/subsys/saslauthd /var/run/saslauthd.pid >/dev/null 2>&1
+	else
 		msg_not_running saslauthd
-	        exit 1
+		exit 1
 	fi
 	;;
   status)
@@ -60,8 +61,12 @@ case "$1" in
 	$0 stop
 	$0 start
 	;;
+  force-reload)
+	$0 stop && $0 start
+	exit $?
+	;;
   *)
-	msg_usage "$0 {start|stop|restart|status}"
+	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
 	exit 1
 	;;
 esac
