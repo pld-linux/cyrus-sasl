@@ -116,7 +116,7 @@ LDFLAGS="-s"; export LDFLAGS
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/var/lib/sasl
+install -d $RPM_BUILD_ROOT{/var/lib/sasl,%{_sysconfdir}}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
