@@ -6,7 +6,7 @@
 Summary:	The SASL library API for the Cyrus mail system.
 Name:		cyrus-sasl
 Version:	1.5.27
-Release:	1
+Release:	2
 LIcense:	Distributable
 Group:		Libraries
 Group(de):	Libraries
@@ -26,7 +26,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	db3-devel >= 3.1.17-8
 BuildRequires:	pam-devel
-BuildRequires:	openssl-devel
+BuildRequires:	openssl-devel >= 0.9.6a
 BuildRequires:	libtool	>= 1.4
 %{?bcond_on_mysql:BuildRequires: mysql-devel}
 %{?bcond_on_ldap:BuildRequires: openldap-devel}
