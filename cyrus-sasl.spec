@@ -6,13 +6,15 @@
 Summary:	The SASL library API for the Cyrus mail system.
 Name:		cyrus-sasl
 Version:	1.5.24
-Release:	2
-Copyright:	distributable
+Release:	7
+LIcense:	Distributable
 Group:		Libraries
+Group(de):	Libraries
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
-Patch0:		cyrus-sasl-configdir.patch
+Patch0:		%{name}-configdir.patch
+Patch1:		%{name}-des.patch
 BuildRequires:	db3-devel
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel
@@ -32,6 +34,7 @@ systemu poczty elektronicznej Cyrusa.
 %package devel
 Summary:	Header files and documentation for cyrus-sasl
 Group:		Development/Libraries
+Group(de):	Entwicklung/Libraries
 Group(fr):	Development/Librairies
 Group(pl):	Programowanie/Biblioteki
 Requires:	%{name} = %{version}
@@ -42,6 +45,7 @@ Header files and documentation for cyrus-sasl.
 %package static
 Summary:	Static cyrus-sasl libraries
 Group:		Libraries
+Group(de):	Libraries
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name}-devel = %{version}
@@ -52,6 +56,7 @@ Static cyrus-sasl libraries.
 %package cram-md5
 Summary:	Cram-MD5 Cyrus SASL pluggin
 Group:		Libraries
+Group(de):	Libraries
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
@@ -62,6 +67,7 @@ Cram-MD5 Cyrus SASL pluggin.
 %package digest-md5
 Summary:	Digest-MD5 Cyrus SASL pluggin
 Group:		Libraries
+Group(de):	Libraries
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
@@ -72,6 +78,7 @@ Digest-MD5 Cyrus SASL pluggin.
 %package plain
 Summary:	Plain Cyrus SASL pluggin
 Group:		Libraries
+Group(de):	Libraries
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
@@ -82,6 +89,7 @@ Plain Cyrus SASL pluggin.
 %package anonymous
 Summary:	Anonymous Cyrus SASL pluggin
 Group:		Libraries
+Group(de):	Libraries
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
@@ -92,6 +100,7 @@ Anonymous Cyrus SASL pluggin.
 %package login
 Summary:	Unsupported Login Cyrus SASL pluggin
 Group:		Libraries
+Group(de):	Libraries
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Requires:	%{name} = %{version}
@@ -128,13 +137,13 @@ x509 Cyrus SASL pluggin.
 %prep
 %setup  -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 aclocal -I cmulocal
 autoheader
 automake -a
 autoconf
-LDFLAGS="-s"; export LDFLAGS
 %configure \
 	--enable-static \
 	--enable-login \
@@ -148,17 +157,11 @@ LDFLAGS="-s"; export LDFLAGS
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT{/var/lib/sasl,%{_sysconfdir}}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
-strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.* \
-	$RPM_BUILD_ROOT%{_libdir}/sasl/lib*.so.*.*
-
 touch $RPM_BUILD_ROOT/var/lib/sasl/sasl.db
-
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man?/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
