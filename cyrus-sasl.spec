@@ -7,6 +7,7 @@ Group:		Libraries
 Source:		ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
 BuildRequires:	gdbm-devel
 BuildRequires:	pam-devel
+BuildRequires:	openssl-devel
 URL:		http://asg.web.cmu.edu/cyrus/imapd/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -94,7 +95,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/var/state/sasl
+install -d $RPM_BUILD_ROOT/var/lib/sasl
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
@@ -114,7 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %dir %{_libdir}/sasl
-%dir /var/state/sasl
+%dir /var/lib/sasl
 %attr(755,root,root) %{_libdir}/lib*.so.*.*
 #%attr(755,root,root) %{_libdir}/sasl/lib*.so*
 %attr(755,root,root) %{_sbindir}/*
