@@ -11,3 +11,60 @@
  				dblib="no")
  	;;
    auto_detect)
+@@ -278,8 +278,8 @@
+   fi
+   cmu_save_LIBS="$LIBS"
+   AC_CHECK_LIB(pam, pam_start,
+-	  AC_CHECK_HEADER(security/pam_appl.h,,
+-			  with_pam=no),
++	  [AC_CHECK_HEADER(security/pam_appl.h,,
++			  with_pam=no)],
+ 		with_pam=no, $SASL_DL_LIB)
+   LIBS="$cmu_save_LIBS"
+ fi
+@@ -466,10 +466,10 @@
+                  cmu_have_rsaref=no)
+ 
+     AC_CHECK_LIB(crypto, des_pcbc_encrypt, 
+-	AC_CHECK_HEADER(openssl/des.h, [AC_DEFINE(WITH_SSL_DES)
++	[AC_CHECK_HEADER(openssl/des.h, [AC_DEFINE(WITH_SSL_DES)
+ 					LIB_DES="-lcrypto";
+ 					with_des=yes],
+-			with_des=no), 
++			with_des=no)],
+         with_des=no, $LIB_RSAREF)
+   fi
+ fi
+@@ -567,7 +567,7 @@
+      LDFLAGS="$LDFLAGS -L$gssapi/lib"
+   fi
+   AC_CHECK_HEADER(gssapi.h, AC_DEFINE(HAVE_GSSAPI_H),
+-    AC_CHECK_HEADER(gssapi/gssapi.h,, AC_WARN(Disabling GSSAPI); gssapi=no))
++    [AC_CHECK_HEADER(gssapi/gssapi.h,, AC_WARN(Disabling GSSAPI); gssapi=no)])
+ fi
+ 
+ if test "$gssapi" != no; then
+@@ -737,7 +737,7 @@
+ sasl_cv_getsubopt=no
+ AC_CHECK_FUNC(getsubopt, [AC_DEFINE(HAVE_GETSUBOPT)], [sasl_cv_getsubopt=yes])
+ if test $sasl_cv_getsubopt = yes; then
+-	LIBOBJS="$LIBOBJS getsubopt.o"
++	AC_LIBOBJ([getsubopt])
+ 	GETSUBOPT="getsubopt.lo"
+ fi
+ AC_SUBST(GETSUBOPT)
+@@ -748,12 +748,12 @@
+ AC_CHECK_FUNC(snprintf, [AC_DEFINE(HAVE_SNPRINTF)], [sasl_cv_snprintf=yes])
+ AC_CHECK_FUNC(vsnprintf, [AC_DEFINE(HAVE_VSNPRINTF)], [sasl_cv_snprintf=yes])
+ if test $sasl_cv_snprintf = yes; then
+-	LIBOBJS="$LIBOBJS snprintf.o"
++	AC_LIBOBJ([snprintf])
+         SNPRINTFOBJS="snprintf.o"
+ fi
+ AC_SUBST(SNPRINTFOBJS)
+ 
+-LTLIBOBJS=`echo "$LIBOBJS" | sed 's/\.o/.lo/g'`
++LTLIBOBJS=`echo "$LIB@&t@OBJS" | sed 's/\.o/.lo/g'`
+ AC_SUBST(LTLIBOBJS)
+ 
+ AC_CHECK_HEADERS(getopt.h unistd.h crypt.h pwd.h shadow.h paths.h)
