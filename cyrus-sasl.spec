@@ -30,6 +30,7 @@ Source3:	%{name}.pam
 Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-nolibs.patch
 Patch2:		%{name}-lt.patch
+Patch3:		%{name}-db.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -378,6 +379,7 @@ Wtyczka PostgreSQL do Cyrus SASL.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
