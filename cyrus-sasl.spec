@@ -35,6 +35,7 @@ BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
 BuildRequires:	db-devel
 BuildRequires:	ed
+BuildRequires:	groff
 %{?with_gssapi:BuildRequires:	heimdal-devel}
 BuildRequires:	libtool	>= 1.4
 %{?with_mysql:BuildRequires:	mysql-devel}
