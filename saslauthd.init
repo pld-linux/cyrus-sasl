@@ -33,7 +33,7 @@ case "$1" in
   start)
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/saslauthd ]; then
-		msg_starting salsauthd
+		msg_starting saslauthd
 		daemon saslauthd $SASLAUTHD_OPTS
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/saslauthd
