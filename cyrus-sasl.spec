@@ -6,7 +6,7 @@
 Summary:	The SASL library API for the Cyrus mail system.
 Name:		cyrus-sasl
 Version:	1.5.27
-Release:	0.2
+Release:	1
 LIcense:	Distributable
 Group:		Libraries
 Group(de):	Libraries
@@ -14,6 +14,8 @@ Group(es):	Bibliotecas
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
+Source1:	saslauthd.init
+Source2:	saslauthd.sysconfig
 Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-des.patch
 Patch2:		%{name}-mysql-ldap.patch
@@ -22,9 +24,10 @@ Patch3:		%{name}-saslauthd.patch
 Patch4:		%{name}-ipv6.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	db3-devel
+BuildRequires:	db3-devel >= 3.1.17-8
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel
+BuildRequires:	libtool	>= 1.4
 %{?bcond_on_mysql:BuildRequires: mysql-devel}
 %{?bcond_on_ldap:BuildRequires: openldap-devel}
 URL:		http://asg.web.cmu.edu/sasl/
@@ -191,6 +194,7 @@ Cyrus SASL pwcheck helper.
 
 %build
 rm -f config/missing
+libtoolize --copy --force
 aclocal -I cmulocal
 autoheader
 automake -a
@@ -213,17 +217,36 @@ LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/var/{state,lib}/sasl,%{_sysconfdir}}
+install -d $RPM_BUILD_ROOT{/var/{state,lib}/sasl,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig}}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 touch $RPM_BUILD_ROOT/var/lib/sasl/sasl.db
+
+install -m755 %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
+install -m644 %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
+
+%post saslauthd
+/sbin/chkconfig --add saslauthd
+if [ -f /var/lock/subsys/saslauthd ]; then
+	/etc/rc.d/init.d/saslauthd restart 1>&2
+else
+	echo "Run \"/etc/rc.d/init.d/saslauthd start\" to start saslauthd."
+fi
+
+%postun saslauthd
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/saslauthd ]; then
+		/etc/rc.d/init.d/saslauthd stop 1>&2
+	fi
+	/sbin/chkconfig --del saslauthd
+fi
 
 %files
 %defattr(644,root,root,755)
@@ -292,3 +315,5 @@ rm -rf $RPM_BUILD_ROOT
 %files saslauthd
 %defattr(644,root,root,755) 
 %attr(755,root,root) %{_sbindir}/saslauthd
+%attr(755,root,root) /etc/rc.d/init.d/saslauthd
+%config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/saslauthd
