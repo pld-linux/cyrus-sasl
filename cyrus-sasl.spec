@@ -5,6 +5,7 @@
 #
 Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
+Summary(pt_BR):	Implementação da API SASL
 Summary(ru):	âÉÂÌÉÏÔÅËÁ Cyrus SASL
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÁ Cyrus SASL
 Name:		cyrus-sasl
@@ -38,12 +39,20 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_sysconfdir	/etc/sasl
 
 %description
-The cyrus-sasl package contains the SASL library API implementation
-for the Cyrus mail system.
+This is an implemention of the SASL API, useful for adding
+authentication, authorization, and security to network protocols.  The
+SASL protocol itself is documented in rfc2222; the API standard is a
+work in progress.
 
 %description -l pl
 Pakiet cyrus-sasl zawiera implementacjê biblioteki API SASL dla
 systemu poczty elektronicznej Cyrusa.
+
+%description -l pt_BR
+Esta é uma implementação da API SASL, útil para acrescentar autenticação,
+autorização e seguança (criptografia) para protocolos de rede. O
+protocolo SASL está documentado na RFC 2222. A API "padrão" ainda está
+em desenvolvimento.
 
 %description -l ru
 ğÁËÅÔ cyrus-sasl ÓÏÄÅÒÖÉÔ ÒÅÁÌÉÚÁÃÉÀ Cyrus SASL. SASL - ÜÔÏ Simple
@@ -58,16 +67,22 @@ Authentication and Security Layer, ÍÅÔÏÄ ÄÌÑ ÄÏÄÁÎÎÑ Ğ¦ÄÔÒÉÍËÉ
 %package devel
 Summary:	Header files and documentation for cyrus-sasl
 Summary(pl):	Pliki nag³ówkowe i dokumentacja dla cyrus-sasl
+Summary(pt_BR):	Exemplos e arquivos para desenvolvimento com SASL
 Summary(ru):	æÁÊÌÙ ÄÌÑ ĞÒÏÇÒÁÍÍÉÒÏ×ÁÎÉÑ Ó ÂÉÂÌÉÏÔÅËÏÊ Cyrus SASL
 Summary(ru):	æÁÊÌÉ ÄÌÑ ĞÒÏÇÒÁÍÕ×ÁÎÎÑ Ú Â¦ÂÌ¦ÏÔÅËÏÀ Cyrus SASL
 Group:		Development/Libraries
 Requires:	%{name} = %{version}
 
 %description devel
-Header files and documentation for cyrus-sasl.
+This includes the header files and documentation needed to develop
+applications which use SASL.
 
 %description devel -l pl
 Pliki nag³ówkowe i dokumentacja dla cyrus-sasl.
+
+%description devel -l pt_BR
+Este pacote inclui os arquivos de cabeçalho e documentação necessários
+para desenvolver aplicativos que usem SASL.
 
 %description devel -l ru
 èÅÄÅÒÙ É ÂÉÂÌÉÏÔÅËÉ, ÎÅÏÂÈÏÄÉÍÙÅ ÄÌÑ ÒÁÚÒÁÂÏÔËÉ ĞÒÉÌÏÖÅÎÉÊ,
@@ -102,50 +117,87 @@ Cyrus SASL.
 %package cram-md5
 Summary:	Cram-MD5 Cyrus SASL plugin
 Summary(pl):	Wtyczka Cram-MD5 do Cyrus SASL
+Summary(pt_BR):	Mecanismo SASL CRAM-MD5
 Group:		Libraries
 Requires:	%{name} = %{version}
 
 %description cram-md5
-Cram-MD5 Cyrus SASL plugin.
+This plugin implements the SASL CRAM-MD5 mechanism.
+CRAM-MD5 is the mandatory-to-implement authentication mechanism for a
+number of protocols; it uses MD5 with a challenge/response system to
+authenticate the user.
 
 %description cram-md5 -l pl
 Wtyczka Cram-MD5 do Cyrus SASL.
 
+%description cram-md5 -l pt_BR
+Este plugin implementa o mecanismo SASL CRAM-MD5. CRAM-MD5 é o
+mecanismo de autenticação obrigatório de ser implementado para vários
+protocolos: ele usa MD5 com um sistema de desafio/resposta para
+autenticar o usuário.
+
 %package digest-md5
 Summary:	Digest-MD5 Cyrus SASL plugin
 Summary(pl):	Wtyczka Digest-MD5 do Cyrus SASL
+Summary(pt_BR):	Mecanismo SASL DIGEST-MD5
 Group:		Libraries
 Requires:	%{name} = %{version}
 
 %description digest-md5
-Digest-MD5 Cyrus SASL plugin.
+This plugin implements the latest draft of the SASL DIGEST-MD5
+mechanism.  Although not yet finalized, this is likely to become the
+new mandatory-to-implement authentication system in all new protocols.
+It's based on the digest md5 authentication system designed for HTTP.
 
 %description digest-md5 -l pl
 Wtyczka Digest-MD5 do Cyrus SASL.
 
+%description digest-md5 -l pt_BR
+Este plugin implementa a última versão da especificação do
+mecanismo SASL DIGEST-MD5. Embora ainda não esteja finalizado,
+DIGEST-MD5 provavelmente será o novo sistema de autenticação obrigatório
+para protocolos novos. Ele é baseado na autenticação md5 digest
+desenvolvida para HTTP.
+
 %package plain
 Summary:	Plain Cyrus SASL plugin
 Summary(pl):	Wtyczka plain do Cyrus SASL
+Summary(pt_BR):	Mecanismo SASL PLAIN
 Group:		Libraries
 Requires:	%{name} = %{version}
 
 %description plain
-Plain Cyrus SASL plugin.
+This plugin implements the SASL PLAIN mechanism.  Although insecure,
+PLAIN is useful for transitioning to new security mechanisms, as this
+is the only mechanism which gives the server a copy of the user's
+password.
 
 %description plain -l pl
 Wtyczka plain do Cyrus SASL.
 
+%description plain -l pt_BR
+Este plugin implementa o mecanismo SASL PLAIN. Embora inseguro,
+este mecanismo é útil durante transições para novos mecanismos de
+segurança, pois é o único esquema que fornece uma cópia da senha
+do usuário para o servidor.
+
 %package anonymous
 Summary:	Anonymous Cyrus SASL plugin
 Summary(pl):	Wtyczka anonymous do Cyrus SASL
+Summary(pt_BR):	Mecanismo SASL ANONYMOUS
 Group:		Libraries
 Requires:	%{name} = %{version}
 
 %description anonymous
-Anonymous Cyrus SASL plugin.
+This plugin implements the SASL ANONYMOUS mechanism,
+used for anonymous authentication.
 
 %description anonymous -l pl
 Wtyczka anonymous do Cyrus SASL.
+
+%description anonymous -l pt_BR
+Este plugin implementa o mecanismo SASL ANONYMOUS, usado
+para autenticação anônima.
 
 %package login
 Summary:	Unsupported Login Cyrus SASL plugin
