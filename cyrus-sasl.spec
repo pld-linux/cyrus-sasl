@@ -1,7 +1,7 @@
 Summary:	The SASL library API for the Cyrus mail system.
 Name:		cyrus-sasl
 Version:	1.5.21
-Release:	1
+Release:	2
 Copyright:	distributable
 Group:		Libraries
 Group(fr):	Librairies
@@ -10,7 +10,7 @@ Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
 BuildRequires:	gdbm-devel
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel
-URL:		http://asg.web.cmu.edu/cyrus/imapd/
+URL:		http://asg.web.cmu.edu/sasl/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
