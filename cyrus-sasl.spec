@@ -19,7 +19,7 @@ Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.17
-Release:	0.2
+Release:	0.3
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -416,6 +416,9 @@ cd ..
 	--with-saslauthd=/var/lib/sasl2
 %{__make}
 
+%{__make} -C saslauthd testsaslauthd
+%{__make} -C saslauthd saslcache
+
 cd doc
 RFCLIST=`grep 'rfc.\+\.txt' rfc-compliance`
 for i in $RFCLIST; do
@@ -444,6 +447,8 @@ touch $RPM_BUILD_ROOT/var/lib/sasl2/sasl.db
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
 install %{SOURCE3} ./cyrus.pam
+
+install saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT/%{_sbindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -564,6 +569,8 @@ fi
 %defattr(644,root,root,755)
 %doc cyrus.pam
 %attr(755,root,root) %{_sbindir}/saslauthd
+%attr(755,root,root) %{_sbindir}/testsaslauthd
+%attr(755,root,root) %{_sbindir}/saslcache
 %attr(754,root,root) /etc/rc.d/init.d/saslauthd
 %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/saslauthd
 %{_mandir}/man8/saslauthd.*
