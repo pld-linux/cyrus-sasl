@@ -36,6 +36,7 @@ BuildRequires:	libtool	>= 1.4
 %{!?_without_ldap:BuildRequires: openldap-devel}
 BuildRequires:	openssl-devel >= 0.9.7
 BuildRequires:	pam-devel
+Requires(post):	/sbin/ldconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/sasl
@@ -409,8 +410,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/ldconfig
-
-echo "Remember to install apropriate plugins, or you won't have any mechs available."
+echo "Remember to install appropriate plugins, or you won't have any mechs available."
 
 %postun -p /sbin/ldconfig
 
