@@ -336,7 +336,7 @@ fi
 %attr(755,root,root) %{_sbindir}/sasldblistusers
 %attr(755,root,root) %{_sbindir}/saslpasswd
 
-%attr(600,root,root) %ghost %config(noreplace) %verify(not mtime md5 size) /var/lib/sasl/sasl.db
+%attr(644,root,root) %ghost %config(noreplace) %verify(not mtime md5 size) /var/lib/sasl/sasl.db
 %{_mandir}/man[18]/*
 %doc *.gz doc/*.gz
 
