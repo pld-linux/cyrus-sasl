@@ -1,7 +1,8 @@
 #
 # Conditional builds:
-# x509 - build x509 pluggin
-# srp - build srp pluggin
+# _with_srp - build srp pluggin
+# _without_myslq - don't build mysql pluggin
+# _without_ldap - disable LDAP support for sasluthd
 #
 Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
@@ -9,31 +10,23 @@ Summary(pt_BR):	Implementação da API SASL
 Summary(ru):	âÉÂÌÉÏÔÅËÁ Cyrus SASL
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÁ Cyrus SASL
 Name:		cyrus-sasl
-Version:	1.5.27
-Release:	16
+Version:	2.1.10
+Release:	1
 License:	distributable
 Group:		Libraries
-Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/OLD-VERSIONS/sasl/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail//%{name}-%{version}.tar.gz
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
 Patch0:		%{name}-configdir.patch
-Patch1:		%{name}-des.patch
-Patch2:		%{name}-mysql-ldap.patch
-Patch3:		%{name}-saslauthd.patch
-#Patch4:	http://www.imasy.or.jp/~ume/ipv6/cyrus-sasl-1.5.24-ipv6-20010321.diff.gz
-Patch4:		%{name}-ipv6.patch
-Patch5:		%{name}-ac25x.patch
-Patch6:		saslauthd-man.diff
-Patch7:		%{name}-db4.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	db-devel
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel >= 0.9.6a
 BuildRequires:	libtool	>= 1.4
-%{?_with_mysql:BuildRequires: mysql-devel}
-%{?_with_ldap:BuildRequires: openldap-devel}
+%{!?_without_mysql:BuildRequires: mysql-devel}
+%{!?_without_ldap:BuildRequires: openldap-devel}
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -49,14 +42,14 @@ work in progress.
 Pakiet cyrus-sasl zawiera implementacjê biblioteki API SASL dla
 systemu poczty elektronicznej Cyrusa. Biblioteka ta jest przydatna
 tak¿e do dodawania uwierzytelniania, autoryzacji oraz zwiêkszania
-bezpieczeñstwa protoko³ów sieciowych. Sam protokó³ SASL jest opisany
-w RFC 2222; standaryzacja API jest w toku.
+bezpieczeñstwa protoko³ów sieciowych. Sam protokó³ SASL jest opisany w
+RFC 2222; standaryzacja API jest w toku.
 
 %description -l pt_BR
-Esta é uma implementação da API SASL, útil para acrescentar autenticação,
-autorização e seguança (criptografia) para protocolos de rede. O
-protocolo SASL está documentado na RFC 2222. A API "padrão" ainda está
-em desenvolvimento.
+Esta é uma implementação da API SASL, útil para acrescentar
+autenticação, autorização e seguança (criptografia) para protocolos de
+rede. O protocolo SASL está documentado na RFC 2222. A API "padrão"
+ainda está em desenvolvimento.
 
 %description -l ru
 ðÁËÅÔ cyrus-sasl ÓÏÄÅÒÖÉÔ ÒÅÁÌÉÚÁÃÉÀ Cyrus SASL. SASL - ÜÔÏ Simple
@@ -134,8 +127,8 @@ authenticate the user.
 %description cram-md5 -l pl
 Wtyczka dodaj±ca obs³ugê mechanizmu CRAM-MD5 do Cyrus SASL. CRAM-MD5
 jest obowi±zkowym do zaimplementowania mechanizmem uwierzytelniania
-dla wielu protoko³ów; do uwierzytelnienia u¿ytkownika u¿ywa MD5 wraz
-z systemem challenge/response.
+dla wielu protoko³ów; do uwierzytelnienia u¿ytkownika u¿ywa MD5 wraz z
+systemem challenge/response.
 
 %description cram-md5 -l pt_BR
 Este plugin implementa o mecanismo SASL CRAM-MD5. CRAM-MD5 é o
@@ -164,10 +157,10 @@ wszystkich nowych protoko³ach. Bazuje na systemie uwierzytelniania
 Digest-MD5 zaprojektowanym dla HTTP.
 
 %description digest-md5 -l pt_BR
-Este plugin implementa a última versão da especificação do
-mecanismo SASL DIGEST-MD5. Embora ainda não esteja finalizado,
-DIGEST-MD5 provavelmente será o novo sistema de autenticação obrigatório
-para protocolos novos. Ele é baseado na autenticação md5 digest
+Este plugin implementa a última versão da especificação do mecanismo
+SASL DIGEST-MD5. Embora ainda não esteja finalizado, DIGEST-MD5
+provavelmente será o novo sistema de autenticação obrigatório para
+protocolos novos. Ele é baseado na autenticação md5 digest
 desenvolvida para HTTP.
 
 %package plain
@@ -190,10 +183,10 @@ nowe mechanizmu bezpieczeñstwa, jako ¿e jest to jedyny mechanizm,
 który udostêpnia serwerowi kopiê has³a u¿ytkownika.
 
 %description plain -l pt_BR
-Este plugin implementa o mecanismo SASL PLAIN. Embora inseguro,
-este mecanismo é útil durante transições para novos mecanismos de
-segurança, pois é o único esquema que fornece uma cópia da senha
-do usuário para o servidor.
+Este plugin implementa o mecanismo SASL PLAIN. Embora inseguro, este
+mecanismo é útil durante transições para novos mecanismos de
+segurança, pois é o único esquema que fornece uma cópia da senha do
+usuário para o servidor.
 
 %package anonymous
 Summary:	Anonymous Cyrus SASL plugin
@@ -203,16 +196,16 @@ Group:		Libraries
 Requires:	%{name} = %{version}
 
 %description anonymous
-This plugin implements the SASL ANONYMOUS mechanism,
-used for anonymous authentication.
+This plugin implements the SASL ANONYMOUS mechanism, used for
+anonymous authentication.
 
 %description anonymous -l pl
 Wtyczka dodaj±ca obs³ugê mechanizmu ANONYMOUS do Cyrus SASL. S³u¿y do
 anonimowego uwierzytelniania.
 
 %description anonymous -l pt_BR
-Este plugin implementa o mecanismo SASL ANONYMOUS, usado
-para autenticação anônima.
+Este plugin implementa o mecanismo SASL ANONYMOUS, usado para
+autenticação anônima.
 
 %package login
 Summary:	Unsupported Login Cyrus SASL plugin
@@ -235,11 +228,10 @@ Group:		Libraries
 Requires:	%{name} = %{version}
 
 %description srp
-This plugin implements the SASL SRP mechanism, based on the
-Secure Remote Password protocol. This mechanism performs mutual
-authentication and can provide a security layer with replay
-detection, integrity protection and/or condifentiality
-protection.
+This plugin implements the SASL SRP mechanism, based on the Secure
+Remote Password protocol. This mechanism performs mutual
+authentication and can provide a security layer with replay detection,
+integrity protection and/or condifentiality protection.
 
 %description srp -l pl
 Wtyczka dodaj±ca obs³ugê mechanizmu SRP do Cyrus SASL. Bazuje na
@@ -248,10 +240,25 @@ uwierzytelnienia i mo¿e dodawaæ warstwê bezpieczeñstwa z wykrywaniem
 powtarzania, zabezpieczeniem integralno¶ci i/lub poufno¶ci.
 
 %description srp -l pt_BR
-Este plugin implementa o mecanismo SASL SRP, baseado no protocolo SRP (Secure
-Remote Password). Este mecanismo oferece autenticação mútua (do cliente e do
-servidor) e pode prover uma camada de segurança com detecção de ataques de
-replay, garantia de integridade e/ou confidencialidade.
+Este plugin implementa o mecanismo SASL SRP, baseado no protocolo SRP
+(Secure Remote Password). Este mecanismo oferece autenticação mútua
+(do cliente e do servidor) e pode prover uma camada de segurança com
+detecção de ataques de replay, garantia de integridade e/ou
+confidencialidade.
+
+%package otp
+Summary:	OTP Cyrus SASL plugin
+Summary(pl):	Wtyczka OTP do Cyrus SASL
+Summary(pt_BR):	Mecanismo SASL OTP
+Group:		Libraries
+Requires:	%{name} = %{version}
+
+%description otp
+This plugin implements the SASL OTP (One Time Password) mechanism.
+
+%description otp -l pl
+Wtyczka dodaj±ca obs³ugê mechanizmu OTP (has³a jednorazowe) do Cyrus
+SASL.
 
 %package x509
 Summary:	x509 Cyrus SASL plugin
@@ -290,47 +297,81 @@ Cyrus SASL pwcheck helper.
 %description pwcheck -l pl
 Program pomocniczy pwcheck do Cyrus SASL.
 
+%package sasldb
+Summary:	Cyrus SASL sasldb plugin
+Summary(pl):	Wtyczka sasldb do Cyrus SASL
+Group:		Libraries
+Requires:	%{name} = %{version}
+
+%description sasldb
+Cyrus SASL sasldb plugin.
+
+%description sasldb -l pl
+Wtyczka sasldb do Cyrus SASL.
+
+%package mysql
+Summary:	Cyrus SASL mysql plugin
+Summary(pl):	Wtyczka mysql do Cyrus SASL
+Group:		Libraries
+Requires:	%{name} = %{version}
+
+%description mysql
+Cyrus SASL mysql plugin.
+
+%description mysql -l pl
+Wtyczka mysql do Cyrus SASL.
+
+
 %prep
 %setup  -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p0
-%patch7 -p1
 
 %build
 rm -f config/missing
 %{__libtoolize}
-%{__aclocal} -I cmulocal
+%{__aclocal} -I cmulocal -I config
 %{__autoheader}
 automake -a
 %{__autoconf}
+
+cd saslauthd
+%{__libtoolize}
+%{__aclocal} -I ../cmulocal -I ../config -I config
+%{__autoheader}
+automake -a
+%{__autoconf}
+cd ..
+
 LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 %configure \
 	--enable-static \
 	--enable-login \
 	%{?_with_srp:--enable-srp} \
-	%{?_with_x509:--enable-x509} \
-	%{?_with_mysql: --with-mysql=%{_prefix}} \
-	%{?_with_ldap: --with-ldap=%{_prefix}} \
-	%{?_with_pwcheck: --with-pwcheck=/var/lib/sasl} \
-	--with-saslauthd=/var/lib/sasl \
+	%{?!_without_mysql: --with-mysql=%{_prefix}} \
+	%{?!_without_ldap: --with-ldap=%{_prefix}} \
+	%{?_with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
+	--with-saslauthd=/var/lib/sasl2 \
 	--with-pam \
 	--with-dblib=berkeley \
-	--with-dbpath=/var/lib/sasl/sasl.db \
-	--with-configdir=%{_sysconfdir}
+	--with-dbpath=/var/lib/sasl2/sasl.db \
+	--with-configdir=%{_sysconfdir} \
+	--disable-krb4
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/var/lib/sasl,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,pam.d}}
-
+install -d $RPM_BUILD_ROOT{/var/lib/sasl2,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig,pam.d}} \
+		$RPM_BUILD_ROOT%{_mandir}/man8
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
-touch $RPM_BUILD_ROOT/var/lib/sasl/sasl.db
+rm -rf $RPM_BUILD_ROOT%{_mandir}/cat*
+rm -f $RPM_BUILD_ROOT%{_libdir}/sasl2/*.la
+
+install {utils,saslauthd}/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+
+ln -sf libsasl2.so $RPM_BUILD_ROOT%{_libdir}/libsasl.so
+
+touch $RPM_BUILD_ROOT/var/lib/sasl2/sasl.db
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
@@ -360,20 +401,22 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc COPYING testing.txt NEWS TODO README doc/*.txt doc/*.html
+%doc AUTHORS COPYING ChangeLog NEWS README
+%doc doc/{ONEWS,TODO,*.txt,*.html,*.fig}
 %dir %{_sysconfdir}
-%dir %{_libdir}/sasl
-%dir /var/lib/sasl
+%dir %{_libdir}/sasl2
+%dir /var/lib/sasl2
 %attr(755,root,root) %{_libdir}/lib*.so.*.*
-%attr(755,root,root) %{_sbindir}/sasldblistusers
-%attr(755,root,root) %{_sbindir}/saslpasswd
+%attr(755,root,root) %{_sbindir}/sasldblistusers2
+%attr(755,root,root) %{_sbindir}/saslpasswd2
 
-%attr(640,root,mail) %ghost %config(noreplace) %verify(not mtime md5 size) /var/lib/sasl/sasl.db
-%{_mandir}/man[18]/*
+%attr(640,root,mail) %ghost %config(noreplace) %verify(not mtime md5 size) /var/lib/sasl2/sasl.db
+%{_mandir}/man8/sasldblistusers2.*
+%{_mandir}/man8/saslpasswd2.*
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/*.h
+%{_includedir}/sasl
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/lib*.la
 %{_mandir}/man3/*
@@ -381,38 +424,50 @@ fi
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/lib*.a
-%{_libdir}/sasl/lib*.a
-
-%files cram-md5
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl/libcrammd5.so*
-
-%files digest-md5
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl/libdigestmd5.so*
-
-%files plain
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl/libplain.so*
+%{_libdir}/sasl2/lib*.a
 
 %files anonymous
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl/libanonymous.so*
+%attr(755,root,root) %{_libdir}/sasl2/libanonymous.so*
+
+%files cram-md5
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libcrammd5.so*
+
+%files digest-md5
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libdigestmd5.so*
 
 %files login
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl/liblogin.so*
+%attr(755,root,root) %{_libdir}/sasl2/liblogin.so*
+
+%files otp
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libotp.so*
+
+%files plain
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libplain.so*
+
+%files sasldb
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libsasldb.so*
+
+%files mysql
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libmysql*.so*
 
 %if %{?_with_srp:1}%{?!_with_srp:0}
 %files srp
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl/libsrp.so*
+%attr(755,root,root) %{_libdir}/sasl2/libsrp.so*
 %endif
 
 %if %{?_with_x509:1}%{?!_with_x509:0}
 %files x509
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl/libx509.so*
+%attr(755,root,root) %{_libdir}/sasl2/libx509.so*
 %endif
 
 %if %{?_with_pwcheck:1}%{?!_with_pwcheck:0}
@@ -427,3 +482,4 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/saslauthd
 %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/saslauthd
 %config(noreplace) %verify(not mtime md5 size) /etc/pam.d/cyrus
+%{_mandir}/man8/saslauthd.*
