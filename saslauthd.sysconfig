@@ -1,5 +1,6 @@
 # $Id$
 # Authentications mechanism (for list see saslauthd -v)
+# In case of problems with PAM you are advised to use shadow
 SASL_AUTHMECH=pam
 
 # Hostname for remote IMAP server (if rimap auth mech is used)
