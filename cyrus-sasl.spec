@@ -3,11 +3,12 @@
 # - add ldap plugin from openldap sources
 #
 # Conditional build:
-# _with_srp		- build srp pluggin
-# _without_mysql	- don't build mysql pluggin
-# _without_ldap		- disable LDAP support for sasluthd
-# _with_gssapi		- enable GSSAPI support for sasluthd
-#
+%bcond_with srp		# build srp pluggin
+%bcond_without mysql	# don't build mysql pluggin
+%bcond_without ldap	# disable LDAP support for sasluthd
+%bcond_with gssapi	# enable GSSAPI support for sasluthd
+%bcond_with pwcheck
+%bcond_with x509	
 Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
 Summary(pt_BR):	Implementação da API SASL
@@ -15,7 +16,7 @@ Summary(ru):	âÉÂÌÉÏÔÅËÁ Cyrus SASL
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÁ Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.15
-Release:	0.1
+Release:	0.2
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -33,8 +34,8 @@ BuildRequires:	automake
 BuildRequires:	db-devel
 BuildRequires:	ed
 BuildRequires:	libtool	>= 1.4
-%{!?_without_mysql:BuildRequires:	mysql-devel}
-%{!?_without_ldap:BuildRequires:	openldap-devel}
+%{?with_mysql:BuildRequires:	mysql-devel}
+%{?with_ldap:BuildRequires:	openldap-devel}
 BuildRequires:	openssl-devel >= 0.9.7c
 BuildRequires:	pam-devel
 Requires(post):	/sbin/ldconfig
@@ -383,18 +384,17 @@ LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 %configure \
 	--enable-static \
 	--enable-login \
-	%{?_with_srp:--enable-srp} \
-	%{?!_without_mysql:--with-mysql=%{_prefix}} \
-	%{?!_without_ldap:--with-ldap=%{_prefix}} \
-	%{?_with_pwcheck:--with-pwcheck=/var/lib/sasl2} \
+	%{?with_srp: --enable-srp} \
+	%{?with_mysql: --with-mysql=%{_prefix}} \
+	%{?with_ldap: --with-ldap=%{_prefix}} \
+	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
 	--with-saslauthd=/var/lib/sasl2 \
 	--with-pam \
 	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl2/sasl.db \
 	--with-configdir=%{_sysconfdir} \
 	--disable-krb4 \
-	%{?_with_gssapi:--enable-gssapi } \
-	%{?!_with_gssapi:--disable-gssapi }
+	%{?with_gssapi: --enable-gssapi}%{?!with_gssapi: --disable-gssapi}
 %{__make}
 
 cd doc
@@ -484,7 +484,7 @@ fi
 %if %{with gssapi}
 %files gssapi
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl2/libgssapi.so*
+%attr(755,root,root) %{_libdir}/sasl2/libgssapiv2.so*
 %endif
 
 %files cram-md5
@@ -511,25 +511,25 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libsasldb.so*
 
-%if %{!?_without_mysql:1}%{?_without_mysql:0}
+%if %{with mysql}
 %files mysql
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libmysql*.so*
 %endif
 
-%if %{?_with_srp:1}%{?!_with_srp:0}
+%if %{with srp}
 %files srp
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libsrp.so*
 %endif
 
-%if %{?_with_x509:1}%{?!_with_x509:0}
+%if %{with x509}
 %files x509
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libx509.so*
 %endif
 
-%if %{?_with_pwcheck:1}%{?!_with_pwcheck:0}
+%if %{with pwcheck}
 %files pwcheck
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/pwcheck
