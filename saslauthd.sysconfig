@@ -6,4 +6,5 @@ SASL_AUTHMECH=pam
 SASL_RIMAP_HOSTNAME=
 
 # Honour time-of-day login restrictions (if shadow auth mech is used)
-SASL_TIME_OF_DAY_LOGIN_RESTRICTIONS=yes 
+# SASL_TIME_OF_DAY_LOGIN_RESTRICTIONS=yes
+# --- not longer used

@@ -23,9 +23,9 @@ if [ "x$SASL_RIMAP_HOSTNAME" != "x" ] ; then
 	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -H $SASL_RIMAP_HOSTNAME"
 fi
 
-if is_yes "$SASL_TIME_OF_DAY_LOGIN_RESTRICTIONS" ; then
-	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -T"
-fi
+#if is_yes "$SASL_TIME_OF_DAY_LOGIN_RESTRICTIONS" ; then
+#	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -T"
+#fi
 
 # See how we were called.
 case "$1" in
