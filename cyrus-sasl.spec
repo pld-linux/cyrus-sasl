@@ -214,14 +214,25 @@ Wtyczka Unsupported Login do Cyrus SASL.
 %package srp
 Summary:	SRP Cyrus SASL plugin
 Summary(pl):	Wtyczka SRP do Cyrus SASL
+Summary(pt_BR):	Mecanismo SASL SRP
 Group:		Libraries
 Requires:	%{name} = %{version}
 
 %description srp
-SRP Cyrus SASL plugin.
+This plugin implements the SASL SRP mechanism, based on the
+Secure Remote Password protocol. This mechanism performs mutual
+authentication and can provide a security layer with replay
+detection, integrity protection and/or condifentiality
+protection.
 
 %description srp -l pl
 Wtyczka SRP do Cyrus SASL.
+
+%description srp -l pt_BR
+Este plugin implementa o mecanismo SASL SRP, baseado no protocolo SRP (Secure
+Remote Password). Este mecanismo oferece autenticação mútua (do cliente e do
+servidor) e pode prover uma camada de segurança com detecção de ataques de
+replay, garantia de integridade e/ou confidencialidade.
 
 %package x509
 Summary:	x509 Cyrus SASL plugin
