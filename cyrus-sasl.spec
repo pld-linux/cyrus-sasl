@@ -10,16 +10,6 @@ Version:	1.5.27
 Release:	10
 License:	distributable
 Group:		Libraries
-Group(cs):	Knihovny
-Group(de):	Bibliotheken
-Group(es):	Bibliotecas
-Group(fr):	Librairies
-Group(ja):	╔И╔╓╔ж╔И╔Й
-Group(pl):	Biblioteki
-Group(pt):	Bibliotecas
-Group(pt_BR):	Bibliotecas
-Group(ru):	Библиотеки
-Group(uk):	Б╕бл╕отеки
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
@@ -56,16 +46,6 @@ systemu poczty elektronicznej Cyrusa.
 Summary:	Header files and documentation for cyrus-sasl
 Summary(pl):	Pliki nagЁСwkowe i dokumentacja dla cyrus-sasl
 Group:		Development/Libraries
-Group(cs):	VЩvojovИ prostЬedky/Knihovny
-Group(de):	Entwicklung/Bibliotheken
-Group(es):	Desarrollo/Bibliotecas
-Group(fr):	Development/Librairies
-Group(ja):	Ё╚х╞/╔И╔╓╔ж╔И╔Й
-Group(pl):	Programowanie/Biblioteki
-Group(pt_BR):	Desenvolvimento/Bibliotecas
-Group(pt):	Desenvolvimento/Bibliotecas
-Group(ru):	Разработка/Библиотеки
-Group(uk):	Розробка/Б╕бл╕отеки
 Requires:	%{name} = %{version}
 
 %description devel
@@ -78,16 +58,6 @@ Pliki nagЁСwkowe i dokumentacja dla cyrus-sasl.
 Summary:	Static cyrus-sasl libraries
 Summary(pl):	Statyczne biblioteki cyrus-sasl
 Group:		Development/Libraries
-Group(cs):	VЩvojovИ prostЬedky/Knihovny
-Group(de):	Entwicklung/Bibliotheken
-Group(es):	Desarrollo/Bibliotecas
-Group(fr):	Development/Librairies
-Group(ja):	Ё╚х╞/╔И╔╓╔ж╔И╔Й
-Group(pl):	Programowanie/Biblioteki
-Group(pt_BR):	Desenvolvimento/Bibliotecas
-Group(pt):	Desenvolvimento/Bibliotecas
-Group(ru):	Разработка/Библиотеки
-Group(uk):	Розробка/Б╕бл╕отеки
 Requires:	%{name}-devel = %{version}
 
 %description static
@@ -100,16 +70,6 @@ Statyczne biblioteki cyrus-sasl.
 Summary:	Cram-MD5 Cyrus SASL plugin
 Summary(pl):	Wtyczka Cram-MD5 do Cyrus SASL
 Group:		Libraries
-Group(cs):	Knihovny
-Group(de):	Bibliotheken
-Group(es):	Bibliotecas
-Group(fr):	Librairies
-Group(ja):	╔И╔╓╔ж╔И╔Й
-Group(pl):	Biblioteki
-Group(pt):	Bibliotecas
-Group(pt_BR):	Bibliotecas
-Group(ru):	Библиотеки
-Group(uk):	Б╕бл╕отеки
 Requires:	%{name} = %{version}
 
 %description cram-md5
@@ -122,16 +82,6 @@ Wtyczka Cram-MD5 do Cyrus SASL.
 Summary:	Digest-MD5 Cyrus SASL plugin
 Summary(pl):	Wtyczka Digest-MD5 do Cyrus SASL
 Group:		Libraries
-Group(cs):	Knihovny
-Group(de):	Bibliotheken
-Group(es):	Bibliotecas
-Group(fr):	Librairies
-Group(ja):	╔И╔╓╔ж╔И╔Й
-Group(pl):	Biblioteki
-Group(pt):	Bibliotecas
-Group(pt_BR):	Bibliotecas
-Group(ru):	Библиотеки
-Group(uk):	Б╕бл╕отеки
 Requires:	%{name} = %{version}
 
 %description digest-md5
@@ -144,16 +94,6 @@ Wtyczka Digest-MD5 do Cyrus SASL.
 Summary:	Plain Cyrus SASL plugin
 Summary(pl):	Wtyczka plain do Cyrus SASL
 Group:		Libraries
-Group(cs):	Knihovny
-Group(de):	Bibliotheken
-Group(es):	Bibliotecas
-Group(fr):	Librairies
-Group(ja):	╔И╔╓╔ж╔И╔Й
-Group(pl):	Biblioteki
-Group(pt):	Bibliotecas
-Group(pt_BR):	Bibliotecas
-Group(ru):	Библиотеки
-Group(uk):	Б╕бл╕отеки
 Requires:	%{name} = %{version}
 
 %description plain
@@ -166,16 +106,6 @@ Wtyczka plain do Cyrus SASL.
 Summary:	Anonymous Cyrus SASL plugin
 Summary(pl):	Wtyczka anonymous do Cyrus SASL
 Group:		Libraries
-Group(cs):	Knihovny
-Group(de):	Bibliotheken
-Group(es):	Bibliotecas
-Group(fr):	Librairies
-Group(ja):	╔И╔╓╔ж╔И╔Й
-Group(pl):	Biblioteki
-Group(pt):	Bibliotecas
-Group(pt_BR):	Bibliotecas
-Group(ru):	Библиотеки
-Group(uk):	Б╕бл╕отеки
 Requires:	%{name} = %{version}
 
 %description anonymous
@@ -188,16 +118,6 @@ Wtyczka anonymous do Cyrus SASL.
 Summary:	Unsupported Login Cyrus SASL plugin
 Summary(pl):	Wtyczka Unsupported Login do Cyrus SASL
 Group:		Libraries
-Group(cs):	Knihovny
-Group(de):	Bibliotheken
-Group(es):	Bibliotecas
-Group(fr):	Librairies
-Group(ja):	╔И╔╓╔ж╔И╔Й
-Group(pl):	Biblioteki
-Group(pt):	Bibliotecas
-Group(pt_BR):	Bibliotecas
-Group(ru):	Библиотеки
-Group(uk):	Б╕бл╕отеки
 Requires:	%{name} = %{version}
 
 %description login
@@ -210,16 +130,6 @@ Wtyczka Unsupported Login do Cyrus SASL.
 Summary:	SRP Cyrus SASL plugin
 Summary(pl):	Wtyczka SRP do Cyrus SASL
 Group:		Libraries
-Group(cs):	Knihovny
-Group(de):	Bibliotheken
-Group(es):	Bibliotecas
-Group(fr):	Librairies
-Group(ja):	╔И╔╓╔ж╔И╔Й
-Group(pl):	Biblioteki
-Group(pt):	Bibliotecas
-Group(pt_BR):	Bibliotecas
-Group(ru):	Библиотеки
-Group(uk):	Б╕бл╕отеки
 Requires:	%{name} = %{version}
 
 %description srp
@@ -232,16 +142,6 @@ Wtyczka SRP do Cyrus SASL.
 Summary:	x509 Cyrus SASL plugin
 Summary(pl):	Wtyczka x509 do Cyrus SASL
 Group:		Libraries
-Group(cs):	Knihovny
-Group(de):	Bibliotheken
-Group(es):	Bibliotecas
-Group(fr):	Librairies
-Group(ja):	╔И╔╓╔ж╔И╔Й
-Group(pl):	Biblioteki
-Group(pt):	Bibliotecas
-Group(pt_BR):	Bibliotecas
-Group(ru):	Библиотеки
-Group(uk):	Б╕бл╕отеки
 Requires:	%{name} = %{version}
 
 %description x509
@@ -254,16 +154,6 @@ Wtyczka x509 do Cyrus SASL.
 Summary:	Cyrus SASL authd
 Summary(pl):	Demon authd do Cyrus SASL
 Group:		Libraries
-Group(cs):	Knihovny
-Group(de):	Bibliotheken
-Group(es):	Bibliotecas
-Group(fr):	Librairies
-Group(ja):	╔И╔╓╔ж╔И╔Й
-Group(pl):	Biblioteki
-Group(pt):	Bibliotecas
-Group(pt_BR):	Bibliotecas
-Group(ru):	Библиотеки
-Group(uk):	Б╕бл╕отеки
 Requires:	%{name} = %{version}
 Prereq:		/sbin/chkconfig
 
@@ -277,16 +167,6 @@ Demon authd do Cyrus SASL.
 Summary:	Cyrus SASL pwcheck helper
 Summary(pl):	Program pomocniczy pwcheck do Cyrus SASL
 Group:		Libraries
-Group(cs):	Knihovny
-Group(de):	Bibliotheken
-Group(es):	Bibliotecas
-Group(fr):	Librairies
-Group(ja):	╔И╔╓╔ж╔И╔Й
-Group(pl):	Biblioteki
-Group(pt):	Bibliotecas
-Group(pt_BR):	Bibliotecas
-Group(ru):	Библиотеки
-Group(uk):	Б╕бл╕отеки
 Requires:	%{name} = %{version}
 
 %description pwcheck
