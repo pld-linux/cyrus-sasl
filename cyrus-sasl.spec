@@ -1,4 +1,6 @@
 #
+# TODO:
+# - add ldap plugin from openldap sources
 # Conditional builds:
 # _with_srp - build srp pluggin
 # _without_myslq - don't build mysql pluggin
@@ -10,11 +12,11 @@ Summary(pt_BR):	ImplementaÁ„o da API SASL
 Summary(ru):	‚…¬Ã…œ‘≈À¡ Cyrus SASL
 Summary(uk):	‚¶¬Ã¶œ‘≈À¡ Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.12
-Release:	2
+Version:	2.1.13
+Release:	0.1
 License:	distributable
 Group:		Libraries
-Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail//%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
