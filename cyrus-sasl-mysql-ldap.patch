@@ -1,0 +1,578 @@
+diff -ruN --exclude *.orig cyrus-sasl-1.5.27.orig/acconfig.h cyrus-sasl-1.5.27/acconfig.h
+--- cyrus-sasl-1.5.27.orig/acconfig.h	Tue Apr 24 17:02:28 2001
++++ cyrus-sasl-1.5.27/acconfig.h	Tue Apr 24 17:02:53 2001
+@@ -86,6 +86,12 @@
+ /* do we have PAM for plaintext password checking? */
+ #undef HAVE_PAM
+ 
++/* do we have MySQL for plaintext password checking? */
++#undef HAVE_MYSQL
++
++/* do we have LDAP for plaintext password checking? */
++#undef HAVE_LDAP
++
+ /* what flavor of GSSAPI are we using? */
+ #undef HAVE_GSS_C_NT_HOSTBASED_SERVICE
+ 
+diff -ruN --exclude *.orig cyrus-sasl-1.5.27.orig/configure.in cyrus-sasl-1.5.27/configure.in
+--- cyrus-sasl-1.5.27.orig/configure.in	Tue Apr 24 17:02:28 2001
++++ cyrus-sasl-1.5.27/configure.in	Tue Apr 24 17:41:49 2001
+@@ -147,13 +147,16 @@
+ dnl named.  arg.
+   berkeley)
+ 	AC_CHECK_HEADER(db.h,
+-			AC_CHECK_LIB(db-3, db_create, SASL_DB_LIB="-ldb-3";
+-			   dblib="berkeley",
+-			AC_CHECK_LIB(db, db_create, SASL_DB_LIB="-ldb";
+-			   dblib="berkeley",
+-			AC_CHECK_LIB(db, db_open, SASL_DB_LIB="-ldb"; 
+-			   dblib="berkeley",
+-                        dblib="no"))),
++			for dbname in db-3.1 db-3 db3.1 db3 db
++			  do
++			    AC_CHECK_LIB($dbname, db_create, SASL_DB_LIB="-l$dbname";
++			    dblib="berkeley"; break, dblib="no")
++			  done
++			if test "$dblib" = "no"; then
++			  AC_CHECK_LIB(db, db_open, SASL_DB_LIB="-ldb"; 
++			  dblib="berkeley"; dbname=db,
++                          dblib="no")
++			fi,
+ 			dblib="no")
+ 	;;
+   gdbm)
+@@ -173,13 +176,16 @@
+   auto_detect)
+         dnl How about berkeley db?
+ 	AC_CHECK_HEADER(db.h,
+-			AC_CHECK_LIB(db-3, db_create, SASL_DB_LIB="-ldb-3";
+-			   dblib="berkeley",
+-			AC_CHECK_LIB(db, db_create, SASL_DB_LIB="-ldb";
+-			   dblib="berkeley",
+-			AC_CHECK_LIB(db, db_open, SASL_DB_LIB="-ldb"; 
+-			   dblib="berkeley",
+-                        dblib="no"))),
++                        for dbname in db-3.1 db-3 db3.1 db3 db
++                          do
++                            AC_CHECK_LIB($dbname, db_create, SASL_DB_LIB="-l$dbname";
++                            dblib="berkeley"; break, dblib="no")
++                          done
++                        if test "$dblib" = "no"; then
++                          AC_CHECK_LIB(db, db_open, SASL_DB_LIB="-ldb";
++                          dblib="berkeley"; dbname=db,
++                          dblib="no")
++			fi,
+ 			dblib="no")
+ 	if test "$dblib" = no; then
+ 	  dnl How about ndbm?
+@@ -322,6 +328,88 @@
+ fi
+ AM_CONDITIONAL(PWCHECK, test "$with_pwcheck" != no)
+ 
++dnl MySQL
++AC_ARG_WITH(mysql,  [ --with-mysql=PATH        enable authentication from MySQL database [no] ],
++  with_mysql=$withval,
++  with_mysql=no)
++
++mysql_found=""  
++if test -z "$with_mysql"; then
++  for mysqlloc in lib/mysql lib ; do
++	for mysqlprefix in ${prefix} /usr/local /usr ; do
++		if test -f ${prefix}/${mysqlloc}/libmysqlclient.a; then
++      		with_mysql="${prefix}"
++			mysql_found="yes"
++      		break
++		fi
++	done
++	if test "$mysql_found"; then
++		break
++	fi
++  done
++fi
++
++LIB_MYSQL=""
++case "$with_mysql" in
++    no) true;;
++    ""|yes) AC_CHECK_LIB(mysqlclient, mysql_select_db,
++		AC_DEFINE(HAVE_MYSQL)
++		LIB_MYSQL="-lmysqlclient",
++		with_mysql=no);;
++    *)	if test -d ${with_mysql}/include/mysql; then
++	  CPPFLAGS="$CPPFLAGS -I${with_mysql}/include/mysql"
++	else
++	  CPPFLAGS="$CPPFLAGS -I${with_mysql}/include"
++	fi
++	if test -d ${with_mysql}/lib/mysql; then
++	  LDFLAGS="$LDFLAGS -L${with_mysql}/lib/mysql"
++	fi
++	AC_DEFINE(HAVE_MYSQL)
++	LIB_MYSQL="-lmysqlclient";;
++esac
++AC_SUBST(LIB_MYSQL)
++
++dnl LDAP
++AC_ARG_WITH(ldap, [  --with-ldap=PATH         enable authentication from LDAP [no] ],
++  with_ldap=$withval,
++  with_ldap=no)
++
++ldap_found=""  
++if test -z "$with_ldap"; then
++  for ldaploc in lib/ldap lib;  do
++  	for ldapprefix in ${prefix} /usr/local /usr; do
++		if test -f ${ldapprefix}/${ldaploc}/libldap.a -o -f ${ldapprefix}/${ldaploc}/libldap.so; then
++      		with_ldap="${ldapprefix}"
++			ldap_found="yes"
++      		break
++    	fi
++	done
++	if test "$ldap_found"; then
++		break
++	fi
++  done
++fi
++
++LIB_LDAP=""
++case "$with_ldap" in
++    no) true;;
++    ""|yes) AC_CHECK_LIB(ldap, ldap_open,
++                AC_DEFINE(HAVE_LDAP)
++		LIB_LDAP="-lldap -llber",
++                with_ldap=no);;
++    *)  if test -d ${with_ldap}/include/ldap; then
++          CPPFLAGS="${CPPFLAGS} -I${with_ldap}/include/ldap"
++        else
++          CPPFLAGS="${CPPFLAGS} -I${with_ldap}/include"
++        fi
++	if test -d ${with_ldap}/lib/ldap; then
++	  LDFLAGS="$LDFLAGS -L${with_ldap}/lib/ldap"
++	fi
++        AC_DEFINE(HAVE_LDAP)
++        LIB_LDAP="-lldap -llber";;
++esac
++AC_SUBST(LIB_LDAP)
++
+ dnl CRAM-MD5
+ AC_ARG_ENABLE(cram, [  --enable-cram           enable CRAM-MD5 authentication [yes] ],
+   cram=$enableval,
+@@ -445,11 +533,15 @@
+   fi
+ 
+   if test "$with_des" != no; then
++    case "$host_os" in
++	freebsd*)
++	    COM_ERR="-lcom_err"
++	    ;;
++    esac
+     AC_CHECK_HEADER(krb.h,
+-      AC_CHECK_LIB(krb, krb_mk_priv, COM_ERR="",
+-	AC_CHECK_LIB(krb, krb_mk_priv, COM_ERR="-lcom_err",
+-                     AC_WARN(No Kerberos V4 found); krb4=no, -ldes -lcom_err),
+-        -ldes),
++      AC_CHECK_LIB(krb, krb_mk_priv,:,
++		   AC_WARN(No Kerberos V4 found); krb4=no,
++		   -ldes $COM_ERR),
+       AC_WARN(No Kerberos V4 found); krb4=no)
+   else
+     AC_WARN(No DES library found for Kerberos V4 support)
+diff -ruN --exclude *.orig cyrus-sasl-1.5.27.orig/doc/sysadmin.html cyrus-sasl-1.5.27/doc/sysadmin.html
+--- cyrus-sasl-1.5.27.orig/doc/sysadmin.html	Sat Feb 17 06:06:33 2001
++++ cyrus-sasl-1.5.27/doc/sysadmin.html	Tue Apr 24 17:02:53 2001
+@@ -171,6 +171,43 @@
+ <dt><i>pwcheck</i><dd> checks passwords with the use of a seperate,
+   helper daemon. <b>needs to be documented.</b><p>
+ 
++<dt><i>mysql</i><dd> A MySQL database can be used for plaintext
++  password checking by setting "pwcheck_method" to "mysql".<p>
++
++  <p>The following SASL options are used for MySQL Authentication:<p>
++
++  <dl>
++    <dd>mysql_user: &lt;user&gt;</dd>
++    <dd>mysql_passwd: &lt;cleartext pw&gt;</dd>
++    <dd>mysql_host: &lt;host&gt;</dd>
++    <dd>mysql_database: &lt;database&gt;</dd>
++    <dd>mysql_table: &lt;table&gt;</dd>
++    <dd>mysql_uidcol: &lt;username col&gt;</dd>
++    <dd>mysql_pwdcol: &lt;password col&gt;</dd>
++  </dl>
++
++  <p>MySQL pwcheck_method created by <a href="mailto:dmz@dmzs.com">David Matthew Zendzian</a>
++  the original patch may be found at <a href="http://www.dmzs.com/~dmz/projects/cyrus/">http://www.dmzs.com/~dmz/projects/cyrus/</a>.<p>
++
++<dt><i>ldap</i><dd> A LDAP server can be used for plaintext password
++  checking by setting "pwcheck_method" to "ldap".<p>
++
++  <p>The following SASL options are used for LDAP Authentication:<p>
++
++  <dl>
++    <dd>ldap_server: &lt;LDAP Server [localhost]&gt;
++    <dd>ldap_basedn: &lt;LDAP base dn&gt;
++    <dd>ldap_uidattr: &lt;LDAP uid attribute [uid]&gt;
++    <dd>ldap_port: &lt;LDAP port [389]&gt;
++  </dl>
++
++  <p>It is a requirement that "ldap_basedn" be set to the appropriate
++  value for your site<br>
++  (ex. ldap_basedn: o=surf, c=UK)<p>
++
++  <p>LDAP pwcheck_method created by <a href="mailto:simon@surf.org.uk">Simon@surf.org.uk</a>
++  the original patch may be found at <a href="http://www.surf.org.uk/">http://www.surf.org.uk/</a>.<p>
++
+ <dt><i>write your own</i><dd> Last, but not least, the most flexible
+   method of authentication for PLAIN is to write your own.  If you do
+   so, any application that calls the "<tt>sasl_checkpass()</tt>"
+diff -ruN --exclude *.orig cyrus-sasl-1.5.27.orig/lib/Makefile.am cyrus-sasl-1.5.27/lib/Makefile.am
+--- cyrus-sasl-1.5.27.orig/lib/Makefile.am	Sat Mar 10 06:56:41 2001
++++ cyrus-sasl-1.5.27/lib/Makefile.am	Tue Apr 24 17:06:04 2001
+@@ -53,5 +53,5 @@
+ EXTRA_libsasl_la_SOURCES = db_none.c db_ndbm.c db_gdbm.c db_berkeley.c db_testw32.c
+ libsasl_la_LDFLAGS = -version-info $(sasl_version)
+ libsasl_la_DEPENDENCIES = $(SASL_DB_BACKEND) @LTLIBOBJS@
+-libsasl_la_LIBADD = @LTLIBOBJS@ $(SASL_DB_BACKEND) $(SASL_DB_LIB) $(SASL_DL_LIB) $(PLAIN_LIBS) $(GSSAPIBASE_LIBS) $(GSSAPI_LIBS) $(LIB_SOCKET)
++libsasl_la_LIBADD = @LTLIBOBJS@ $(SASL_DB_BACKEND) $(SASL_DB_LIB) $(SASL_DL_LIB) $(PLAIN_LIBS) $(GSSAPIBASE_LIBS) $(GSSAPI_LIBS) $(LIB_SOCKET) $(LIB_LDAP) $(LIB_MYSQL)
+ # PLAIN_LIBS are linked in for sasl_checkpass
+diff -ruN --exclude *.orig cyrus-sasl-1.5.27.orig/lib/checkpw.c cyrus-sasl-1.5.27/lib/checkpw.c
+--- cyrus-sasl-1.5.27.orig/lib/checkpw.c	Sat Feb 17 06:06:48 2001
++++ cyrus-sasl-1.5.27/lib/checkpw.c	Tue Apr 24 17:09:32 2001
+@@ -51,11 +51,11 @@
+ #include <assert.h>
+ #ifdef HAVE_UNISTD_H
+ #include <unistd.h>
+-#endif
++#endif /* HAVE_UNISTD_H */
+ 
+ #ifdef HAVE_KRB
+ #include <krb.h>
+-#endif
++#endif /* HAVE_KRB */
+ 
+ #include <stdlib.h>
+ 
+@@ -96,10 +96,19 @@
+ # include <sys/un.h>
+ # ifdef HAVE_UNISTD_H
+ #  include <unistd.h>
+-# endif
++# endif /* HAVE_UNISTD_H */
+ 
+ extern int errno;
+-#endif
++#endif /* HAVE_PWCHECK || HAVE_SASLAUTHD */
++
++#ifdef HAVE_MYSQL
++#include <mysql.h>
++#endif /* HAVE_MYSQL */
++
++#ifdef HAVE_LDAP
++#include <lber.h>
++#include <ldap.h>
++#endif /* HAVE_LDAP */
+ 
+ #ifdef HAVE_KRB
+ 
+@@ -171,7 +180,11 @@
+     memcpy (&temp_key, "kerberos", 8);
+     des_fixup_key_parity (&temp_key);
+     des_key_sched (&temp_key, schedule);
++#ifdef __FreeBSD__
++    des_cbc_cksum ((const unsigned char *)password, &ivec, passlen, schedule, &ivec);
++#else
+     des_cbc_cksum ((des_cblock *)password, &ivec, passlen, schedule, &ivec);
++#endif
+ 
+     memcpy (&temp_key, &ivec, sizeof temp_key);
+     des_fixup_key_parity (&temp_key);
+@@ -211,10 +224,17 @@
+     return (str);
+ }
+ 
++#ifdef __FreeBSD__
++static int use_key(const char *user __attribute__((unused)),
++		   char *instance __attribute__((unused)),
++		   const char *realm __attribute__((unused)),
++		   const void *key, des_cblock *returned_key)
++#else
+ static int use_key(char *user __attribute__((unused)), 
+ 		   char *instance __attribute__((unused)), 
+ 		   char *realm __attribute__((unused)), 
+ 		   void *key, des_cblock *returned_key)
++#endif
+ {
+     memcpy (returned_key, key, sizeof(des_cblock));
+     return 0;
+@@ -1015,7 +1035,7 @@
+ 
+ 
+ /* pwcheck daemon-authenticated login */
+-static int pwcheck_verify_password(sasl_conn_t *conn,
++static int pwcheck_verify_password(sasl_conn_t *conn __attribute__((unused)),
+ 				   const char *userid, 
+ 				   const char *passwd,
+ 				   const char *service __attribute__((unused)),
+@@ -1030,8 +1050,10 @@
+     static char response[1024];
+     int start, n;
+     char pwpath[1024];
++#if 0 /* Not used */
+     sasl_getopt_t *getopt;
+     void *context;
++#endif
+ 
+     if (reply) { *reply = NULL; }
+ 
+@@ -1183,6 +1205,225 @@
+ 
+ #endif
+ 
++#ifdef HAVE_MYSQL
++/* DMZ mysql auth 12/29/1999
++ * Updated to 1.5.24 by SWH 09/12/2000
++ * changed to malloc qbuf Simon Loader 10/21/2000
++ */
++#ifdef USE_CRYPT_PASSWORD
++#define QUERY_STRING    "select %s from %s where %s = '%s' and %s = password('%s')"
++#else
++#define QUERY_STRING    "select %s from %s where %s = '%s' and %s = '%s'"
++#endif
++
++static int mysql_verify_password(sasl_conn_t *conn,
++				const char *userid,
++				const char *password,
++				const char *service __attribute__((unused)),
++				const char *user_realm __attribute__((unused)),
++				const char **reply)
++{
++   unsigned int numrows;
++   MYSQL mysql,*sock;
++   MYSQL_RES *result;
++   char *qbuf;
++   char *db_user="",
++        *db_passwd="",
++        *db_host="",
++        *db_uidcol="",
++        *db_pwcol="",
++        *db_database="",
++        *db_table="";
++   sasl_getopt_t *getopt;
++   void *context;
++ 
++   if (!userid || !password) {
++       return SASL_BADPARAM;
++   }
++   if (reply) { *reply = NULL; }
++ 
++   /* check to see if the user configured a mysqluser/passwd/host/etc */
++   if (_sasl_getcallback(conn, SASL_CB_GETOPT, &getopt, &context) == SASL_OK) {
++       getopt(context, NULL, "mysql_user", (const char **) &db_user, NULL);
++       if (!db_user) db_user = "";
++       getopt(context, NULL, "mysql_passwd", (const char **) &db_passwd, NULL);
++       if (!db_passwd) db_passwd = "";
++       getopt(context, NULL, "mysql_host", (const char **) &db_host, NULL);
++       if (!db_host) db_host = "";
++       getopt(context, NULL, "mysql_database", (const char **) &db_database, NULL);
++       if (!db_database) db_database = "";
++       getopt(context, NULL, "mysql_table", (const char **) &db_table, NULL);
++       if (!db_table) db_table = "";
++       getopt(context, NULL, "mysql_uidcol", (const char **) &db_uidcol, NULL);
++       if (!db_uidcol) db_uidcol = "";
++       getopt(context, NULL, "mysql_pwdcol", (const char **) &db_pwcol, NULL);
++       if (!db_pwcol) db_pwcol = "";
++    }
++
++    if (!(sock = mysql_connect(&mysql,db_host,db_user,db_passwd)))
++    {
++      if (reply) { *reply = "cannot connect to MySQL server"; }
++      return SASL_FAIL;
++    }
++
++    if (mysql_select_db(sock,db_database) < 0)
++    {
++      mysql_close(sock);
++      if (reply) { *reply = "cannot select MySQL database"; }
++      return SASL_FAIL;
++    }
++    /* select DB_UIDCOL from DB_TABLE where DB_UIDCOL = 'userid' AND DB_PWCOL = password('password') */
++    if ( (qbuf = (char *)malloc(strlen(QUERY_STRING)+strlen(db_uidcol)
++				+strlen(db_table)+strlen(db_uidcol)
++				+strlen(userid)+strlen(db_pwcol)
++				+strlen(password)+1)) == NULL ) {
++      if (reply) {
++	*reply = "cannot malloc memory for sql query";
++      }
++      return SASL_FAIL;
++    }
++    sprintf(qbuf,QUERY_STRING,db_uidcol,db_table,db_uidcol,userid,db_pwcol,password);
++    if (mysql_query(sock,qbuf) < 0 || !(result=mysql_store_result(sock)))
++    {
++      free(qbuf);
++      mysql_close(sock);
++      return SASL_FAIL;
++    }
++
++    if (result) //There were some rows found
++    {
++           if ((numrows = mysql_affected_rows(&mysql)) != 1)
++           {
++                   mysql_free_result(result);
++                   mysql_close(sock);
++		   if ((numrows > 1) && (reply)) { *reply = "Detected duplicate entries for user"; }
++		   free(qbuf);
++                   return SASL_BADAUTH;
++           } else {
++	     free(qbuf);
++	     mysql_free_result(result);
++	     mysql_close(sock);
++	     return SASL_OK;
++	   }
++    }
++    free(qbuf);
++    mysql_free_result(result);
++    mysql_close(sock);
++    return SASL_BADAUTH;
++}
++#endif /* HAVE_MYSQL */
++
++#ifdef HAVE_LDAP
++/* simon@surf.org.uk LDAP auth 07/11/2000
++ * Updated to 1.5.24 by SWH 09/12/2000
++ * changed to use malloc and simplify the auth by Simon@surf.org.uk 10/21/2000
++ */
++
++#define LDAP_SERVER	"localhost"
++#define LDAP_BASEDN	"o=JOFA, c=UK"
++#define LDAP_UIDATTR	"uid"
++
++#ifndef TRUE
++# define TRUE          1
++# define FALSE         0
++#endif
++
++static int ldap_isdigits(char *value)
++{
++    char *ptr;
++    int num = TRUE;
++
++    for (ptr = value; *ptr != '\0' && num != FALSE; ptr++) {
++       if (!isdigit(*ptr))
++           num = FALSE;
++    }
++
++    return num;
++}
++
++static int ldap_verify_password(sasl_conn_t *conn,
++				const char *userid,
++				const char *password,
++				const char *service __attribute__((unused)),
++				const char *user_realm __attribute__((unused)),
++				const char **reply)
++{
++
++    LDAP *ld;
++    char *dn,
++	 *ldap_server="",
++	 *ldap_basedn="",
++	 *ldap_uidattr="",
++	 *port_num="";
++    int ldap_port = LDAP_PORT;
++    sasl_getopt_t *getopt;
++    void *context;
++
++    /* If the password is NULL, reject the login...
++     * Otherwise the bind will succed as a reference bind. Not good...
++     */
++    if (strcmp(password,"") == 0 || strcmp(userid,"") == 0) {
++      return SASL_BADPARAM;
++    }
++
++    if (reply) { *reply = NULL; }
++    
++    /* check to see if the user configured a mysqluser/passwd/host/etc */
++    if (_sasl_getcallback(conn, SASL_CB_GETOPT, &getopt, &context) == SASL_OK) {
++      getopt(context, NULL, "ldap_server", (const char **) &ldap_server, NULL);
++      if (!ldap_server) ldap_server = LDAP_SERVER;
++      getopt(context, NULL, "ldap_basedn", (const char **) &ldap_basedn, NULL);
++      if (!ldap_basedn) {
++	if (reply) { *reply = "ldap_basedn not defined"; }
++	return SASL_BADPARAM;
++      }
++      getopt(context, NULL, "ldap_uidattr", (const char **) &ldap_uidattr, NULL);
++      if (!ldap_uidattr) ldap_uidattr = LDAP_UIDATTR;
++      getopt(context, NULL, "ldap_port", (const char **) &port_num, NULL);
++      if (!port_num) {
++	ldap_port = LDAP_PORT;
++      } else if (!ldap_isdigits(port_num)) {
++	if (reply) { *reply = "ldap_port - invalid value"; }
++	return SASL_BADPARAM;
++      } else {
++	ldap_port = atoi(port_num);
++      }
++    }
++
++    /* Open the LDAP connection. */
++    if ((ld = ldap_open(ldap_server, ldap_port)) == NULL) {
++      if (reply) { *reply = "cannot connect to LDAP server"; }
++      return SASL_FAIL;
++    }
++
++    if ( (dn = 
++	  (char *)malloc(strlen(ldap_uidattr)+strlen(userid)+strlen(ldap_basedn)+3)) == NULL ) {
++      if (reply) { 
++	*reply = "cannnot allocate memory for ldap dn";
++      }
++      return SASL_FAIL;
++    }
++    /* Generate a dn that we will try and login with */
++    sprintf(dn,"%s=%s,%s", ldap_uidattr,userid,ldap_basedn);
++    
++    /* 
++     * Just try and bind with the dn we have been given
++     * In most cases the basedn is correct. 
++     * If this is not so I have a version or that too
++     * Simon@surf.org.uk
++     */
++    if (ldap_simple_bind_s(ld,dn,password) != LDAP_SUCCESS) {
++      free(dn);
++      ldap_unbind(ld);
++      return SASL_BADAUTH;
++    }
++    free(dn);
++    ldap_unbind(ld);
++    return SASL_OK;
++}
++
++#endif /* HAVE_LDAP */
++
+ struct sasl_verify_password_s _sasl_verify_password[] = {
+     { "sasldb", &sasldb_verify_password },
+ #ifdef HAVE_KRB
+@@ -1205,6 +1446,12 @@
+ #endif
+ #ifdef HAVE_PWCHECK
+     { "pwcheck", &pwcheck_verify_password },
++#endif
++#ifdef HAVE_MYSQL
++    { "mysql", &mysql_verify_password },
++#endif
++#ifdef HAVE_LDAP
++    { "ldap", &ldap_verify_password },
+ #endif
+ #ifdef HAVE_SASLAUTHD
+     { "saslauthd", &saslauthd_verify_password },
+diff -ruN --exclude *.orig cyrus-sasl-1.5.27.orig/plugins/kerberos4.c cyrus-sasl-1.5.27/plugins/kerberos4.c
+--- cyrus-sasl-1.5.27.orig/plugins/kerberos4.c	Sat Mar 10 06:56:46 2001
++++ cyrus-sasl-1.5.27/plugins/kerberos4.c	Tue Apr 24 17:02:53 2001
+@@ -698,8 +698,13 @@
+ 
+     /* decrypt; verify checksum */
+ 
++#ifdef __FreeBSD__
++    des_pcbc_encrypt((const unsigned char *)in,
++		     (unsigned char *)in,
++#else
+     des_pcbc_encrypt((des_cblock *)in,
+ 		     (des_cblock *)in,
++#endif
+ 		     clientinlen,
+ 		     text->init_keysched,
+ 		     &text->session,
