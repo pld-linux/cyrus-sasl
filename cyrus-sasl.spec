@@ -13,7 +13,7 @@ Version:	1.5.27
 Release:	15
 License:	distributable
 Group:		Libraries
-Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/OLD-VERSIONS/sasl/%{name}-%{version}.tar.gz
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
@@ -75,6 +75,8 @@ Summary(ru):	Файлы для программирования с библиотекой Cyrus SASL
 Summary(ru):	Файли для програмування з б╕бл╕отекою Cyrus SASL
 Group:		Development/Libraries
 Requires:	%{name} = %{version}
+Requires:	db-devel
+Requires:	pam-devel
 
 %description devel
 This includes the header files and documentation needed to develop
@@ -302,12 +304,14 @@ Program pomocniczy pwcheck do Cyrus SASL.
 %build
 rm -f config/missing
 %{__libtoolize}
-aclocal -I cmulocal
-autoheader
+%{__aclocal} -I cmulocal
+%{__autoheader}
 automake -a
 %{__autoconf}
 LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 %configure \
+	--disable-krb4 \
+	--disable-gssapi \
 	--enable-static \
 	--enable-login \
 	%{?_with_srp:--enable-srp} \
