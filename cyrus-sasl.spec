@@ -10,8 +10,8 @@ Summary(pt_BR):	ImplementaГЦo da API SASL
 Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.11
-Release:	2
+Version:	2.1.12
+Release:	1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail//%{name}-%{version}.tar.gz
