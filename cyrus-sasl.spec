@@ -216,6 +216,8 @@ touch $RPM_BUILD_ROOT/var/lib/sasl/sasl.db
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
 
+gzip -9nf COPYING testing.txt NEWS TODO README doc/*.txt doc/*.html 
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -249,9 +251,9 @@ fi
 %attr(755,root,root) %{_sbindir}/sasldblistusers
 %attr(755,root,root) %{_sbindir}/saslpasswd
 
-
 %config(noreplace) %verify(not mtime md5 size) /var/lib/sasl/sasl.db
 %{_mandir}/man[18]/*
+%doc *.gz doc/*.gz
 
 %files devel
 %defattr(644,root,root,755)
@@ -259,30 +261,37 @@ fi
 %attr(755,root,root) %{_libdir}/lib*.so
 %attr(755,root,root) %{_libdir}/lib*.la
 
+
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/lib*.a
 %{_libdir}/sasl/lib*.a
 
+
 %files cram-md5
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libcrammd5.so*
+
 
 %files digest-md5
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libdigestmd5.so*
 
+
 %files plain
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libplain.so*
+
 
 %files anonymous
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libanonymous.so*
 
+
 %files login
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/liblogin.so*
+
 
 %if %{?_with_srp:1}%{?!_with_srp:0}
 %files srp
@@ -290,17 +299,20 @@ fi
 %attr(755,root,root) %{_libdir}/sasl/libsrp.so*
 %endif
 
+
 %if %{?_with_x509:1}%{?!_with_x509:0}
 %files x509
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl/libx509.so*
 %endif
 
+
 %if %{?_with_pwcheck:1}%{?!_with_pwcheck:0}
 %files pwcheck
 %defattr(644,root,root,755) 
 %attr(755,root,root) %{_sbindir}/pwcheck
 %endif
+
 
 %files saslauthd
 %defattr(644,root,root,755) 
