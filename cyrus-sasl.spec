@@ -1,39 +1,41 @@
 #
 # TODO:
 # - add ldap plugin from openldap sources
+# - pgsql? (but sql plugin would require both libs...)
 #
 # Conditional build:
-%bcond_with srp		# build srp pluggin
-%bcond_without mysql	# don't build mysql pluggin
-%bcond_without ldap	# disable LDAP support for sasluthd
-%bcond_with gssapi	# enable GSSAPI support for sasluthd
-%bcond_with pwcheck
-%bcond_with x509	
+%bcond_without	ldap	# disable LDAP support for saslauthd
+%bcond_with	gssapi	# enable GSSAPI support for saslauthd and build gssapi plugin
+%bcond_without	mysql	# don't build mysql pluggin
+%bcond_with	srp	# build srp pluggin
+%bcond_with	pwcheck	# build pwcheck helper (deprecated)
+%bcond_with	x509	# build x509 plugin (no sources in package???)
+#
 Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
 Summary(pt_BR):	Implementação da API SASL
 Summary(ru):	âÉÂÌÉÏÔÅËÁ Cyrus SASL
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÁ Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.15
-Release:	0.3
+Version:	2.1.17
+Release:	0.1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
-# Source0-md5:	82c7f82a777b7bc10cc1ef68fb8e2a37
+# Source0-md5:	4add6be2f194dc51aafc64193a1dd77b
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
 Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-nolibs.patch
-Patch2:		%{name}-lt14d.patch
-Patch3:		%{name}-do_dlopen.patch
-Patch4:		%{name}-ldb4.patch
+Patch2:		%{name}-do_dlopen.patch
+Patch3:		%{name}-ldb4.patch
 URL:		http://asg.web.cmu.edu/sasl/
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
 BuildRequires:	db-devel
 BuildRequires:	ed
+%{?with_gssapi:BuildRequires:	heimdal-devel}
 BuildRequires:	libtool	>= 1.4
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_ldap:BuildRequires:	openldap-devel}
@@ -358,17 +360,15 @@ Wtyczka mysql do Cyrus SASL.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
 ls rfc*.txt >> rfc-compliance
 rm -f rfc*.txt
-cd ..
 
 %build
 # acinclude.m4 contains only old libtool.m4
-rm -f acinclude.m4 config/missing
+rm -f acinclude.m4
 %{__libtoolize}
 %{__aclocal} -I cmulocal -I config
 %{__autoheader}
@@ -382,21 +382,22 @@ cd saslauthd
 	%{__autoconf}
 cd ..
 
-LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
 %configure \
-	--enable-static \
+	--disable-krb4 \
+	%{!?with_gssapi: --disable-gssapi} \
+	%{?with_gssapi: --enable-gssapi --with-gss_impl=heimdal} \
 	--enable-login \
+	--enable-sql \
 	%{?with_srp: --enable-srp} \
-	%{?with_mysql: --with-mysql=%{_prefix}} \
-	%{?with_ldap: --with-ldap=%{_prefix}} \
-	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
-	--with-saslauthd=/var/lib/sasl2 \
-	--with-pam \
+	--enable-static \
+	--with-configdir=%{_sysconfdir} \
 	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl2/sasl.db \
-	--with-configdir=%{_sysconfdir} \
-	--disable-krb4 \
-	%{?with_gssapi: --enable-gssapi}%{?!with_gssapi: --disable-gssapi}
+	%{?with_ldap: --with-ldap=%{_prefix}} \
+	%{?with_mysql: --with-mysql=%{_prefix}} \
+	--with-pam \
+	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
+	--with-saslauthd=/var/lib/sasl2
 %{__make}
 
 cd doc
@@ -405,7 +406,6 @@ for i in $RFCLIST; do
 	RFCDIR=../RFC/text/`echo $i | sed -e 's:^rfc::' -e 's:..\.txt$::' `00
 	echo -e ',s:'$i':'$RFCDIR/$i'\n,w\nq' | ed index.html
 done
-cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -516,7 +516,7 @@ fi
 %if %{with mysql}
 %files mysql
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl2/libmysql*.so*
+%attr(755,root,root) %{_libdir}/sasl2/libsql*.so*
 %endif
 
 %if %{with srp}
