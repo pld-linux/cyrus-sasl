@@ -283,7 +283,7 @@ Program pomocniczy pwcheck do Cyrus SASL.
 
 %build
 rm -f config/missing
-libtoolize --copy --force
+%{__libtoolize}
 aclocal -I cmulocal
 autoheader
 automake -a
