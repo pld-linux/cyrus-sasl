@@ -1,0 +1,9 @@
+# $Id$
+# Authentications mechanism (for list see saslauthd -v)
+SASL_AUTHMECH=pam
+
+# Hostname for remote IMAP server (if rimap auth mech is used)
+SASL_RIMAP_HOSTNAME=
+
+# Honour time-of-day login restrictions (if shadow auth mech is used)
+SASL_TIME_OF_DAY_LOGIN_RESTRICTIONS=yes 
