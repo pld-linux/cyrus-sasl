@@ -85,7 +85,7 @@ Summary(pt_BR):	Exemplos e arquivos para desenvolvimento com SASL
 Summary(ru):	Файлы для программирования с библиотекой Cyrus SASL
 Summary(ru):	Файли для програмування з б╕бл╕отекою Cyrus SASL
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 This includes the header files and documentation needed to develop
@@ -112,7 +112,7 @@ Summary(pl):	Statyczne biblioteki cyrus-sasl
 Summary(ru):	Статические библиотеки Cyrus SASL
 Summary(uk):	Статичн╕ б╕бл╕отеки Cyrus SASL
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static cyrus-sasl libraries.
@@ -133,7 +133,7 @@ Summary:	Cram-MD5 Cyrus SASL plugin
 Summary(pl):	Wtyczka Cram-MD5 do Cyrus SASL
 Summary(pt_BR):	Mecanismo SASL CRAM-MD5
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description cram-md5
 This plugin implements the SASL CRAM-MD5 mechanism. CRAM-MD5 is the
@@ -158,7 +158,7 @@ Summary:	Digest-MD5 Cyrus SASL plugin
 Summary(pl):	Wtyczka Digest-MD5 do Cyrus SASL
 Summary(pt_BR):	Mecanismo SASL DIGEST-MD5
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description digest-md5
 This plugin implements the latest draft of the SASL DIGEST-MD5
@@ -185,7 +185,7 @@ Summary:	Plain Cyrus SASL plugin
 Summary(pl):	Wtyczka plain do Cyrus SASL
 Summary(pt_BR):	Mecanismo SASL PLAIN
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description plain
 This plugin implements the SASL PLAIN mechanism. Although insecure,
@@ -210,7 +210,7 @@ Summary:	Anonymous Cyrus SASL plugin
 Summary(pl):	Wtyczka anonymous do Cyrus SASL
 Summary(pt_BR):	Mecanismo SASL ANONYMOUS
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description anonymous
 This plugin implements the SASL ANONYMOUS mechanism, used for
@@ -229,7 +229,7 @@ Summary:	GSSAPI Cyrus SASL plugin
 Summary(pl):	Wtyczka GSSAPI do Cyrus SASL
 Summary(pt_BR):	Mecanismo SASL GSSAPI
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description gssapi
 This plugin implements the SASL GSSAPI mechanism, used for
@@ -247,7 +247,7 @@ autenticaГЦo Kerberos/GSSAPI.
 Summary:	Unsupported Login Cyrus SASL plugin
 Summary(pl):	Nie wspierana wtyczka Login do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description login
 Unsupported LOGIN Cyrus SASL plugin.
@@ -261,7 +261,7 @@ Summary:	SRP Cyrus SASL plugin
 Summary(pl):	Wtyczka SRP do Cyrus SASL
 Summary(pt_BR):	Mecanismo SASL SRP
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description srp
 This plugin implements the SASL SRP mechanism, based on the Secure
@@ -287,7 +287,7 @@ Summary:	OTP Cyrus SASL plugin
 Summary(pl):	Wtyczka OTP do Cyrus SASL
 Summary(pt_BR):	Mecanismo SASL OTP
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description otp
 This plugin implements the SASL OTP (One Time Password) mechanism.
@@ -300,7 +300,7 @@ SASL.
 Summary:	x509 Cyrus SASL plugin
 Summary(pl):	Wtyczka x509 do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description x509
 x509 Cyrus SASL plugin.
@@ -311,9 +311,9 @@ Wtyczka x509 do Cyrus SASL.
 %package saslauthd
 Summary:	Cyrus SASL authd
 Summary(pl):	Demon authd do Cyrus SASL
-Group:		Libraries
+Group:		Daemons
 Requires(post,postun):	/sbin/chkconfig
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description saslauthd
 Cyrus SASL authd.
@@ -325,7 +325,7 @@ Demon authd do Cyrus SASL.
 Summary:	Cyrus SASL pwcheck helper
 Summary(pl):	Program pomocniczy pwcheck do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description pwcheck
 Cyrus SASL pwcheck helper.
@@ -337,7 +337,7 @@ Program pomocniczy pwcheck do Cyrus SASL.
 Summary:	Cyrus SASL sasldb plugin
 Summary(pl):	Wtyczka sasldb do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description sasldb
 Cyrus SASL sasldb plugin.
@@ -349,7 +349,7 @@ Wtyczka sasldb do Cyrus SASL.
 Summary:	Cyrus SASL mysql plugin
 Summary(pl):	Wtyczka mysql do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description mysql
 Cyrus SASL mysql plugin.
@@ -361,7 +361,7 @@ Wtyczka mysql do Cyrus SASL.
 Summary:	Cyrus SASL PostgreSQL plugin
 Summary(pl):	Wtyczka PostgreSQL do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description pgsql
 Cyrus SASL PostgreSQL plugin.
