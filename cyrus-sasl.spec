@@ -7,7 +7,7 @@ Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
 Name:		cyrus-sasl
 Version:	1.5.27
-Release:	8
+Release:	9
 License:	distributable
 Group:		Libraries
 Group(de):	Libraries
@@ -319,7 +319,7 @@ else
 	echo "Run \"/etc/rc.d/init.d/saslauthd start\" to start saslauthd."
 fi
 
-%postun saslauthd
+%preun saslauthd
 if [ "$1" = "0" ]; then
 	if [ -f /var/lock/subsys/saslauthd ]; then
 		/etc/rc.d/init.d/saslauthd stop 1>&2
