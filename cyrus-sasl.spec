@@ -7,7 +7,7 @@ Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
 Name:		cyrus-sasl
 Version:	1.5.27
-Release:	6
+Release:	7
 LIcense:	Distributable
 Group:		Libraries
 Group(de):	Libraries
