@@ -14,8 +14,8 @@ Summary(pt_BR):	Implementação da API SASL
 Summary(ru):	âÉÂÌÉÏÔÅËÁ Cyrus SASL
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÁ Cyrus SASL
 Name:		cyrus-sasl
-Version:	1.5.27
-Release:	16
+Version:	1.5.28
+Release:	1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/OLD-VERSIONS/sasl/%{name}-%{version}.tar.gz
@@ -31,6 +31,7 @@ Patch3:		%{name}-saslauthd.patch
 Patch4:		%{name}-ipv6.patch
 Patch5:		%{name}-ac25x.patch
 Patch6:		saslauthd-man.diff
+Patch7:		%{name}-unchecked_env.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	db3-devel >= 3.1.17-8
@@ -300,12 +301,13 @@ Program pomocniczy pwcheck do Cyrus SASL.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
+#%%patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p0
+#%%patch6 -p0
+#%%patch7 -p1
 
 %build
 rm -f config/missing
