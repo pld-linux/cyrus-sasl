@@ -10,7 +10,7 @@ Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	1.5.27
-Release:	15
+Release:	16
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
@@ -25,9 +25,10 @@ Patch3:		%{name}-saslauthd.patch
 Patch4:		%{name}-ipv6.patch
 Patch5:		%{name}-ac25x.patch
 Patch6:		saslauthd-man.diff
+Patch7:		%{name}-db4.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	db3-devel >= 3.1.17-8
+BuildRequires:	db-devel
 BuildRequires:	pam-devel
 BuildRequires:	openssl-devel >= 0.9.6a
 BuildRequires:	libtool	>= 1.4
@@ -298,6 +299,7 @@ Program pomocniczy pwcheck do Cyrus SASL.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p0
+%patch7 -p1
 
 %build
 rm -f config/missing
