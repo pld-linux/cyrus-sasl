@@ -6,7 +6,7 @@
 # Conditional build:
 %bcond_without	ldap	# disable LDAP support for saslauthd
 %bcond_with	gssapi	# enable GSSAPI support for saslauthd and build gssapi plugin
-%bcond_without	mysql	# don't build mysql pluggin
+%bcond_without	mysql	# don't build MySQL pluggin
 %bcond_with	pgsql	# build pgsql pluggin
 %bcond_with	srp	# build srp pluggin
 %bcond_with	pwcheck	# build pwcheck helper (deprecated)
@@ -349,16 +349,16 @@ Cyrus SASL sasldb plugin.
 Wtyczka sasldb do Cyrus SASL.
 
 %package mysql
-Summary:	Cyrus SASL mysql plugin
-Summary(pl):	Wtyczka mysql do Cyrus SASL
+Summary:	Cyrus SASL MySQL plugin
+Summary(pl):	Wtyczka MySQL do Cyrus SASL
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description mysql
-Cyrus SASL mysql plugin.
+Cyrus SASL MySQL plugin.
 
 %description mysql -l pl
-Wtyczka mysql do Cyrus SASL.
+Wtyczka MySQL do Cyrus SASL.
 
 %package pgsql
 Summary:	Cyrus SASL PostgreSQL plugin
