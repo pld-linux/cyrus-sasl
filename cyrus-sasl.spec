@@ -111,7 +111,6 @@ LDFLAGS="-s"; export LDFLAGS
 	--with-dblib=gdbm \
 	--with-dbpath=/var/lib/sasl/sasl.db \
 	--with-configdir=%{_sysconfdir}
-	--with-dbpath=/var/lib/sasl/sasl.db
 %{__make}
 
 %install
