@@ -1,5 +1,3 @@
-# TODO:
-# - possible SECURITY: http://securitytracker.com/alerts/2004/Oct/1011568.html
 #
 # Conditional builds:
 # x509 - build x509 pluggin
@@ -307,7 +305,7 @@ Program pomocniczy pwcheck do Cyrus SASL.
 %patch4 -p1
 %patch5 -p1
 #%%patch6 -p0
-#%%patch7 -p1
+%patch7 -p1
 
 %build
 rm -f config/missing
