@@ -10,7 +10,7 @@ Summary(pt_BR):	Implementação da API SASL
 Summary(ru):	âÉÂÌÉÏÔÅËÁ Cyrus SASL
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÁ Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.10
+Version:	2.1.11
 Release:	1
 License:	distributable
 Group:		Libraries
@@ -28,7 +28,7 @@ BuildRequires:	db-devel
 BuildRequires:	libtool	>= 1.4
 %{!?_without_mysql:BuildRequires: mysql-devel}
 %{!?_without_ldap:BuildRequires: openldap-devel}
-BuildRequires:	openssl-devel >= 0.9.6a
+BuildRequires:	openssl-devel >= 0.9.7
 BuildRequires:	pam-devel
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
