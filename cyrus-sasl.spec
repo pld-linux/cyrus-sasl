@@ -302,8 +302,8 @@ Program pomocniczy pwcheck do Cyrus SASL.
 %build
 rm -f config/missing
 %{__libtoolize}
-aclocal -I cmulocal
-autoheader
+%{__aclocal} -I cmulocal
+%{__autoheader}
 automake -a
 %{__autoconf}
 LDFLAGS="%{rpmldflags} -ldl"; export LDFLAGS
