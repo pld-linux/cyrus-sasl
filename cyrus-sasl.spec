@@ -1,64 +1,73 @@
-%define name cyrus-sasl
-%define version 1.5.3
-%define release 2
-%define prefix /usr
-
-Summary: The SASL library API for the Cyrus mail system.
-Name: %{name}
-Version: %{version}
-Release: %{release}
-Copyright: distributable
-Group: System Environment/Libraries
-Source: ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/cyrus-sasl-1.5.3.tar.gz
-URL: http://asg.web.cmu.edu/cyrus/imapd/
-Buildroot:/var/tmp/%{name}-root
-Provides: libsasl
+Summary:	The SASL library API for the Cyrus mail system.
+Name:		cyrus-sasl
+Version:	1.5.3
+Release:	3
+Copyright:	distributable
+Group:		Libraries
+Source:		ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
+URL:		http://asg.web.cmu.edu/cyrus/imapd/
+Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
 The cyrus-sasl package contains the SASL library API implementation
 for the Cyrus mail system.
 
+%package devel
+Summary:	Header files and documentation for cyrus-sasl
+Group:		Development/Libraries
+Requires:	%{name} = %{version}
+
+%description devel
+Header files and documentation for cyrus-sasl.
+
+%package static
+Summary:	Static cyrus-sasl libraries
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}
+
+%description static
+Static cyrus-sasl libraries.
+
 %prep
-%setup -n %{name}-%{version}
+%setup -q
 
 %build
-(cd $RPM_BUILD_DIR/cyrus-sasl-1.5.3
-./configure --prefix=%{prefix}
-make)
+LDFLAGS="-s"; export LDFLAGS
+%configure \
+	--enable-static
+make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-(cd $RPM_BUILD_DIR/cyrus-sasl-1.5.3
-	make prefix=$RPM_BUILD_ROOT%{prefix} install )
 
-strip -s $RPM_BUILD_ROOT%{prefix}/sbin/* || :
-chmod 755 $RPM_BUILD_ROOT%{prefix}/lib/sasl/*
-chmod 755 $RPM_BUILD_ROOT%{prefix}/lib/libsasl.la 
-chmod 755 $RPM_BUILD_ROOT%{prefix}/lib/libsasl.so.5.1.0
+make install DESTDIR=$RPM_BUILD_ROOT
+
+strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.* \
+	$RPM_BUILD_ROOT%{_libdir}/sasl/lib*.so.*.*
+
+gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man?/*
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-/sbin/ldconfig
-
-%postun
-/sbin/ldconfig
-
+%post   -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %files
-%defattr(-,root,root)
-%{prefix}/include/*.h
-%{prefix}/lib/sasl/*
-%{prefix}/lib/libsasl*
-%dir %{prefix}/lib/sasl
-%{prefix}/man/man1/sasl_client.1
-%{prefix}/man/man1/sasl_server.1
-%{prefix}/man/man8/saslpasswd.8
-%{prefix}/sbin/saslpasswd
+%defattr(644,root,root,755)
+%dir %{_libdir}/sasl
+%attr(755,root,toot) %{_libdir}/lib*.so.*.*
+%attr(755,root,toot) %{_libdir}/sasl/lib*.so*
+%attr(755,root,toot) %{_sbindir}/saslpasswd
+%{_mandir}/man[18]/*
 
-%changelog
-* Mon Aug 30 1999 Tim Powers <timp@redhat.com>
-- changed group
+%files devel
+%defattr(644,root,root,755)
+%{_includedir}/*.h
+%attr(755,root,toot) %{_libdir}/lib*.so
+%attr(755,root,toot) %{_libdir}/lib*.la
 
-* Fri Aug 13 1999 Tim Powers <timp@redhat.com>
-- first build for Powertools
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/lib*.a
+%{_libdir}/sasl/lib*.a
