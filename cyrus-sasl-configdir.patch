@@ -129,14 +129,19 @@ diff -durN cyrus-sasl-2.1.10.orig/lib/saslint.h cyrus-sasl-2.1.10/lib/saslint.h
  _sasl_find_verifyfile_callback(const sasl_callback_t *callbacks);
  
  extern int _sasl_common_init(void);
---- cyrus-sasl-2.1.17/lib/server.c.orig	2003-11-14 17:49:07.000000000 +0100
-+++ cyrus-sasl-2.1.17/lib/server.c	2003-12-03 22:48:32.585083464 +0100
-@@ -436,15 +436,15 @@
+--- cyrus-sasl-2.1.19/lib/server.c.orig	2004-07-06 15:42:23.000000000 +0200
++++ cyrus-sasl-2.1.19/lib/server.c	2004-07-25 18:46:12.483590936 +0200
+@@ -462,7 +462,7 @@
    size_t path_len;
    char *config_filename=NULL;
    size_t len;
 -  const sasl_callback_t *getpath_cb=NULL;
 +  const sasl_callback_t *getconfpath_cb=NULL;
+ 
+   /* If appname was not provided, behave as if there is no config file 
+      (see also sasl_config_init() */
+@@ -471,12 +471,12 @@
+   }
  
    /* get the path to the plugins; for now the config file will reside there */
 -  getpath_cb=_sasl_find_getpath_callback( global_callbacks.callbacks );
