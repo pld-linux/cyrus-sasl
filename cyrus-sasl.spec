@@ -7,7 +7,7 @@ Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
 Name:		cyrus-sasl
 Version:	1.5.27
-Release:	10
+Release:	11
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/%{name}-%{version}.tar.gz
@@ -21,6 +21,7 @@ Patch3:		%{name}-saslauthd.patch
 #Patch4:	http://www.imasy.or.jp/~ume/ipv6/cyrus-sasl-1.5.24-ipv6-20010321.diff.gz
 Patch4:		%{name}-ipv6.patch
 Patch5:		%{name}-ac25x.patch
+Patch6:		saslauthd-man.diff
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	db3-devel >= 3.1.17-8
@@ -183,6 +184,7 @@ Program pomocniczy pwcheck do Cyrus SASL.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p0
 
 %build
 rm -f config/missing
