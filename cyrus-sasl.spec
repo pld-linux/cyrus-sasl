@@ -5,8 +5,7 @@
 # _with_mysql - with mysql support
 # _with_ldap - with ldap support
 # _with_pwcheck - build pwcheck pluggin
-		
-#
+#		
 Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
 Summary(pt_BR):	ImplementaÁ„o da API SASL
@@ -14,10 +13,11 @@ Summary(ru):	‚…¬Ã…œ‘≈À¡ Cyrus SASL
 Summary(uk):	‚¶¬Ã¶œ‘≈À¡ Cyrus SASL
 Name:		cyrus-sasl
 Version:	1.5.27
-Release:	15
+Release:	16
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/OLD-VERSIONS/sasl/%{name}-%{version}.tar.gz
+# Source0-md5:	76ea426e2e2da3b8d2e3a43af5488f3b
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
@@ -296,7 +296,7 @@ Cyrus SASL pwcheck helper.
 Program pomocniczy pwcheck do Cyrus SASL.
 
 %prep
-%setup  -q
+%setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -345,8 +345,8 @@ install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/cyrus
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post   -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %post saslauthd
 /sbin/chkconfig --add saslauthd
