@@ -1,0 +1,9 @@
+--- saslauthd/saslauthd.8.in~	Tue Mar  5 15:41:38 2002
++++ saslauthd/saslauthd.8.in	Tue Mar  5 15:41:38 2002
+@@ -1,5 +1,6 @@
+ .\" $Id$
+ .\" Copyright 1997-2000 Messaging Direct Ltd. All rights reserved.
++.Dd February 11, 2001
+ .Dt SASLAUTHD 8
+ .Os "CMU-SASL"
+ .Sh NAME
