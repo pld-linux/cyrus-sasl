@@ -1,10 +1,11 @@
 #
 # TODO:
 # - add ldap plugin from openldap sources
-# Conditional builds:
-# _with_srp - build srp pluggin
-# _without_myslq - don't build mysql pluggin
-# _without_ldap - disable LDAP support for sasluthd
+#
+# Conditional build:
+# _with_srp		- build srp pluggin
+# _without_myslq	- don't build mysql pluggin
+# _without_ldap		- disable LDAP support for sasluthd
 #
 Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
@@ -389,7 +390,7 @@ install -d $RPM_BUILD_ROOT{/var/lib/sasl2,%{_sysconfdir},/etc/{rc.d/init.d,sysco
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 rm -rf $RPM_BUILD_ROOT%{_mandir}/cat*
-rm -f $RPM_BUILD_ROOT%{_libdir}/sasl2/*.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/sasl2/*.{la,a}
 
 install {utils,saslauthd}/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
@@ -448,7 +449,6 @@ fi
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/lib*.a
-%{_libdir}/sasl2/lib*.a
 
 %files anonymous
 %defattr(644,root,root,755)
