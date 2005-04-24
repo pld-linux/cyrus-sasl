@@ -20,7 +20,7 @@ Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.20
-Release:	2.1
+Release:	2.2
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -34,6 +34,7 @@ Patch2:		%{name}-lt.patch
 Patch3:		%{name}-db.patch
 Patch4:		%{name}-split-sql.patch
 Patch5:		%{name}-opie.patch
+Patch6:		%{name}-gcc4.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -413,6 +414,7 @@ Wtyczka SQLite do Cyrus SASL.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
