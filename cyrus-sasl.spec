@@ -498,6 +498,11 @@ install %{SOURCE3} ./cyrus.pam
 
 install saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT%{_sbindir}
 
+for f in `ls $RPM_BUILD_ROOT%{_libdir}/*.a`; do
+# ugly workaround for binutils #880 bug.
+	ar dv $f `ar t $f | egrep '\.la'`
+done
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
