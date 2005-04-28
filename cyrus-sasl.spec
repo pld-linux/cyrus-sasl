@@ -20,7 +20,7 @@ Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.20
-Release:	2.4
+Release:	3
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -497,11 +497,6 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
 install %{SOURCE3} ./cyrus.pam
 
 install saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT%{_sbindir}
-
-for f in `ls $RPM_BUILD_ROOT%{_libdir}/*.a`; do
-# ugly workaround for binutils #880 bug.
-	ar dv $f `ar t $f | egrep '\.la'`
-done
 
 %clean
 rm -rf $RPM_BUILD_ROOT
