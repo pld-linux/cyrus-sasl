@@ -16,7 +16,7 @@ diff -urN cyrus-sasl-2.1.20.org/configure.in cyrus-sasl-2.1.20/configure.in
       fi
  
 +     SASL_MECHS="$SASL_MECHS libmysql.la"
-+     SASL_STATIC_OBJS="$SASL_STATIC_OBJS ../plugins/libmysql.la"
++     SASL_STATIC_OBJS="$SASL_STATIC_OBJS"
       LIB_MYSQL_DIR=$LIB_MYSQL
       LIB_MYSQL="$LIB_MYSQL -lmysqlclient"
  
@@ -25,7 +25,7 @@ diff -urN cyrus-sasl-2.1.20.org/configure.in cyrus-sasl-2.1.20/configure.in
       fi
  
 +     SASL_MECHS="$SASL_MECHS libpgsql.la"
-+     SASL_STATIC_OBJS="$SASL_STATIC_OBJS ../plugins/libpgsql.la"
++     SASL_STATIC_OBJS="$SASL_STATIC_OBJS"
       LIB_PGSQL_DIR=$LIB_PGSQL
       LIB_PGSQL="$LIB_PGSQL -lpq"
  
@@ -34,7 +34,7 @@ diff -urN cyrus-sasl-2.1.20.org/configure.in cyrus-sasl-2.1.20/configure.in
       fi
  
 +     SASL_MECHS="$SASL_MECHS libsqlite.la"
-+     SASL_STATIC_OBJS="$SASL_STATIC_OBJS ../plugins/libsqlite.la"
++     SASL_STATIC_OBJS="$SASL_STATIC_OBJS"
       LIB_SQLITE_DIR=$LIB_SQLITE
       LIB_SQLITE="$LIB_SQLITE -lsqlite"
  
