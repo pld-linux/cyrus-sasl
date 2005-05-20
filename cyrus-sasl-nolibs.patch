@@ -9,26 +9,17 @@
  
  dnl Check for getaddrinfo
  GETADDRINFOOBJS=""
---- cyrus-sasl-2.1.10/cmulocal/bsd_sockets.m4.orig	Tue May 28 21:06:56 2002
-+++ cyrus-sasl-2.1.10/cmulocal/bsd_sockets.m4	Thu Jan  9 21:07:50 2003
-@@ -16,11 +16,12 @@
- 			     LIB_SOCKET="-lsocket $LIB_SOCKET")
- 	)
+--- cyrus-sasl-2.1.21/cmulocal/bsd_sockets.m4.orig	2005-04-26 21:14:07.000000000 +0200
++++ cyrus-sasl-2.1.21/cmulocal/bsd_sockets.m4	2005-05-20 22:51:01.224089408 +0200
+@@ -30,7 +30,7 @@
+ u_char ans[1024];
+ res_search( host, C_IN, T_MX, (u_char *)&ans, sizeof(ans));
+ return 0;
+-]], LIB_SOCKET="-lresolv $LIB_SOCKET")
++]], LIB_SOCKET="$LIB_SOCKET") dnl res_* funcs aren't used anyway
+         )
  	LIBS="$LIB_SOCKET $save_LIBS"
--	AC_CHECK_FUNC(res_search, :,
--                AC_CHECK_LIB(resolv, res_search,
--                              LIB_SOCKET="-lresolv $LIB_SOCKET") 
--        )
--	LIBS="$LIB_SOCKET $save_LIBS"
-+dnl we don't need res_search if no kerberos support
-+dnl	AC_CHECK_FUNC(res_search, :,
-+dnl             AC_CHECK_LIB(resolv, res_search,
-+dnl                           LIB_SOCKET="-lresolv $LIB_SOCKET") 
-+dnl     )
-+dnl	LIBS="$LIB_SOCKET $save_LIBS"
  	AC_CHECK_FUNCS(dn_expand dns_lookup)
- 	LIBS="$save_LIBS"
- 	AC_SUBST(LIB_SOCKET)
 --- cyrus-sasl-2.1.10/saslauthd/configure.in.orig	Fri Dec  6 17:24:06 2002
 +++ cyrus-sasl-2.1.10/saslauthd/configure.in	Thu Jan  9 21:22:46 2003
 @@ -106,7 +106,7 @@
