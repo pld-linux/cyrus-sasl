@@ -19,22 +19,21 @@ Summary(pt_BR):	Implementação da API SASL
 Summary(ru):	âÉÂÌÉÏÔÅËÁ Cyrus SASL
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÁ Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.20
-Release:	5
+Version:	2.1.21
+Release:	1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
-# Source0-md5:	268ead27f4ac39bcfe17d9e38e0f2977
+# Source0-md5:	dde02db234dea892bee298390890502e
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
 Patch0:		%{name}-configdir.patch
 Patch1:		%{name}-nolibs.patch
 Patch2:		%{name}-lt.patch
-Patch3:		%{name}-db.patch
-Patch4:		%{name}-split-sql.patch
-Patch5:		%{name}-opie.patch
-Patch6:		%{name}-gcc4.patch
+Patch3:		%{name}-split-sql.patch
+Patch4:		%{name}-opie.patch
+Patch5:		%{name}-gcc4.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -415,7 +414,6 @@ Wtyczka SQLite do Cyrus SASL.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
