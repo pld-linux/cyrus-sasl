@@ -20,7 +20,7 @@ Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.21
-Release:	1
+Release:	2
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -40,7 +40,7 @@ BuildRequires:	automake
 BuildRequires:	db-devel
 BuildRequires:	ed
 BuildRequires:	groff
-%{?with_gssapi:BuildRequires:	heimdal-devel}
+%{?with_gssapi:BuildRequires:	heimdal-devel >= 0.7}
 BuildRequires:	libtool	>= 1.4
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
