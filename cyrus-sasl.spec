@@ -8,11 +8,16 @@
 %bcond_without	mysql	# don't build MySQL pluggin
 %bcond_without	pgsql	# do not build PostgreSQL pluggin
 %bcond_without	sqlite	# do not enable sqlite plugin
+%bcond_with	cryptedpw # if you keep crypted passwords in your *sql
 %bcond_with	opie	# enable opie plugin
 %bcond_with	srp	# build srp pluggin
 %bcond_with	pwcheck	# build pwcheck helper (deprecated)
 %bcond_with	x509	# build x509 plugin (no sources in package???)
 #
+%if !%{with mysql} && !%{with pgsql}
+%undefine with_cryptedpw
+%endif
+
 Summary:	The SASL library API for the Cyrus mail system
 Summary(pl):	Biblioteka Cyrus SASL
 Summary(pt_BR):	Implementação da API SASL
@@ -34,6 +39,8 @@ Patch2:		%{name}-lt.patch
 Patch3:		%{name}-split-sql.patch
 Patch4:		%{name}-opie.patch
 Patch5:		%{name}-gcc4.patch
+# Adapted from http://frost.ath.cx/software/cyrus-sasl-patches/dist/2.1.19/cyrus-sasl-2.1.19-checkpw.c+sql.c.patch
+Patch6:		%{name}-cryptedpw.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -414,6 +421,9 @@ Wtyczka SQLite do Cyrus SASL.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%if %{with cryptedpw}
+%patch6 -p1
+%endif
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
@@ -441,6 +451,7 @@ cd saslauthd
 cd ..
 
 %configure \
+	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
 	--disable-krb4 \
 	%{!?with_gssapi: --disable-gssapi} \
 	%{?with_gssapi: --enable-gssapi --with-gss_impl=heimdal} \
