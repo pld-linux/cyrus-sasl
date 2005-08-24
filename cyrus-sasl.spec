@@ -41,6 +41,7 @@ Patch4:		%{name}-opie.patch
 Patch5:		%{name}-gcc4.patch
 # Adapted from http://frost.ath.cx/software/cyrus-sasl-patches/dist/2.1.19/cyrus-sasl-2.1.19-checkpw.c+sql.c.patch
 Patch6:		%{name}-cryptedpw.patch
+Patch7:		%{name}-md5sum-passwords.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -423,6 +424,7 @@ Wtyczka SQLite do Cyrus SASL.
 %patch5 -p1
 %if %{with cryptedpw}
 %patch6 -p1
+%patch7 -p1
 %endif
 
 cd doc
