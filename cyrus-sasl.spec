@@ -8,13 +8,14 @@
 %bcond_without	mysql	# don't build MySQL pluggin
 %bcond_without	pgsql	# do not build PostgreSQL pluggin
 %bcond_without	sqlite	# do not enable sqlite plugin
+%bcond_with	authlib	# enable courier-authlib (i wasn't able to test it)
 %bcond_with	cryptedpw # if you keep crypted passwords in your *sql
 %bcond_with	opie	# enable opie plugin
 %bcond_with	srp	# build srp pluggin
 %bcond_with	pwcheck	# build pwcheck helper (deprecated)
 %bcond_with	x509	# build x509 plugin (no sources in package???)
 #
-%if !%{with mysql} && !%{with pgsql}
+%if %{without mysql} && %{without pgsql}
 %undefine with_cryptedpw
 %endif
 
@@ -25,7 +26,7 @@ Summary(ru):	âÉÂÌÉÏÔÅËÁ Cyrus SASL
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÁ Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.21
-Release:	3
+Release:	3.5
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -43,6 +44,7 @@ Patch5:		%{name}-gcc4.patch
 Patch6:		%{name}-cryptedpw.patch
 Patch7:		%{name}-md5sum-passwords.patch
 URL:		http://asg.web.cmu.edu/sasl/
+%{?with_authlib:BuildRequires:	courier-authlib-devel}
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
 BuildRequires:	db-devel
@@ -316,11 +318,11 @@ Wtyczka dodaj±ca obs³ugê mechanizmu OTP (has³a jednorazowe) do Cyrus
 SASL.
 
 %package opie
-Summary:        OPIE Cyrus SASL plugin
-Summary(pl):    Wtyczka OPIE do Cyrus SASL
-Summary(pt_BR): Mecanismo SASL OPIE
-Group:          Libraries
-Requires:       %{name} = %{version}-%{release}
+Summary:	OPIE Cyrus SASL plugin
+Summary(pl):	Wtyczka OPIE do Cyrus SASL
+Summary(pt_BR):	Mecanismo SASL OPIE
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
 
 %description opie
 This plugin implements the SASL OPIE (One Time Password) mechanism.
@@ -403,10 +405,10 @@ Cyrus SASL PostgreSQL plugin.
 Wtyczka PostgreSQL do Cyrus SASL.
 
 %package sqlite
-Summary:        Cyrus SQLite PostgreSQL plugin
-Summary(pl):    Wtyczka SQLite do Cyrus SASL
-Group:          Libraries
-Requires:       %{name} = %{version}-%{release}
+Summary:	Cyrus SQLite PostgreSQL plugin
+Summary(pl):	Wtyczka SQLite do Cyrus SASL
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
 
 %description sqlite
 Cyrus SASL SQLite plugin.
@@ -465,6 +467,7 @@ cd ..
 	--with-configdir=%{_sysconfdir} \
 	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl2/sasl.db \
+	%{?with_authlib:--with-authdaemond=/var/spool/authdaemon/socket} \
 	%{?with_ldap: --with-ldap=%{_prefix}} \
 	%{?with_mysql: --with-mysql=%{_prefix}} \
 	%{?with_pgsql: --with-pgsql=%{_prefix}} \
@@ -487,7 +490,7 @@ done
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/var/lib/sasl2,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig}} \
+install -d $RPM_BUILD_ROOT{%{_bindir},/var/lib/sasl2,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig}} \
 		$RPM_BUILD_ROOT%{_mandir}/man8
 
 %{__make} install \
@@ -504,11 +507,17 @@ ln -sf libsasl2.so $RPM_BUILD_ROOT%{_libdir}/libsasl.so
 
 touch $RPM_BUILD_ROOT/var/lib/sasl2/sasl.db
 
+# create empty config
+touch $RPM_BUILD_ROOT%{_sysconfdir}/saslauthd.conf
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
 install %{SOURCE3} ./cyrus.pam
 
 install saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT%{_sbindir}
+
+# sample programs for testing sasl
+libtool --mode=install cp sample/client $RPM_BUILD_ROOT%{_bindir}/sasl-sample-client
+libtool --mode=install cp sample/server $RPM_BUILD_ROOT%{_bindir}/sasl-sample-server
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -540,10 +549,13 @@ fi
 %dir %{_libdir}/sasl2
 %dir /var/lib/sasl2
 %attr(755,root,root) %{_libdir}/lib*.so.*.*
+# sample programs to subpackage instead?
+%attr(755,root,root) %{_bindir}/sasl-sample-client
+%attr(755,root,root) %{_bindir}/sasl-sample-server
 %attr(755,root,root) %{_sbindir}/sasldblistusers2
 %attr(755,root,root) %{_sbindir}/saslpasswd2
 
-%attr(640,root,mail) %ghost %config(noreplace) %verify(not mtime md5 size) /var/lib/sasl2/sasl.db
+%attr(640,root,mail) %ghost %config(noreplace) %verify(not md5 mtime size) /var/lib/sasl2/sasl.db
 %{_mandir}/man8/sasldblistusers2.*
 %{_mandir}/man8/saslpasswd2.*
 
@@ -637,9 +649,11 @@ fi
 %files saslauthd
 %defattr(644,root,root,755)
 %doc cyrus.pam
+%doc saslauthd/{AUTHORS,LDAP_SASLAUTHD}
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/saslauthd.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/saslauthd
 %attr(755,root,root) %{_sbindir}/saslauthd
 %attr(755,root,root) %{_sbindir}/testsaslauthd
 %attr(755,root,root) %{_sbindir}/saslcache
 %attr(754,root,root) /etc/rc.d/init.d/saslauthd
-%config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/saslauthd
 %{_mandir}/man8/saslauthd.*
