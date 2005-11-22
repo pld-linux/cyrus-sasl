@@ -26,7 +26,7 @@ Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.21
-Release:	5
+Release:	6
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -63,6 +63,8 @@ Requires:	pam >= 0.79.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/sasl
+
+%define		specflags	-fno-strict-aliasing
 
 %description
 This is an implementation of the SASL API, useful for adding
