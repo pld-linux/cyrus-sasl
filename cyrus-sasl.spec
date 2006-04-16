@@ -44,21 +44,21 @@ Patch5:		%{name}-gcc4.patch
 Patch6:		%{name}-cryptedpw.patch
 Patch7:		%{name}-md5sum-passwords.patch
 URL:		http://asg.web.cmu.edu/sasl/
-%{?with_authlib:BuildRequires:	courier-authlib-devel}
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
+%{?with_authlib:BuildRequires:	courier-authlib-devel}
 BuildRequires:	db-devel
 BuildRequires:	ed
 BuildRequires:	groff
 %{?with_gssapi:BuildRequires:	heimdal-devel >= 0.7}
-BuildRequires:	libtool	>= 1.4
+BuildRequires:	libtool >= 1.4
 %{?with_mysql:BuildRequires:	mysql-devel}
-%{?with_pgsql:BuildRequires:	postgresql-devel}
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
-%{?with_sqlite:BuildRequires:	sqlite-devel}
-%{?with_opie:BuildRequires:	opie-devel}
 BuildRequires:	openssl-devel >= 0.9.7d
+%{?with_opie:BuildRequires:	opie-devel}
 BuildRequires:	pam-devel
+%{?with_pgsql:BuildRequires:	postgresql-devel}
+%{?with_sqlite:BuildRequires:	sqlite-devel}
 Requires:	pam >= 0.79.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -105,8 +105,8 @@ Authentication and Security Layer, метод для додання п╕дтримки
 Summary:	Header files and documentation for cyrus-sasl
 Summary(pl):	Pliki nagЁСwkowe i dokumentacja dla cyrus-sasl
 Summary(pt_BR):	Exemplos e arquivos para desenvolvimento com SASL
-Summary(ru):	Файлы для программирования с библиотекой Cyrus SASL
 Summary(ru):	Файли для програмування з б╕бл╕отекою Cyrus SASL
+Summary(ru):	Файлы для программирования с библиотекой Cyrus SASL
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -349,8 +349,9 @@ Wtyczka x509 do Cyrus SASL.
 Summary:	Cyrus SASL authd
 Summary(pl):	Demon authd do Cyrus SASL
 Group:		Daemons
-Requires(post,postun):	/sbin/chkconfig
+Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{version}-%{release}
+Requires:	rc-scripts
 
 %description saslauthd
 Cyrus SASL authd.
