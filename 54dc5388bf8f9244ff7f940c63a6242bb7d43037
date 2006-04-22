@@ -1,0 +1,2 @@
+- updated to 2.1.21 [resolves CVE-2006-1721],
+  updated nolibs,lt,split-sql patches, removed obsolete db patch
