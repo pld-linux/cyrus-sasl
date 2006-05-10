@@ -3,17 +3,17 @@
 # - add ldap plugin from openldap sources
 #
 # Conditional build:
-%bcond_without	ldap	# disable LDAP support for saslauthd
-%bcond_without	gssapi	# do not enable GSSAPI support for saslauthd and build gssapi plugin
-%bcond_without	mysql	# don't build MySQL pluggin
-%bcond_without	pgsql	# do not build PostgreSQL pluggin
-%bcond_without	sqlite	# do not enable sqlite plugin
-%bcond_with	authlib	# enable courier-authlib (i wasn't able to test it)
-%bcond_with	cryptedpw # if you keep crypted passwords in your *sql
-%bcond_with	opie	# enable opie plugin
-%bcond_with	srp	# build srp pluggin
-%bcond_with	pwcheck	# build pwcheck helper (deprecated)
-%bcond_with	x509	# build x509 plugin (no sources in package???)
+%bcond_without	cryptedpw	# if you keep crypted passwords in your *sql
+%bcond_without	ldap		# disable LDAP support for saslauthd
+%bcond_without	gssapi		# do not enable GSSAPI support for saslauthd and build gssapi plugin
+%bcond_without	mysql		# don't build MySQL pluggin
+%bcond_without	pgsql		# do not build PostgreSQL pluggin
+%bcond_without	sqlite		# do not enable sqlite plugin
+%bcond_with	authlib		# enable courier-authlib (i wasn't able to test it)
+%bcond_with	opie		# enable opie plugin
+%bcond_with	srp		# build srp pluggin
+%bcond_with	pwcheck		# build pwcheck helper (deprecated)
+%bcond_with	x509		# build x509 plugin (no sources in package???)
 #
 %if %{without mysql} && %{without pgsql}
 %undefine with_cryptedpw
