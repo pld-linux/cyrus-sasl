@@ -105,8 +105,8 @@ Authentication and Security Layer, метод для додання п╕дтримки
 Summary:	Header files and documentation for cyrus-sasl
 Summary(pl):	Pliki nagЁСwkowe i dokumentacja dla cyrus-sasl
 Summary(pt_BR):	Exemplos e arquivos para desenvolvimento com SASL
-Summary(ru):	Файли для програмування з б╕бл╕отекою Cyrus SASL
 Summary(ru):	Файлы для программирования с библиотекой Cyrus SASL
+Summary(uk):	Файли для програмування з б╕бл╕отекою Cyrus SASL
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
