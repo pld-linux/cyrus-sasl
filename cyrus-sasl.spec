@@ -25,24 +25,23 @@ Summary(pt_BR):	Implementação da API SASL
 Summary(ru):	âÉÂÌÉÏÔÅËÁ Cyrus SASL
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÁ Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.21
-Release:	8
+Version:	2.1.22
+Release:	1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
-# Source0-md5:	dde02db234dea892bee298390890502e
+# Source0-md5:	45dde9d19193ae9dd388eb68b2027bc9
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
-Patch0:		%{name}-configdir.patch
-Patch1:		%{name}-nolibs.patch
-Patch2:		%{name}-lt.patch
-Patch3:		%{name}-split-sql.patch
-Patch4:		%{name}-opie.patch
-Patch5:		%{name}-gcc4.patch
+Patch0:		%{name}-nolibs.patch
+Patch1:		%{name}-lt.patch
+Patch2:		%{name}-split-sql.patch
+Patch3:		%{name}-opie.patch
+Patch4:		%{name}-gcc4.patch
 # Adapted from http://frost.ath.cx/software/cyrus-sasl-patches/dist/2.1.19/cyrus-sasl-2.1.19-checkpw.c+sql.c.patch
-Patch6:		%{name}-cryptedpw.patch
-Patch7:		%{name}-md5sum-passwords.patch
+Patch5:		%{name}-cryptedpw.patch
+Patch6:		%{name}-md5sum-passwords.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -426,10 +425,9 @@ Wtyczka SQLite do Cyrus SASL.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
 %if %{with cryptedpw}
+%patch5 -p1
 %patch6 -p1
-%patch7 -p1
 %endif
 
 cd doc
@@ -463,6 +461,7 @@ cd ..
 	%{!?with_gssapi: --disable-gssapi} \
 	%{?with_gssapi: --enable-gssapi --with-gss_impl=heimdal} \
 	--enable-login \
+	--enable-sample \
 	--enable-sql \
 	%{?with_srp: --enable-srp} \
 	--enable-static \
@@ -555,12 +554,14 @@ fi
 # sample programs to subpackage instead?
 %attr(755,root,root) %{_bindir}/sasl-sample-client
 %attr(755,root,root) %{_bindir}/sasl-sample-server
+%attr(755,root,root) %{_sbindir}/pluginviewer
 %attr(755,root,root) %{_sbindir}/sasldblistusers2
 %attr(755,root,root) %{_sbindir}/saslpasswd2
 
 %attr(640,root,mail) %ghost %config(noreplace) %verify(not md5 mtime size) /var/lib/sasl2/sasl.db
-%{_mandir}/man8/sasldblistusers2.*
-%{_mandir}/man8/saslpasswd2.*
+%{_mandir}/man8/pluginviewer.8*
+%{_mandir}/man8/sasldblistusers2.8*
+%{_mandir}/man8/saslpasswd2.8*
 
 %files devel
 %defattr(644,root,root,755)
@@ -659,4 +660,4 @@ fi
 %attr(755,root,root) %{_sbindir}/testsaslauthd
 %attr(755,root,root) %{_sbindir}/saslcache
 %attr(754,root,root) /etc/rc.d/init.d/saslauthd
-%{_mandir}/man8/saslauthd.*
+%{_mandir}/man8/saslauthd.8*
