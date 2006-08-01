@@ -1,4 +1,3 @@
-#
 # TODO:
 # - add ldap plugin from openldap sources
 #
@@ -26,7 +25,7 @@ Summary(ru):	Библиотека Cyrus SASL
 Summary(uk):	Б╕бл╕отека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.22
-Release:	1
+Release:	2
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -57,6 +56,7 @@ BuildRequires:	openssl-devel >= 0.9.7d
 %{?with_opie:BuildRequires:	opie-devel}
 BuildRequires:	pam-devel
 %{?with_pgsql:BuildRequires:	postgresql-devel}
+BuildRequires:	rpmbuild(macros) >= 1.268
 %{?with_sqlite:BuildRequires:	sqlite-devel}
 Requires:	pam >= 0.79.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -350,6 +350,7 @@ Summary(pl):	Demon authd do Cyrus SASL
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{version}-%{release}
+Requires:	/sbin/chkconfig
 Requires:	rc-scripts
 
 %description saslauthd
@@ -529,17 +530,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %post saslauthd
 /sbin/chkconfig --add saslauthd
-if [ -f /var/lock/subsys/saslauthd ]; then
-	/etc/rc.d/init.d/saslauthd restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/saslauthd start\" to start saslauthd."
-fi
+%service saslauthd restart
 
 %preun saslauthd
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/saslauthd ]; then
-		/etc/rc.d/init.d/saslauthd stop 1>&2
-	fi
+	%service saslauthd stop
 	/sbin/chkconfig --del saslauthd
 fi
 
