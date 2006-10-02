@@ -41,6 +41,7 @@ Patch4:		%{name}-gcc4.patch
 # Adapted from http://frost.ath.cx/software/cyrus-sasl-patches/dist/2.1.19/cyrus-sasl-2.1.19-checkpw.c+sql.c.patch
 Patch5:		%{name}-cryptedpw.patch
 Patch6:		%{name}-md5sum-passwords.patch
+Patch7:		%{name}-db.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -430,6 +431,7 @@ Wtyczka SQLite do Cyrus SASL.
 %patch5 -p1
 %patch6 -p1
 %endif
+%patch7 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
