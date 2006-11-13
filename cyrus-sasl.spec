@@ -14,7 +14,7 @@
 %bcond_with	pwcheck		# build pwcheck helper (deprecated)
 %bcond_with	x509		# build x509 plugin (no sources in package???)
 #
-%if %{without mysql} && %{without pgsql}
+%if !%{with mysql} && !%{with pgsql}
 %undefine with_cryptedpw
 %endif
 
