@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.22
-Release:	5
+Release:	6
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -50,7 +50,7 @@ BuildRequires:	automake
 BuildRequires:	db-devel
 BuildRequires:	ed
 BuildRequires:	groff
-%{?with_gssapi:BuildRequires:	heimdal-devel >= 0.7}
+%{?with_gssapi:BuildRequires:	krb5-devel}
 BuildRequires:	libtool >= 1.4
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
@@ -464,7 +464,7 @@ cd ..
 	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
 	--disable-krb4 \
 	%{!?with_gssapi: --disable-gssapi} \
-	%{?with_gssapi: --enable-gssapi --with-gss_impl=heimdal} \
+	%{?with_gssapi: --enable-gssapi --with-gss_impl=mit} \
 	--enable-login \
 	--enable-sample \
 	--enable-sql \
