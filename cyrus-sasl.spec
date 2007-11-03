@@ -56,7 +56,7 @@ BuildRequires:	groff
 %{?with_gssapi:BuildRequires:	krb5-devel}
 BuildRequires:	libtool >= 1.4
 %{?with_mysql:BuildRequires:	mysql-devel}
-%{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
+%{?with_ldap:BuildRequires:	openldap-devel >= 2.4.6}
 BuildRequires:	openssl-devel >= 0.9.7d
 %{?with_opie:BuildRequires:	opie-devel}
 BuildRequires:	pam-devel
