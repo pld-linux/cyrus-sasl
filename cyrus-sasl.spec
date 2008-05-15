@@ -14,18 +14,18 @@
 %bcond_with	pwcheck		# build pwcheck helper (deprecated)
 %bcond_with	x509		# build x509 plugin (no sources in package???)
 #
-%if %{without mysql} && %{without pgsql}
+%if !%{with mysql} && !%{with pgsql}
 %undefine with_cryptedpw
 %endif
 
 Summary:	The SASL library API for the Cyrus mail system
-Summary(pl):	Biblioteka Cyrus SASL
-Summary(pt_BR):	ImplementaÁ„o da API SASL
-Summary(ru):	‚…¬Ã…œ‘≈À¡ Cyrus SASL
-Summary(uk):	‚¶¬Ã¶œ‘≈À¡ Cyrus SASL
+Summary(pl.UTF-8):	Biblioteka Cyrus SASL
+Summary(pt_BR.UTF-8):	Implementa√ß√£o da API SASL
+Summary(ru.UTF-8):	–ë–∏–±–ª–∏–æ—Ç–µ–∫–∞ Cyrus SASL
+Summary(uk.UTF-8):	–ë—ñ–±–ª—ñ–æ—Ç–µ–∫–∞ Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.22
-Release:	3
+Release:	7
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -41,7 +41,7 @@ Patch4:		%{name}-gcc4.patch
 # Adapted from http://frost.ath.cx/software/cyrus-sasl-patches/dist/2.1.19/cyrus-sasl-2.1.19-checkpw.c+sql.c.patch
 Patch5:		%{name}-cryptedpw.patch
 Patch6:		%{name}-md5sum-passwords.patch
-Patch7:		%{name}-db.patch
+Patch7:		%{name}-automake_1_10.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -75,38 +75,38 @@ work in progress.
 Note: remember to install appropriate plugins, or you won't have any
 authentication mechanisms available.
 
-%description -l pl
-Pakiet cyrus-sasl zawiera implementacjÍ biblioteki API SASL dla
+%description -l pl.UTF-8
+Pakiet cyrus-sasl zawiera implementacjƒô biblioteki API SASL dla
 systemu poczty elektronicznej Cyrusa. Biblioteka ta jest przydatna
-takøe do dodawania uwierzytelniania, autoryzacji oraz zwiÍkszania
-bezpieczeÒstwa protoko≥Ûw sieciowych. Sam protokÛ≥ SASL jest opisany w
+tak≈ºe do dodawania uwierzytelniania, autoryzacji oraz zwiƒôkszania
+bezpiecze≈Ñstwa protoko≈Ç√≥w sieciowych. Sam protok√≥≈Ç SASL jest opisany w
 RFC 2222; standaryzacja API jest w toku.
 
-Uwaga: aby by≥y dostÍpne jakiekolwiek mechanizmy autoryzacji, naleøy
-doinstalowaÊ odpowiednie wtyczki.
+Uwaga: aby by≈Çy dostƒôpne jakiekolwiek mechanizmy autoryzacji, nale≈ºy
+doinstalowaƒá odpowiednie wtyczki.
 
-%description -l pt_BR
-Esta È uma implementaÁ„o da API SASL, ˙til para acrescentar
-autenticaÁ„o, autorizaÁ„o e seguanÁa (criptografia) para protocolos de
-rede. O protocolo SASL est· documentado na RFC 2222. A API "padr„o"
-ainda est· em desenvolvimento.
+%description -l pt_BR.UTF-8
+Esta √© uma implementa√ß√£o da API SASL, √∫til para acrescentar
+autentica√ß√£o, autoriza√ß√£o e seguan√ßa (criptografia) para protocolos de
+rede. O protocolo SASL est√° documentado na RFC 2222. A API "padr√£o"
+ainda est√° em desenvolvimento.
 
-%description -l ru
-¡À≈‘ cyrus-sasl ”œƒ≈“÷…‘ “≈¡Ã…⁄¡√…¿ Cyrus SASL. SASL - ‹‘œ Simple
-Authentication and Security Layer, Õ≈‘œƒ ƒÃ— ƒœ¬¡◊Ã≈Œ…— –œƒƒ≈“÷À…
-¡’‘≈Œ‘…À¡√…… À –“œ‘œÀœÃ¡Õ, œ”Œœ◊¡ŒŒŸÕ Œ¡ ”œ≈ƒ…Œ≈Œ…—».
+%description -l ru.UTF-8
+–ü–∞–∫–µ—Ç cyrus-sasl —Å–æ–¥–µ—Ä–∂–∏—Ç —Ä–µ–∞–ª–∏–∑–∞—Ü–∏—é Cyrus SASL. SASL - —ç—Ç–æ Simple
+Authentication and Security Layer, –º–µ—Ç–æ–¥ –¥–ª—è –¥–æ–±–∞–≤–ª–µ–Ω–∏—è –ø–æ–¥–¥–µ—Ä–∂–∫–∏
+–∞—É—Ç–µ–Ω—Ç–∏–∫–∞—Ü–∏–∏ –∫ –ø—Ä–æ—Ç–æ–∫–æ–ª–∞–º, –æ—Å–Ω–æ–≤–∞–Ω–Ω—ã–º –Ω–∞ —Å–æ–µ–¥–∏–Ω–µ–Ω–∏—è—Ö.
 
-%description -l uk
-¡À≈‘ cyrus-sasl Õ¶”‘…‘ÿ “≈¡Ã¶⁄¡√¶¿ Cyrus SASL. SASL - √≈ Simple
-Authentication and Security Layer, Õ≈‘œƒ ƒÃ— ƒœƒ¡ŒŒ— –¶ƒ‘“…ÕÀ…
-¡’‘≈Œ‘…À¡√¶ß ƒœ –“œ‘œÀœÃ¶◊, ¬¡⁄œ◊¡Œ…» Œ¡ ⁄'§ƒŒ¡ŒŒ—».
+%description -l uk.UTF-8
+–ü–∞–∫–µ—Ç cyrus-sasl –º—ñ—Å—Ç–∏—Ç—å —Ä–µ–∞–ª—ñ–∑–∞—Ü—ñ—é Cyrus SASL. SASL - —Ü–µ Simple
+Authentication and Security Layer, –º–µ—Ç–æ–¥ –¥–ª—è –¥–æ–¥–∞–Ω–Ω—è –ø—ñ–¥—Ç—Ä–∏–º–∫–∏
+–∞—É—Ç–µ–Ω—Ç–∏–∫–∞—Ü—ñ—ó –¥–æ –ø—Ä–æ—Ç–æ–∫–æ–ª—ñ–≤, –±–∞–∑–æ–≤–∞–Ω–∏—Ö –Ω–∞ –∑'—î–¥–Ω–∞–Ω–Ω—è—Ö.
 
 %package devel
 Summary:	Header files and documentation for cyrus-sasl
-Summary(pl):	Pliki nag≥Ûwkowe i dokumentacja dla cyrus-sasl
-Summary(pt_BR):	Exemplos e arquivos para desenvolvimento com SASL
-Summary(ru):	Ê¡ ÃŸ ƒÃ— –“œ«“¡ÕÕ…“œ◊¡Œ…— ” ¬…¬Ã…œ‘≈Àœ  Cyrus SASL
-Summary(uk):	Ê¡ Ã… ƒÃ— –“œ«“¡Õ’◊¡ŒŒ— ⁄ ¬¶¬Ã¶œ‘≈Àœ¿ Cyrus SASL
+Summary(pl.UTF-8):	Pliki nag≈Ç√≥wkowe i dokumentacja dla cyrus-sasl
+Summary(pt_BR.UTF-8):	Exemplos e arquivos para desenvolvimento com SASL
+Summary(ru.UTF-8):	–§–∞–π–ª—ã –¥–ª—è –ø—Ä–æ–≥—Ä–∞–º–º–∏—Ä–æ–≤–∞–Ω–∏—è —Å –±–∏–±–ª–∏–æ—Ç–µ–∫–æ–π Cyrus SASL
+Summary(uk.UTF-8):	–§–∞–π–ª–∏ –¥–ª—è –ø—Ä–æ–≥—Ä–∞–º—É–≤–∞–Ω–Ω—è –∑ –±—ñ–±–ª—ñ–æ—Ç–µ–∫–æ—é Cyrus SASL
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -114,47 +114,47 @@ Requires:	%{name} = %{version}-%{release}
 This includes the header files and documentation needed to develop
 applications which use SASL.
 
-%description devel -l pl
-Pliki nag≥Ûwkowe i dokumentacja dla cyrus-sasl.
+%description devel -l pl.UTF-8
+Pliki nag≈Ç√≥wkowe i dokumentacja dla cyrus-sasl.
 
-%description devel -l pt_BR
-Este pacote inclui os arquivos de cabeÁalho e documentaÁ„o necess·rios
+%description devel -l pt_BR.UTF-8
+Este pacote inclui os arquivos de cabe√ßalho e documenta√ß√£o necess√°rios
 para desenvolver aplicativos que usem SASL.
 
-%description devel -l ru
-Ë≈ƒ≈“Ÿ … ¬…¬Ã…œ‘≈À…, Œ≈œ¬»œƒ…ÕŸ≈ ƒÃ— “¡⁄“¡¬œ‘À… –“…Ãœ÷≈Œ… ,
-…”–œÃÿ⁄’¿›…» Cyrus SASL.
+%description devel -l ru.UTF-8
+–•–µ–¥–µ—Ä—ã –∏ –±–∏–±–ª–∏–æ—Ç–µ–∫–∏, –Ω–µ–æ–±—Ö–æ–¥–∏–º—ã–µ –¥–ª—è —Ä–∞–∑—Ä–∞–±–æ—Ç–∫–∏ –ø—Ä–∏–ª–æ–∂–µ–Ω–∏–π,
+–∏—Å–ø–æ–ª—å–∑—É—é—â–∏—Ö Cyrus SASL.
 
-%description devel -l uk
-Ë≈ƒ≈“… ‘¡ ¬¶¬Ã¶œ‘≈À…, Œ≈œ¬»¶ƒŒ¶ ƒÃ— “œ⁄“œ¬À… –“œ«“¡Õ, ›œ
-◊…Àœ“…”‘œ◊’¿‘ÿ Cyrus SASL.
+%description devel -l uk.UTF-8
+–•–µ–¥–µ—Ä–∏ —Ç–∞ –±—ñ–±–ª—ñ–æ—Ç–µ–∫–∏, –Ω–µ–æ–±—Ö—ñ–¥–Ω—ñ –¥–ª—è —Ä–æ–∑—Ä–æ–±–∫–∏ –ø—Ä–æ–≥—Ä–∞–º, —â–æ
+–≤–∏–∫–æ—Ä–∏—Å—Ç–æ–≤—É—é—Ç—å Cyrus SASL.
 
 %package static
 Summary:	Static cyrus-sasl libraries
-Summary(pl):	Statyczne biblioteki cyrus-sasl
-Summary(ru):	Û‘¡‘…ﬁ≈”À…≈ ¬…¬Ã…œ‘≈À… Cyrus SASL
-Summary(uk):	Û‘¡‘…ﬁŒ¶ ¬¶¬Ã¶œ‘≈À… Cyrus SASL
+Summary(pl.UTF-8):	Statyczne biblioteki cyrus-sasl
+Summary(ru.UTF-8):	–°—Ç–∞—Ç–∏—á–µ—Å–∫–∏–µ –±–∏–±–ª–∏–æ—Ç–µ–∫–∏ Cyrus SASL
+Summary(uk.UTF-8):	–°—Ç–∞—Ç–∏—á–Ω—ñ –±—ñ–±–ª—ñ–æ—Ç–µ–∫–∏ Cyrus SASL
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static cyrus-sasl libraries.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczne biblioteki cyrus-sasl.
 
-%description static -l ru
-Û‘¡‘…ﬁ≈”À…≈ ¬…¬Ã…œ‘≈À…, Œ≈œ¬»œƒ…ÕŸ≈ ƒÃ— “¡⁄“¡¬œ‘À… –“…Ãœ÷≈Œ… ,
-…”–œÃÿ⁄’¿›…» Cyrus SASL.
+%description static -l ru.UTF-8
+–°—Ç–∞—Ç–∏—á–µ—Å–∫–∏–µ –±–∏–±–ª–∏–æ—Ç–µ–∫–∏, –Ω–µ–æ–±—Ö–æ–¥–∏–º—ã–µ –¥–ª—è —Ä–∞–∑—Ä–∞–±–æ—Ç–∫–∏ –ø—Ä–∏–ª–æ–∂–µ–Ω–∏–π,
+–∏—Å–ø–æ–ª—å–∑—É—é—â–∏—Ö Cyrus SASL.
 
-%description static -l uk
-Û‘¡‘…ﬁŒ¶ ¬¶¬Ã¶œ‘≈À…, Œ≈œ¬»¶ƒŒ¶ ƒÃ— “œ⁄“œ¬À… –“œ«“¡Õ, ›œ ◊…Àœ“…”‘œ◊’¿‘ÿ
+%description static -l uk.UTF-8
+–°—Ç–∞—Ç–∏—á–Ω—ñ –±—ñ–±–ª—ñ–æ—Ç–µ–∫–∏, –Ω–µ–æ–±—Ö—ñ–¥–Ω—ñ –¥–ª—è —Ä–æ–∑—Ä–æ–±–∫–∏ –ø—Ä–æ–≥—Ä–∞–º, —â–æ –≤–∏–∫–æ—Ä–∏—Å—Ç–æ–≤—É—é—Ç—å
 Cyrus SASL.
 
 %package cram-md5
 Summary:	Cram-MD5 Cyrus SASL plugin
-Summary(pl):	Wtyczka Cram-MD5 do Cyrus SASL
-Summary(pt_BR):	Mecanismo SASL CRAM-MD5
+Summary(pl.UTF-8):	Wtyczka Cram-MD5 do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL CRAM-MD5
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -164,22 +164,22 @@ mandatory-to-implement authentication mechanism for a number of
 protocols; it uses MD5 with a challenge/response system to
 authenticate the user.
 
-%description cram-md5 -l pl
-Wtyczka dodaj±ca obs≥ugÍ mechanizmu CRAM-MD5 do Cyrus SASL. CRAM-MD5
-jest obowi±zkowym do zaimplementowania mechanizmem uwierzytelniania
-dla wielu protoko≥Ûw; do uwierzytelnienia uøytkownika uøywa MD5 wraz z
+%description cram-md5 -l pl.UTF-8
+Wtyczka dodajƒÖca obs≈Çugƒô mechanizmu CRAM-MD5 do Cyrus SASL. CRAM-MD5
+jest obowiƒÖzkowym do zaimplementowania mechanizmem uwierzytelniania
+dla wielu protoko≈Ç√≥w; do uwierzytelnienia u≈ºytkownika u≈ºywa MD5 wraz z
 systemem challenge/response.
 
-%description cram-md5 -l pt_BR
-Este plugin implementa o mecanismo SASL CRAM-MD5. CRAM-MD5 È o
-mecanismo de autenticaÁ„o obrigatÛrio de ser implementado para v·rios
+%description cram-md5 -l pt_BR.UTF-8
+Este plugin implementa o mecanismo SASL CRAM-MD5. CRAM-MD5 √© o
+mecanismo de autentica√ß√£o obrigat√≥rio de ser implementado para v√°rios
 protocolos: ele usa MD5 com um sistema de desafio/resposta para
-autenticar o usu·rio.
+autenticar o usu√°rio.
 
 %package digest-md5
 Summary:	Digest-MD5 Cyrus SASL plugin
-Summary(pl):	Wtyczka Digest-MD5 do Cyrus SASL
-Summary(pt_BR):	Mecanismo SASL DIGEST-MD5
+Summary(pl.UTF-8):	Wtyczka Digest-MD5 do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL DIGEST-MD5
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -189,24 +189,24 @@ mechanism. Although not yet finalized, this is likely to become the
 new mandatory-to-implement authentication system in all new protocols.
 It's based on the digest md5 authentication system designed for HTTP.
 
-%description digest-md5 -l pl
-Wtyczka dodaj±ca najnowsz± wersjÍ mechanizmu DIGEST-MD5 do Cyrus SASL.
-Pomimo tego, øe nie jest jeszcze ukoÒczony, najprawdopodobniej stanie
-siÍ obowi±zkowym do zaimplementowania systemem uwierzytelniania we
-wszystkich nowych protoko≥ach. Bazuje na systemie uwierzytelniania
+%description digest-md5 -l pl.UTF-8
+Wtyczka dodajƒÖca najnowszƒÖ wersjƒô mechanizmu DIGEST-MD5 do Cyrus SASL.
+Pomimo tego, ≈ºe nie jest jeszcze uko≈Ñczony, najprawdopodobniej stanie
+siƒô obowiƒÖzkowym do zaimplementowania systemem uwierzytelniania we
+wszystkich nowych protoko≈Çach. Bazuje na systemie uwierzytelniania
 Digest-MD5 zaprojektowanym dla HTTP.
 
-%description digest-md5 -l pt_BR
-Este plugin implementa a ˙ltima vers„o da especificaÁ„o do mecanismo
-SASL DIGEST-MD5. Embora ainda n„o esteja finalizado, DIGEST-MD5
-provavelmente ser· o novo sistema de autenticaÁ„o obrigatÛrio para
-protocolos novos. Ele È baseado na autenticaÁ„o md5 digest
+%description digest-md5 -l pt_BR.UTF-8
+Este plugin implementa a √∫ltima vers√£o da especifica√ß√£o do mecanismo
+SASL DIGEST-MD5. Embora ainda n√£o esteja finalizado, DIGEST-MD5
+provavelmente ser√° o novo sistema de autentica√ß√£o obrigat√≥rio para
+protocolos novos. Ele √© baseado na autentica√ß√£o md5 digest
 desenvolvida para HTTP.
 
 %package plain
 Summary:	Plain Cyrus SASL plugin
-Summary(pl):	Wtyczka plain do Cyrus SASL
-Summary(pt_BR):	Mecanismo SASL PLAIN
+Summary(pl.UTF-8):	Wtyczka plain do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL PLAIN
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -216,22 +216,22 @@ PLAIN is useful for transitioning to new security mechanisms, as this
 is the only mechanism which gives the server a copy of the user's
 password.
 
-%description plain -l pl
-Wtyczka dodaj±ca obs≥ugÍ mechanizmu PLAIN do Cyrus SASL. Pomimo tego,
-øe nie jest bezpieczny, PLAIN jest przydatny przy przechodzeniu na
-nowe mechanizmu bezpieczeÒstwa, jako øe jest to jedyny mechanizm,
-ktÛry udostÍpnia serwerowi kopiÍ has≥a uøytkownika.
+%description plain -l pl.UTF-8
+Wtyczka dodajƒÖca obs≈Çugƒô mechanizmu PLAIN do Cyrus SASL. Pomimo tego,
+≈ºe nie jest bezpieczny, PLAIN jest przydatny przy przechodzeniu na
+nowe mechanizmu bezpiecze≈Ñstwa, jako ≈ºe jest to jedyny mechanizm,
+kt√≥ry udostƒôpnia serwerowi kopiƒô has≈Ça u≈ºytkownika.
 
-%description plain -l pt_BR
+%description plain -l pt_BR.UTF-8
 Este plugin implementa o mecanismo SASL PLAIN. Embora inseguro, este
-mecanismo È ˙til durante transiÁıes para novos mecanismos de
-seguranÁa, pois È o ˙nico esquema que fornece uma cÛpia da senha do
-usu·rio para o servidor.
+mecanismo √© √∫til durante transi√ß√µes para novos mecanismos de
+seguran√ßa, pois √© o √∫nico esquema que fornece uma c√≥pia da senha do
+usu√°rio para o servidor.
 
 %package anonymous
 Summary:	Anonymous Cyrus SASL plugin
-Summary(pl):	Wtyczka anonymous do Cyrus SASL
-Summary(pt_BR):	Mecanismo SASL ANONYMOUS
+Summary(pl.UTF-8):	Wtyczka anonymous do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL ANONYMOUS
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -239,18 +239,18 @@ Requires:	%{name} = %{version}-%{release}
 This plugin implements the SASL ANONYMOUS mechanism, used for
 anonymous authentication.
 
-%description anonymous -l pl
-Wtyczka dodaj±ca obs≥ugÍ mechanizmu ANONYMOUS do Cyrus SASL. S≥uøy do
+%description anonymous -l pl.UTF-8
+Wtyczka dodajƒÖca obs≈Çugƒô mechanizmu ANONYMOUS do Cyrus SASL. S≈Çu≈ºy do
 anonimowego uwierzytelniania.
 
-%description anonymous -l pt_BR
+%description anonymous -l pt_BR.UTF-8
 Este plugin implementa o mecanismo SASL ANONYMOUS, usado para
-autenticaÁ„o anÙnima.
+autentica√ß√£o an√¥nima.
 
 %package gssapi
 Summary:	GSSAPI Cyrus SASL plugin
-Summary(pl):	Wtyczka GSSAPI do Cyrus SASL
-Summary(pt_BR):	Mecanismo SASL GSSAPI
+Summary(pl.UTF-8):	Wtyczka GSSAPI do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL GSSAPI
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -258,31 +258,31 @@ Requires:	%{name} = %{version}-%{release}
 This plugin implements the SASL GSSAPI mechanism, used for
 GSSAPI/Kerberos5 authentication.
 
-%description gssapi -l pl
-Wtyczka dodaj±ca obs≥ugÍ mechanizmu SASL GSSAPI, uøywanego do
-uwierzytelniania z uøyciem GSSAPI/Kerberos5.
+%description gssapi -l pl.UTF-8
+Wtyczka dodajƒÖca obs≈Çugƒô mechanizmu SASL GSSAPI, u≈ºywanego do
+uwierzytelniania z u≈ºyciem GSSAPI/Kerberos5.
 
-%description gssapi -l pt_BR
+%description gssapi -l pt_BR.UTF-8
 Este plugin implementa o mecanismo SASL GSSAPI, usado para
-autenticaÁ„o Kerberos/GSSAPI.
+autentica√ß√£o Kerberos/GSSAPI.
 
 %package login
 Summary:	Unsupported Login Cyrus SASL plugin
-Summary(pl):	Nie wspierana wtyczka Login do Cyrus SASL
+Summary(pl.UTF-8):	Nie wspierana wtyczka Login do Cyrus SASL
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description login
 Unsupported LOGIN Cyrus SASL plugin.
 
-%description login -l pl
-Wtyczka dodaj±ca obs≥ugÍ nie wspieranego mechanizmu LOGIN do Cyrus
+%description login -l pl.UTF-8
+Wtyczka dodajƒÖca obs≈Çugƒô nie wspieranego mechanizmu LOGIN do Cyrus
 SASL.
 
 %package srp
 Summary:	SRP Cyrus SASL plugin
-Summary(pl):	Wtyczka SRP do Cyrus SASL
-Summary(pt_BR):	Mecanismo SASL SRP
+Summary(pl.UTF-8):	Wtyczka SRP do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL SRP
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -292,62 +292,62 @@ Remote Password protocol. This mechanism performs mutual
 authentication and can provide a security layer with replay detection,
 integrity protection and/or condifentiality protection.
 
-%description srp -l pl
-Wtyczka dodaj±ca obs≥ugÍ mechanizmu SRP do Cyrus SASL. Bazuje na
+%description srp -l pl.UTF-8
+Wtyczka dodajƒÖca obs≈Çugƒô mechanizmu SRP do Cyrus SASL. Bazuje na
 protokole Secure Remote Password. Ten mechanizm dokonuje wzajemnego
-uwierzytelnienia i moøe dodawaÊ warstwÍ bezpieczeÒstwa z wykrywaniem
-powtarzania, zabezpieczeniem integralno∂ci i/lub poufno∂ci.
+uwierzytelnienia i mo≈ºe dodawaƒá warstwƒô bezpiecze≈Ñstwa z wykrywaniem
+powtarzania, zabezpieczeniem integralno≈õci i/lub poufno≈õci.
 
-%description srp -l pt_BR
+%description srp -l pt_BR.UTF-8
 Este plugin implementa o mecanismo SASL SRP, baseado no protocolo SRP
-(Secure Remote Password). Este mecanismo oferece autenticaÁ„o m˙tua
-(do cliente e do servidor) e pode prover uma camada de seguranÁa com
-detecÁ„o de ataques de replay, garantia de integridade e/ou
+(Secure Remote Password). Este mecanismo oferece autentica√ß√£o m√∫tua
+(do cliente e do servidor) e pode prover uma camada de seguran√ßa com
+detec√ß√£o de ataques de replay, garantia de integridade e/ou
 confidencialidade.
 
 %package otp
 Summary:	OTP Cyrus SASL plugin
-Summary(pl):	Wtyczka OTP do Cyrus SASL
-Summary(pt_BR):	Mecanismo SASL OTP
+Summary(pl.UTF-8):	Wtyczka OTP do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL OTP
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description otp
 This plugin implements the SASL OTP (One Time Password) mechanism.
 
-%description otp -l pl
-Wtyczka dodaj±ca obs≥ugÍ mechanizmu OTP (has≥a jednorazowe) do Cyrus
+%description otp -l pl.UTF-8
+Wtyczka dodajƒÖca obs≈Çugƒô mechanizmu OTP (has≈Ça jednorazowe) do Cyrus
 SASL.
 
 %package opie
 Summary:	OPIE Cyrus SASL plugin
-Summary(pl):	Wtyczka OPIE do Cyrus SASL
-Summary(pt_BR):	Mecanismo SASL OPIE
+Summary(pl.UTF-8):	Wtyczka OPIE do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL OPIE
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description opie
 This plugin implements the SASL OPIE (One Time Password) mechanism.
 
-%description opie -l pl
-Wtyczka dodaj±ca obs≥ugÍ mechanizmu OPIE (has≥a jednorazowe) do Cyrus
+%description opie -l pl.UTF-8
+Wtyczka dodajƒÖca obs≈Çugƒô mechanizmu OPIE (has≈Ça jednorazowe) do Cyrus
 SASL.
 
 %package x509
 Summary:	x509 Cyrus SASL plugin
-Summary(pl):	Wtyczka x509 do Cyrus SASL
+Summary(pl.UTF-8):	Wtyczka x509 do Cyrus SASL
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description x509
 x509 Cyrus SASL plugin.
 
-%description x509 -l pl
+%description x509 -l pl.UTF-8
 Wtyczka x509 do Cyrus SASL.
 
 %package saslauthd
 Summary:	Cyrus SASL authd
-Summary(pl):	Demon authd do Cyrus SASL
+Summary(pl.UTF-8):	Demon authd do Cyrus SASL
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{version}-%{release}
@@ -357,67 +357,67 @@ Requires:	rc-scripts
 %description saslauthd
 Cyrus SASL authd.
 
-%description saslauthd -l pl
+%description saslauthd -l pl.UTF-8
 Demon authd do Cyrus SASL.
 
 %package pwcheck
 Summary:	Cyrus SASL pwcheck helper
-Summary(pl):	Program pomocniczy pwcheck do Cyrus SASL
+Summary(pl.UTF-8):	Program pomocniczy pwcheck do Cyrus SASL
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description pwcheck
 Cyrus SASL pwcheck helper.
 
-%description pwcheck -l pl
+%description pwcheck -l pl.UTF-8
 Program pomocniczy pwcheck do Cyrus SASL.
 
 %package sasldb
 Summary:	Cyrus SASL sasldb plugin
-Summary(pl):	Wtyczka sasldb do Cyrus SASL
+Summary(pl.UTF-8):	Wtyczka sasldb do Cyrus SASL
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description sasldb
 Cyrus SASL sasldb plugin.
 
-%description sasldb -l pl
+%description sasldb -l pl.UTF-8
 Wtyczka sasldb do Cyrus SASL.
 
 %package mysql
 Summary:	Cyrus SASL MySQL plugin
-Summary(pl):	Wtyczka MySQL do Cyrus SASL
+Summary(pl.UTF-8):	Wtyczka MySQL do Cyrus SASL
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description mysql
 Cyrus SASL MySQL plugin.
 
-%description mysql -l pl
+%description mysql -l pl.UTF-8
 Wtyczka MySQL do Cyrus SASL.
 
 %package pgsql
 Summary:	Cyrus SASL PostgreSQL plugin
-Summary(pl):	Wtyczka PostgreSQL do Cyrus SASL
+Summary(pl.UTF-8):	Wtyczka PostgreSQL do Cyrus SASL
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description pgsql
 Cyrus SASL PostgreSQL plugin.
 
-%description pgsql -l pl
+%description pgsql -l pl.UTF-8
 Wtyczka PostgreSQL do Cyrus SASL.
 
 %package sqlite
 Summary:	Cyrus SQLite PostgreSQL plugin
-Summary(pl):	Wtyczka SQLite do Cyrus SASL
+Summary(pl.UTF-8):	Wtyczka SQLite do Cyrus SASL
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description sqlite
 Cyrus SASL SQLite plugin.
 
-%description sqlite -l pl
+%description sqlite -l pl.UTF-8
 Wtyczka SQLite do Cyrus SASL.
 
 %prep
@@ -547,7 +547,8 @@ fi
 %dir %{_sysconfdir}
 %dir %{_libdir}/sasl2
 %dir /var/lib/sasl2
-%attr(755,root,root) %{_libdir}/lib*.so.*.*
+%attr(755,root,root) %{_libdir}/libsasl2.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libsasl2.so.2
 # sample programs to subpackage instead?
 %attr(755,root,root) %{_bindir}/sasl-sample-client
 %attr(755,root,root) %{_bindir}/sasl-sample-server
