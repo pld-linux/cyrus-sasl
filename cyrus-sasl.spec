@@ -549,7 +549,8 @@ fi
 %dir %{_sysconfdir}
 %dir %{_libdir}/sasl2
 %dir /var/lib/sasl2
-%attr(755,root,root) %{_libdir}/lib*.so.*.*
+%attr(755,root,root) %{_libdir}/libsasl2.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libsasl2.so.2
 # sample programs to subpackage instead?
 %attr(755,root,root) %{_bindir}/sasl-sample-client
 %attr(755,root,root) %{_bindir}/sasl-sample-server
