@@ -23,15 +23,7 @@ if [ "x$SASL_RIMAP_HOSTNAME" != "x" ]; then
 	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -O $SASL_RIMAP_HOSTNAME"
 fi
 
-#if is_yes "$SASL_TIME_OF_DAY_LOGIN_RESTRICTIONS" ; then
-#	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -T"
-#fi
-
-RETVAL=0
-# See how we were called.
-case "$1" in
-  start)
-	# Check if the service is already running?
+start() {
 	if [ ! -f /var/lock/subsys/saslauthd ]; then
 		msg_starting saslauthd
 		daemon saslauthd $SASLAUTHD_OPTS
@@ -40,9 +32,9 @@ case "$1" in
 	else
 		msg_already_running saslauthd
 	fi
-	;;
-  stop)
-	# Stop daemons.
+}
+
+stop() {
 	if [ -f /var/lock/subsys/saslauthd ]; then
 		msg_stopping saslauthd
 		killproc saslauthd
@@ -50,18 +42,43 @@ case "$1" in
 	else
 		msg_not_running saslauthd
 	fi
+}
+
+condrestart() {
+	if [ -f /var/lock/subsys/saslauthd ]; then
+		stop
+		start
+	else
+		msg_not_running saslauthd
+		RETVAL=$1
+	fi
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart)
+	stop
+	start
+	;;
+  try-restart)
+	condrestart 0
+	;;
+  force-reload)
+	condrestart 7
 	;;
   status)
 	status saslauthd
 	exit $?
 	;;
-  restart|force-reload)
-	$0 stop
-	$0 start
-	exit $?
-	;;
   *)
-	msg_usage "$0 {start|stop|restart|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|try-restart|force-reload|status}"
 	exit 3
 esac
 
