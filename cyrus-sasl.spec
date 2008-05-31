@@ -552,17 +552,17 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING ChangeLog NEWS README
 %doc doc/{ONEWS,TODO,*.txt,*.html,*.fig,rfc-compliance}
-%dir %{_sysconfdir}
-%dir %{_libdir}/sasl2
-%dir /var/lib/sasl2
-%attr(755,root,root) %{_libdir}/lib*.so.*.*
 # sample programs to subpackage instead?
 %attr(755,root,root) %{_bindir}/sasl-sample-client
 %attr(755,root,root) %{_bindir}/sasl-sample-server
 %attr(755,root,root) %{_sbindir}/pluginviewer
 %attr(755,root,root) %{_sbindir}/sasldblistusers2
 %attr(755,root,root) %{_sbindir}/saslpasswd2
-
+%attr(755,root,root) %{_libdir}/libsasl2.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libsasl2.so.2
+%dir %{_libdir}/sasl2
+%dir %{_sysconfdir}
+%dir /var/lib/sasl2
 %attr(640,root,mail) %ghost %config(noreplace) %verify(not md5 mtime size) /var/lib/sasl2/sasl.db
 %{_mandir}/man8/pluginviewer.8*
 %{_mandir}/man8/sasldblistusers2.8*
@@ -570,14 +570,15 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libsasl2.so
+%attr(755,root,root) %{_libdir}/libsasl.so
+%{_libdir}/libsasl2.la
 %{_includedir}/sasl
-%attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.la
-%{_mandir}/man3/*
+%{_mandir}/man3/sasl*.3*
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/lib*.a
+%{_libdir}/libsasl2.a
 
 %files anonymous
 %defattr(644,root,root,755)
@@ -657,8 +658,7 @@ fi
 
 %files saslauthd
 %defattr(644,root,root,755)
-%doc cyrus.pam
-%doc saslauthd/{AUTHORS,LDAP_SASLAUTHD}
+%doc cyrus.pam saslauthd/{AUTHORS,LDAP_SASLAUTHD}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/saslauthd.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/saslauthd
 %attr(755,root,root) %{_sbindir}/saslauthd
