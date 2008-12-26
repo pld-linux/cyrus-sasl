@@ -5,7 +5,7 @@
 # chkconfig:	2345 40 60
 # description:	SASL AUTH Daemon
 # processname:	saslauthd
-# pidfile:	/var/state/sasl/mux.pid
+# pidfile:	/var/lib/sasl2/saslauthd.pid
 
 # $Id$
 
@@ -38,7 +38,7 @@ stop() {
 	if [ -f /var/lock/subsys/saslauthd ]; then
 		msg_stopping saslauthd
 		killproc saslauthd
-		rm -f /var/lock/subsys/saslauthd /var/run/saslauthd.pid >/dev/null 2>&1
+		rm -f /var/lock/subsys/saslauthd /var/lib/sasl2/saslauthd.pid >/dev/null 2>&1
 	else
 		msg_not_running saslauthd
 	fi
