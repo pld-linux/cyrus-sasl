@@ -1,13 +1,14 @@
---- cyrus-sasl-2.1.22/saslauthd/Makefile.am	2006-05-17 19:46:17.000000000 +0300
-+++ cyrus-sasl-2.1.22-nagios/saslauthd/Makefile.am	2009-01-30 18:09:01.984198032 +0200
-@@ -1,5 +1,5 @@
+--- cyrus-sasl-2.1.22-nagios/saslauthd/Makefile.am	2009-01-30 18:09:01.984198032 +0200
++++ cyrus-sasl-2.1.22/saslauthd/Makefile.am	2009-01-30 18:43:20.796560455 +0200
+@@ -1,5 +1,7 @@
  AUTOMAKE_OPTIONS = 1.7
--sbin_PROGRAMS	= saslauthd testsaslauthd
-+sbin_PROGRAMS	= saslauthd testsaslauthd check_saslauthd
+ sbin_PROGRAMS	= saslauthd testsaslauthd
++nagios_PROGRAM	= check_saslauthd
++nagiosdir	= @libexecdir@/nagios/plugins
  EXTRA_PROGRAMS  = saslcache
  
  saslauthd_SOURCES = mechanisms.c globals.h \
-@@ -21,6 +21,10 @@
+@@ -21,6 +23,10 @@
  testsaslauthd_SOURCES = testsaslauthd.c utils.c
  testsaslauthd_LDADD = @LIB_SOCKET@
  
