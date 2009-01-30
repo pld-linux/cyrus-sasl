@@ -14,7 +14,7 @@
 %bcond_with	pwcheck		# build pwcheck helper (deprecated)
 %bcond_with	x509		# build x509 plugin (no sources in package???)
 #
-%if !%{with mysql} && !%{with pgsql}
+%if %{without mysql} && %{without pgsql}
 %undefine with_cryptedpw
 %endif
 
@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.22
-Release:	7
+Release:	8
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
