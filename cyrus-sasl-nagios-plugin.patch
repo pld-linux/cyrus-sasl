@@ -1,0 +1,105 @@
+--- cyrus-sasl-2.1.22/saslauthd/Makefile.am	2006-05-17 19:46:17.000000000 +0300
++++ cyrus-sasl-2.1.22-nagios/saslauthd/Makefile.am	2009-01-30 18:09:01.984198032 +0200
+@@ -1,5 +1,5 @@
+ AUTOMAKE_OPTIONS = 1.7
+-sbin_PROGRAMS	= saslauthd testsaslauthd
++sbin_PROGRAMS	= saslauthd testsaslauthd check_saslauthd
+ EXTRA_PROGRAMS  = saslcache
+ 
+ saslauthd_SOURCES = mechanisms.c globals.h \
+@@ -21,6 +21,10 @@
+ testsaslauthd_SOURCES = testsaslauthd.c utils.c
+ testsaslauthd_LDADD = @LIB_SOCKET@
+ 
++check_saslauthd_SOURCES = testsaslauthd.c utils.c
++check_saslauthd_LDADD = @LIB_SOCKET@
++check_saslauthd_CFLAGS = -DNAGIOS_PLUGIN
++
+ saslcache_SOURCES = saslcache.c
+ 
+ EXTRA_DIST	= saslauthd.8 saslauthd.mdoc config include \
+--- cyrus-sasl-2.1.22/saslauthd/saslauthd.h.in	2006-05-18 22:38:27.000000000 +0300
++++ cyrus-sasl-2.1.22-nagios/saslauthd/saslauthd.h.in	2009-01-30 13:47:59.582432052 +0200
+@@ -164,9 +164,6 @@
+ /* define if your compiler has __attribute__ */
+ #undef HAVE___ATTRIBUTE__
+ 
+-/* Using Heimdal */
+-#undef KRB5_HEIMDAL
+-
+ /* Name of package */
+ #undef PACKAGE
+ 
+@@ -206,7 +203,7 @@
+ /* Use NDBM for SASLdb */
+ #undef SASL_NDBM
+ 
+-/* The size of a `long', as computed by sizeof. */
++/* The size of `long', as computed by sizeof. */
+ #undef SIZEOF_LONG
+ 
+ /* User KERBEROS_V4 Staticly */
+--- cyrus-sasl-2.1.22/saslauthd/testsaslauthd.c	2004-01-21 21:54:53.000000000 +0200
++++ cyrus-sasl-2.1.22-nagios/saslauthd/testsaslauthd.c	2009-01-30 18:36:26.070737112 +0200
+@@ -57,6 +57,13 @@
+ #endif
+ #include <assert.h>
+ 
++#ifdef NAGIOS_PLUGIN
++#define STATE_OK    0
++#define STATE_WARNING   1
++#define STATE_CRITICAL  2
++#define STATE_UNKNOWN   3
++#endif
++
+ #include "globals.h"
+ #include "utils.h"
+ 
+@@ -243,7 +250,11 @@
+     }
+   
+     printf("NO \"authentication failed\"\n");
++#ifdef NAGIOS_PLUGIN
++    return 1;
++#else
+     return -1;
++#endif
+ }
+ 
+ int
+@@ -293,7 +304,11 @@
+ 		  "              [-r realm] [-s servicename]\n"
+ 		  "              [-f socket path] [-R repeatnum]\n",
+ 		  argv[0], argv[0]);
++#ifdef NAGIOS_PLUGIN
++    exit(STATE_UNKNOWN);
++#else
+     exit(1);
++#endif
+   }
+ 
+   if (!repeat) repeat = 1;
+@@ -302,7 +317,23 @@
+       printf("%d: ", c);
+       result = saslauthd_verify_password(path, user, password, service, realm);
+   }
++#ifdef NAGIOS_PLUGIN
++  switch (result) {
++  case -1:
++      return STATE_CRITICAL;
++
++  case 0: // auth ok
++      return STATE_OK;
++
++  case 1: // auth fail
++      return STATE_WARNING;
++
++  default:
++      return STATE_UNKNOWN;
++  }
++#else
+   return result;
++#endif
+ }
+ 
+ 
