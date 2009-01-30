@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.22
-Release:	8
+Release:	8.3
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -421,6 +421,14 @@ Cyrus SASL SQLite plugin.
 %description sqlite -l pl.UTF-8
 Wtyczka SQLite do Cyrus SASL.
 
+%package -n nagios-plugin-check_saslauthd
+Summary:	Nagios plugin to check health of saslauthd
+Group:		Networking
+Requires:	nagios-core
+
+%description -n nagios-plugin-check_saslauthd
+Nagios plugin to check health of saslauthd
+
 %prep
 %setup -q
 %patch0 -p1
@@ -529,6 +537,18 @@ libtool --mode=install cp sample/server $RPM_BUILD_ROOT%{_bindir}/sasl-sample-se
 
 # package for ghost
 touch $RPM_BUILD_ROOT/var/lib/sasl2/{cache.flock,cache.mmap,mux,mux.accept,saslauthd.pid}
+
+install -d $RPM_BUILD_ROOT/etc/nagios/plugins
+cat > $RPM_BUILD_ROOT/etc/nagios/plugins/check_saslauthd.cfg <<'EOF'
+# Commandline Usage:
+#   check_saslauthd -u username -p password [-r realm] [-s servicename] [-f socket path] [-R repeatnum]
+# Plugin Usage:
+#   check_saslauthd!username!password![-r realm] [-s servicename] [-f socket path] [-R repeatnum]
+define command {
+	command_name    check_saslauthd
+	command_line    %{_libdir}/nagios/plugins/check_saslauthd -u $ARG1$ -p $ARG2$ $ARG3$
+}
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -670,3 +690,8 @@ fi
 %ghost /var/lib/sasl2/mux.accept
 %ghost /var/lib/sasl2/saslauthd.pid
 %{_mandir}/man8/saslauthd.8*
+
+%files -n nagios-plugin-check_saslauthd
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) /etc/nagios/plugins/check_saslauthd.cfg
+%attr(755,root,root) %{_libdir}/nagios/plugins/check_saslauthd
