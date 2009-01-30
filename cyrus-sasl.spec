@@ -42,6 +42,7 @@ Patch4:		%{name}-gcc4.patch
 Patch5:		%{name}-cryptedpw.patch
 Patch6:		%{name}-md5sum-passwords.patch
 Patch7:		%{name}-automake_1_10.patch
+Patch8:		%{name}-nagios-plugin.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -432,6 +433,7 @@ Wtyczka SQLite do Cyrus SASL.
 %patch6 -p1
 %endif
 %patch7 -p1
+%patch8 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
