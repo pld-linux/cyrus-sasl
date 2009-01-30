@@ -26,7 +26,7 @@ fi
 start() {
 	if [ ! -f /var/lock/subsys/saslauthd ]; then
 		msg_starting saslauthd
-		daemon saslauthd $SASLAUTHD_OPTS
+		daemon /usr/sbin/saslauthd $SASLAUTHD_OPTS
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/saslauthd
 	else
