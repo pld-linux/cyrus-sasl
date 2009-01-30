@@ -465,6 +465,7 @@ cd ..
 	%{?with_gssapi: --enable-gssapi --with-gss_impl=heimdal} \
 	--enable-login \
 	--enable-sample \
+	--enable-httpform \
 	--enable-sql \
 	%{?with_srp: --enable-srp} \
 	--enable-static \
