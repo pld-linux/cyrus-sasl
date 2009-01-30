@@ -525,6 +525,9 @@ install saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT%{_sbindir}
 libtool --mode=install cp sample/client $RPM_BUILD_ROOT%{_bindir}/sasl-sample-client
 libtool --mode=install cp sample/server $RPM_BUILD_ROOT%{_bindir}/sasl-sample-server
 
+# package for ghost
+touch $RPM_BUILD_ROOT/var/lib/sasl2/{cache.flock,cache.mmap,mux,mux.accept,saslauthd.pid}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -659,4 +662,9 @@ fi
 %attr(755,root,root) %{_sbindir}/testsaslauthd
 %attr(755,root,root) %{_sbindir}/saslcache
 %attr(754,root,root) /etc/rc.d/init.d/saslauthd
+%ghost /var/lib/sasl2/cache.flock
+%ghost /var/lib/sasl2/cache.mmap
+%ghost /var/lib/sasl2/mux
+%ghost /var/lib/sasl2/mux.accept
+%ghost /var/lib/sasl2/saslauthd.pid
 %{_mandir}/man8/saslauthd.8*
