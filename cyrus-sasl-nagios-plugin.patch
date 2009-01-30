@@ -19,27 +19,6 @@
  saslcache_SOURCES = saslcache.c
  
  EXTRA_DIST	= saslauthd.8 saslauthd.mdoc config include \
---- cyrus-sasl-2.1.22/saslauthd/saslauthd.h.in	2006-05-18 22:38:27.000000000 +0300
-+++ cyrus-sasl-2.1.22-nagios/saslauthd/saslauthd.h.in	2009-01-30 13:47:59.582432052 +0200
-@@ -164,9 +164,6 @@
- /* define if your compiler has __attribute__ */
- #undef HAVE___ATTRIBUTE__
- 
--/* Using Heimdal */
--#undef KRB5_HEIMDAL
--
- /* Name of package */
- #undef PACKAGE
- 
-@@ -206,7 +203,7 @@
- /* Use NDBM for SASLdb */
- #undef SASL_NDBM
- 
--/* The size of a `long', as computed by sizeof. */
-+/* The size of `long', as computed by sizeof. */
- #undef SIZEOF_LONG
- 
- /* User KERBEROS_V4 Staticly */
 --- cyrus-sasl-2.1.22/saslauthd/testsaslauthd.c	2004-01-21 21:54:53.000000000 +0200
 +++ cyrus-sasl-2.1.22-nagios/saslauthd/testsaslauthd.c	2009-01-30 18:36:26.070737112 +0200
 @@ -57,6 +57,13 @@
