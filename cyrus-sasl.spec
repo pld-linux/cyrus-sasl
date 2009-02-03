@@ -14,7 +14,7 @@
 %bcond_with	pwcheck		# build pwcheck helper (deprecated)
 %bcond_with	x509		# build x509 plugin (no sources in package???)
 #
-%if !%{with mysql} && !%{with pgsql}
+%if %{without mysql} && %{without pgsql}
 %undefine with_cryptedpw
 %endif
 
@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.22
-Release:	14
+Release:	15
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -33,6 +33,7 @@ Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
+Source4:	check_saslauthd.cfg
 Patch0:		%{name}-nolibs.patch
 Patch1:		%{name}-lt.patch
 Patch2:		%{name}-split-sql.patch
@@ -46,6 +47,7 @@ Patch8:		%{name}-automake_1_10.patch
 Patch9:		%{name}-digest-commas.patch
 Patch10:	%{name}-keytab.patch
 Patch11:	%{name}-sizes.patch
+Patch12:	%{name}-nagios-plugin.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -424,6 +426,14 @@ Cyrus SASL SQLite plugin.
 %description sqlite -l pl.UTF-8
 Wtyczka SQLite do Cyrus SASL.
 
+%package -n nagios-plugin-check_saslauthd
+Summary:	Nagios plugin to check health of saslauthd
+Group:		Networking
+Requires:	nagios-core
+
+%description -n nagios-plugin-check_saslauthd
+Nagios plugin to check health of saslauthd
+
 %prep
 %setup -q
 %patch0 -p1
@@ -440,6 +450,7 @@ Wtyczka SQLite do Cyrus SASL.
 %patch9 -p2
 %patch10 -p1
 %patch11 -p1
+%patch12 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
@@ -473,6 +484,7 @@ cd ..
 	%{?with_gssapi: --enable-gssapi --with-gss_impl=mit} \
 	--enable-login \
 	--enable-sample \
+	--enable-httpform \
 	--enable-sql \
 	%{?with_srp: --enable-srp} \
 	--enable-static \
@@ -524,13 +536,19 @@ touch $RPM_BUILD_ROOT/var/lib/sasl2/sasl.db
 touch $RPM_BUILD_ROOT%{_sysconfdir}/saslauthd.conf
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
-install %{SOURCE3} ./cyrus.pam
+install %{SOURCE3} cyrus.pam
 
 install saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT%{_sbindir}
 
 # sample programs for testing sasl
 libtool --mode=install cp sample/client $RPM_BUILD_ROOT%{_bindir}/sasl-sample-client
 libtool --mode=install cp sample/server $RPM_BUILD_ROOT%{_bindir}/sasl-sample-server
+
+# package for ghost
+touch $RPM_BUILD_ROOT/var/lib/sasl2/{cache.flock,cache.mmap,mux,mux.accept,saslauthd.pid}
+
+install -d $RPM_BUILD_ROOT/etc/nagios/plugins
+%{__sed} -e 's,@plugindir@,%{_libdir}/nagios/plugins,' %{SOURCE4} > $RPM_BUILD_ROOT/etc/nagios/plugins/check_saslauthd.cfg
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -552,16 +570,16 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING ChangeLog NEWS README
 %doc doc/{ONEWS,TODO,*.txt,*.html,*.fig,rfc-compliance}
+%dir %{_sysconfdir}
+%dir %{_libdir}/sasl2
+%attr(755,root,root) %{_libdir}/libsasl2.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libsasl2.so.2
 # sample programs to subpackage instead?
 %attr(755,root,root) %{_bindir}/sasl-sample-client
 %attr(755,root,root) %{_bindir}/sasl-sample-server
 %attr(755,root,root) %{_sbindir}/pluginviewer
 %attr(755,root,root) %{_sbindir}/sasldblistusers2
 %attr(755,root,root) %{_sbindir}/saslpasswd2
-%attr(755,root,root) %{_libdir}/libsasl2.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libsasl2.so.2
-%dir %{_libdir}/sasl2
-%dir %{_sysconfdir}
 %dir /var/lib/sasl2
 %attr(640,root,mail) %ghost %config(noreplace) %verify(not md5 mtime size) /var/lib/sasl2/sasl.db
 %{_mandir}/man8/pluginviewer.8*
@@ -658,11 +676,22 @@ fi
 
 %files saslauthd
 %defattr(644,root,root,755)
-%doc cyrus.pam saslauthd/{AUTHORS,LDAP_SASLAUTHD}
+%doc cyrus.pam
+%doc saslauthd/{AUTHORS,LDAP_SASLAUTHD}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/saslauthd.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/saslauthd
 %attr(755,root,root) %{_sbindir}/saslauthd
 %attr(755,root,root) %{_sbindir}/testsaslauthd
 %attr(755,root,root) %{_sbindir}/saslcache
 %attr(754,root,root) /etc/rc.d/init.d/saslauthd
+%ghost /var/lib/sasl2/cache.flock
+%ghost /var/lib/sasl2/cache.mmap
+%ghost /var/lib/sasl2/mux
+%ghost /var/lib/sasl2/mux.accept
+%ghost /var/lib/sasl2/saslauthd.pid
 %{_mandir}/man8/saslauthd.8*
+
+%files -n nagios-plugin-check_saslauthd
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) /etc/nagios/plugins/check_saslauthd.cfg
+%attr(755,root,root) %{_libdir}/nagios/plugins/check_saslauthd
