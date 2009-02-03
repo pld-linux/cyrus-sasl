@@ -15,12 +15,20 @@
 # Get service config
 [ -f /etc/sysconfig/saslauthd ] && . /etc/sysconfig/saslauthd
 
-if [ "x$SASL_AUTHMECH" != "x" ]; then
+if [ "$SASL_AUTHMECH" ]; then
 	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -a $SASL_AUTHMECH"
 fi
 
-if [ "x$SASL_RIMAP_HOSTNAME" != "x" ]; then
+if [ "$SASL_RIMAP_HOSTNAME" ]; then
 	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -O $SASL_RIMAP_HOSTNAME"
+fi
+
+if is_yes "$SASLAUTHD_CACHE"; then
+	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -c"
+fi
+
+if [ "$SASLAUTHD_THREADS" ]; then
+	SASLAUTHD_OPTS="$SASLAUTHD_OPTS -n $SASLAUTHD_THREADS"
 fi
 
 start() {
