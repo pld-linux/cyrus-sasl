@@ -564,7 +564,6 @@ fi
 %doc doc/{ONEWS,TODO,*.txt,*.html,*.fig,rfc-compliance}
 %dir %{_sysconfdir}
 %dir %{_libdir}/sasl2
-%dir /var/lib/sasl2
 %attr(755,root,root) %{_libdir}/libsasl2.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libsasl2.so.2
 # sample programs to subpackage instead?
@@ -573,7 +572,7 @@ fi
 %attr(755,root,root) %{_sbindir}/pluginviewer
 %attr(755,root,root) %{_sbindir}/sasldblistusers2
 %attr(755,root,root) %{_sbindir}/saslpasswd2
-
+%dir /var/lib/sasl2
 %attr(640,root,mail) %ghost %config(noreplace) %verify(not md5 mtime size) /var/lib/sasl2/sasl.db
 %{_mandir}/man8/pluginviewer.8*
 %{_mandir}/man8/sasldblistusers2.8*
@@ -581,14 +580,15 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libsasl2.so
+%attr(755,root,root) %{_libdir}/libsasl.so
+%{_libdir}/libsasl2.la
 %{_includedir}/sasl
-%attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.la
-%{_mandir}/man3/*
+%{_mandir}/man3/sasl*.3*
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/lib*.a
+%{_libdir}/libsasl2.a
 
 %files anonymous
 %defattr(644,root,root,755)
