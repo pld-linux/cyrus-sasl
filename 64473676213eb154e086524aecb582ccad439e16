@@ -1,0 +1,7 @@
+- rewrited in PLD packagin style policy.
+
+* Mon Aug 30 1999 Tim Powers <timp@redhat.com>
+- changed group
+
+* Fri Aug 13 1999 Tim Powers <timp@redhat.com>
+- first build for Powertools
