@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.22
-Release:	8.3
+Release:	8.4
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -33,6 +33,7 @@ Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
+Source4:	check_saslauthd.cfg
 Patch0:		%{name}-nolibs.patch
 Patch1:		%{name}-lt.patch
 Patch2:		%{name}-split-sql.patch
@@ -527,7 +528,7 @@ touch $RPM_BUILD_ROOT/var/lib/sasl2/sasl.db
 touch $RPM_BUILD_ROOT%{_sysconfdir}/saslauthd.conf
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
-install %{SOURCE3} ./cyrus.pam
+install %{SOURCE3} cyrus.pam
 
 install saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT%{_sbindir}
 
@@ -539,16 +540,7 @@ libtool --mode=install cp sample/server $RPM_BUILD_ROOT%{_bindir}/sasl-sample-se
 touch $RPM_BUILD_ROOT/var/lib/sasl2/{cache.flock,cache.mmap,mux,mux.accept,saslauthd.pid}
 
 install -d $RPM_BUILD_ROOT/etc/nagios/plugins
-cat > $RPM_BUILD_ROOT/etc/nagios/plugins/check_saslauthd.cfg <<'EOF'
-# Commandline Usage:
-#   check_saslauthd -u username -p password [-r realm] [-s servicename] [-f socket path] [-R repeatnum]
-# Plugin Usage:
-#   check_saslauthd!username!password![-r realm] [-s servicename] [-f socket path] [-R repeatnum]
-define command {
-	command_name    check_saslauthd
-	command_line    %{_libdir}/nagios/plugins/check_saslauthd -u $ARG1$ -p $ARG2$ $ARG3$
-}
-EOF
+cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/nagios/plugins/check_saslauthd.cfg
 
 %clean
 rm -rf $RPM_BUILD_ROOT
