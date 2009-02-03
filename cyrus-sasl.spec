@@ -540,7 +540,7 @@ libtool --mode=install cp sample/server $RPM_BUILD_ROOT%{_bindir}/sasl-sample-se
 touch $RPM_BUILD_ROOT/var/lib/sasl2/{cache.flock,cache.mmap,mux,mux.accept,saslauthd.pid}
 
 install -d $RPM_BUILD_ROOT/etc/nagios/plugins
-cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/nagios/plugins/check_saslauthd.cfg
+%{__sed} -e 's,@plugindir@,%{_libdir}/nagios/plugins,' %{SOURCE4} > $RPM_BUILD_ROOT/etc/nagios/plugins/check_saslauthd.cfg
 
 %clean
 rm -rf $RPM_BUILD_ROOT
