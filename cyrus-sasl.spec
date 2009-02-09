@@ -424,11 +424,15 @@ Wtyczka SQLite do Cyrus SASL.
 
 %package -n nagios-plugin-check_saslauthd
 Summary:	Nagios plugin to check health of saslauthd
+Summary(pl.UTF-8):	Wtyczka Nagiosa do sprawdzania działania saslauthd
 Group:		Networking
 Requires:	nagios-core
 
 %description -n nagios-plugin-check_saslauthd
-Nagios plugin to check health of saslauthd
+Nagios plugin to check health of saslauthd.
+
+%description -n nagios-plugin-check_saslauthd -l pl.UTF-8
+Wtyczka Nagiosa do sprawdzania działania saslauthd.
 
 %prep
 %setup -q
