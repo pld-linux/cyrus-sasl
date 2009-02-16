@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.22
-Release:	15
+Release:	9
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -42,12 +42,9 @@ Patch4:		%{name}-gcc4.patch
 # Adapted from http://frost.ath.cx/software/cyrus-sasl-patches/dist/2.1.19/cyrus-sasl-2.1.19-checkpw.c+sql.c.patch
 Patch5:		%{name}-cryptedpw.patch
 Patch6:		%{name}-md5sum-passwords.patch
-Patch7:		%{name}-db.patch
-Patch8:		%{name}-automake_1_10.patch
-Patch9:		%{name}-digest-commas.patch
-Patch10:	%{name}-keytab.patch
-Patch11:	%{name}-sizes.patch
-Patch12:	%{name}-nagios-plugin.patch
+Patch7:		%{name}-automake_1_10.patch
+Patch8:		%{name}-nagios-plugin.patch
+Patch9:		%{name}-saslauthd-httpform-urlescape.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -55,10 +52,10 @@ BuildRequires:	automake
 BuildRequires:	db-devel
 BuildRequires:	ed
 BuildRequires:	groff
-%{?with_gssapi:BuildRequires:	krb5-devel}
+%{?with_gssapi:BuildRequires:	heimdal-devel >= 0.7}
 BuildRequires:	libtool >= 1.4
 %{?with_mysql:BuildRequires:	mysql-devel}
-%{?with_ldap:BuildRequires:	openldap-devel >= 2.4.6}
+%{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
 BuildRequires:	openssl-devel >= 0.9.7d
 %{?with_opie:BuildRequires:	opie-devel}
 BuildRequires:	pam-devel
@@ -451,10 +448,7 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %endif
 %patch7 -p1
 %patch8 -p1
-%patch9 -p2
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
+%patch9 -p0
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
@@ -485,7 +479,7 @@ cd ..
 	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
 	--disable-krb4 \
 	%{!?with_gssapi: --disable-gssapi} \
-	%{?with_gssapi: --enable-gssapi --with-gss_impl=mit} \
+	%{?with_gssapi: --enable-gssapi --with-gss_impl=heimdal} \
 	--enable-login \
 	--enable-sample \
 	--enable-httpform \
