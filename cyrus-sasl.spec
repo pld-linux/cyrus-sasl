@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.22
-Release:	8.4
+Release:	9
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -44,6 +44,7 @@ Patch5:		%{name}-cryptedpw.patch
 Patch6:		%{name}-md5sum-passwords.patch
 Patch7:		%{name}-automake_1_10.patch
 Patch8:		%{name}-nagios-plugin.patch
+Patch9:		%{name}-saslauthd-httpform-urlescape.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -447,6 +448,7 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %endif
 %patch7 -p1
 %patch8 -p1
+%patch9 -p0
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
