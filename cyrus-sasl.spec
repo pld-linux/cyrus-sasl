@@ -13,7 +13,6 @@
 %bcond_with	srp		# build srp pluggin
 %bcond_with	pwcheck		# build pwcheck helper (deprecated)
 %bcond_with	x509		# build x509 plugin (no sources in package???)
-%bcond_with	heimdal		# build GSSAPI against Heimdal
 #
 %if %{without mysql} && %{without pgsql}
 %undefine with_cryptedpw
@@ -26,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.22
-Release:	15
+Release:	16
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -56,11 +55,7 @@ BuildRequires:	automake
 BuildRequires:	db-devel
 BuildRequires:	ed
 BuildRequires:	groff
-%if %{with heimdal}
 %{?with_gssapi:BuildRequires:	heimdal-devel}
-%else
-%{?with_gssapi:BuildRequires:	krb5-devel}
-%endif
 BuildRequires:	libtool >= 1.4
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.4.6}
@@ -490,11 +485,7 @@ cd ..
 	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
 	--disable-krb4 \
 	%{!?with_gssapi: --disable-gssapi} \
-%if %{with heimdal}
 	%{?with_gssapi: --enable-gssapi --with-gss_impl=heimdal} \
-%else
-	%{?with_gssapi: --enable-gssapi --with-gss_impl=mit} \
-%endif
 	--enable-login \
 	--enable-sample \
 	--enable-httpform \
