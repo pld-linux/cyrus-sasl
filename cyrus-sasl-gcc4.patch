@@ -25,3 +25,23 @@
  
  	if (dump_stat_info == 0 && dump_user_info == 0)
  		dump_stat_info = 1;
+--- cyrus-sasl-2.1.22/plugins/digestmd5.c.orig	2009-07-02 15:21:59.000000000 +0200
++++ cyrus-sasl-2.1.22/plugins/digestmd5.c	2009-07-02 15:25:38.190152725 +0200
+@@ -2743,7 +2743,7 @@
+ 	"DIGEST-MD5",			/* mech_name */
+ #ifdef WITH_RC4
+ 	128,				/* max_ssf */
+-#elif WITH_DES
++#elif defined(WITH_DES)
+ 	112,
+ #else 
+ 	1,
+@@ -4071,7 +4071,7 @@
+ 	"DIGEST-MD5",
+ #ifdef WITH_RC4				/* mech_name */
+ 	128,				/* max ssf */
+-#elif WITH_DES
++#elif defined(WITH_DES)
+ 	112,
+ #else
+ 	1,
