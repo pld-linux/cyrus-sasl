@@ -24,12 +24,12 @@ Summary(pt_BR.UTF-8):	Implementação da API SASL
 Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.22
-Release:	17
+Version:	2.1.23
+Release:	1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
-# Source0-md5:	45dde9d19193ae9dd388eb68b2027bc9
+# Source0-md5:	2eb0e48106f0e9cd8001e654f267ecbc
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
