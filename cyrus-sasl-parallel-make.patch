@@ -1,0 +1,47 @@
+diff -ur cyrus-sasl-2.1.23.orig/plugins/Makefile.am cyrus-sasl-2.1.23/plugins/Makefile.am
+--- cyrus-sasl-2.1.23.orig/plugins/Makefile.am	2009-12-09 08:19:06.981152890 +0000
++++ cyrus-sasl-2.1.23/plugins/Makefile.am	2009-12-09 08:33:41.561911411 +0000
+@@ -186,8 +186,8 @@
+ 
+ CLEANFILES=$(init_src)
+ 
+-${init_src}: $(srcdir)/makeinit.sh
+-	$(SHELL) $(srcdir)/makeinit.sh
++${init_src}: $(srcdir)/makeinit.sh $@
++	$(SHELL) $(srcdir)/makeinit.sh $@
+ 
+ # Compatibility function build rules (they build in lib/)
+ $(COMPAT_OBJS):
+diff -ur cyrus-sasl-2.1.23.orig/plugins/makeinit.sh cyrus-sasl-2.1.23/plugins/makeinit.sh
+--- cyrus-sasl-2.1.23.orig/plugins/makeinit.sh	2009-12-09 08:19:06.921144397 +0000
++++ cyrus-sasl-2.1.23/plugins/makeinit.sh	2009-12-09 08:25:31.644442215 +0000
+@@ -1,5 +1,6 @@
+-for mech in anonymous crammd5 digestmd5 gssapiv2 kerberos4 login ntlm otp passdss plain srp; do
+-
++mech="${1%_init.c}"
++case "$mech" in
++	anonymous|crammd5|digestmd5|gssapiv2|kerberos4|login|ntlm|otp|passdss|plain|srp)
+ echo "
+ #include <config.h>
+ 
+@@ -43,10 +44,9 @@
+ SASL_CLIENT_PLUG_INIT( $mech )
+ SASL_SERVER_PLUG_INIT( $mech )
+ " > ${mech}_init.c
+-done
+-
+-for mech in sasldb mysql pgsql sqlite ldapdb; do
++;;
+ 
++	sasldb|mysql|pgsql|sqlite|ldapdb)
+ echo "
+ #include <config.h>
+ 
+@@ -85,5 +85,6 @@
+ 
+ SASL_AUXPROP_PLUG_INIT( $mech )
+ " > ${mech}_init.c
+-done
++;;
++esac
+ 

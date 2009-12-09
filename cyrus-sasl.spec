@@ -48,6 +48,7 @@ Patch9:		%{name}-digest-commas.patch
 Patch10:	%{name}-keytab.patch
 Patch11:	%{name}-sizes.patch
 Patch12:	%{name}-nagios-plugin.patch
+Patch13:	%{name}-parallel-make.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake
@@ -455,6 +456,7 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %patch10 -p1
 %patch11 -p1
 %patch12 -p1
+%patch13 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
