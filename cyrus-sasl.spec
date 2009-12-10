@@ -511,6 +511,7 @@ cd ..
 
 %{__make} -C saslauthd testsaslauthd
 %{__make} -C saslauthd saslcache
+%{__make} -C sample sample-client sample-server
 
 cd doc
 RFCLIST=`grep 'rfc.\+\.txt' rfc-compliance`
@@ -547,8 +548,8 @@ install %{SOURCE3} cyrus.pam
 install saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT%{_sbindir}
 
 # sample programs for testing sasl
-libtool --mode=install cp sample/client $RPM_BUILD_ROOT%{_bindir}/sasl-sample-client
-libtool --mode=install cp sample/server $RPM_BUILD_ROOT%{_bindir}/sasl-sample-server
+libtool --mode=install cp sample/sample-client $RPM_BUILD_ROOT%{_bindir}/sasl-sample-client
+libtool --mode=install cp sample/sample-server $RPM_BUILD_ROOT%{_bindir}/sasl-sample-server
 
 # package for ghost
 touch $RPM_BUILD_ROOT/var/lib/sasl2/{cache.flock,cache.mmap,mux,mux.accept,saslauthd.pid}
