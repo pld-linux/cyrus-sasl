@@ -51,7 +51,7 @@ Patch12:	%{name}-nagios-plugin.patch
 Patch13:	%{name}-parallel-make.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
-BuildRequires:	automake
+BuildRequires:	automake >= 1:1.7
 %{?with_authlib:BuildRequires:	courier-authlib-devel}
 BuildRequires:	db-devel
 BuildRequires:	ed
