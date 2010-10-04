@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.23
-Release:	5
+Release:	6
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -49,6 +49,7 @@ Patch10:	%{name}-keytab.patch
 Patch11:	%{name}-sizes.patch
 Patch12:	%{name}-nagios-plugin.patch
 Patch13:	%{name}-parallel-make.patch
+Patch14:	%{name}-gssapi-detect.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake >= 1:1.7
@@ -457,6 +458,7 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %patch11 -p1
 %patch12 -p1
 %patch13 -p1
+%patch14 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
