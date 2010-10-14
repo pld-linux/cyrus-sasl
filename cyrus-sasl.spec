@@ -472,6 +472,14 @@ rm -rf autom4te.cache saslauthd/autom4te.cache
 # acinclude.m4 contains only old libtool.m4
 rm -f acinclude.m4 libtool config/libtool.m4 saslauthd/acinclude.m4
 
+# update to our paths
+sed -i -e '
+	s,/usr/local/etc/saslauthd.conf,%{_sysconfdir}/saslauthd.conf,g
+	s,/etc/saslauthd.conf,%{_sysconfdir}/saslauthd.conf,g
+	s,/var/run/saslauthd/mux,/var/lib/sasl2/mux,g
+	s,/var/state/saslauthd,/var/lib/sasl2,g
+' saslauthd/saslauthd.8 saslauthd/saslauthd.mdoc saslauthd/LDAP_SASLAUTHD doc/sysadmin.html
+
 %build
 %{__libtoolize}
 %{__aclocal} -I cmulocal -I config
@@ -518,7 +526,7 @@ cd ..
 %{__make} -C sample sample-client sample-server
 
 cd doc
-RFCLIST=`grep 'rfc.\+\.txt' rfc-compliance`
+RFCLIST=$(grep 'rfc.\+\.txt' rfc-compliance)
 for i in $RFCLIST; do
 	RFCDIR=../RFC/text/`echo $i | sed -e 's:^rfc::' -e 's:..\.txt$::' `00
 	echo -e ',s:'$i':'$RFCDIR/$i'\n,w\nq' | ed index.html
@@ -536,8 +544,8 @@ install -d $RPM_BUILD_ROOT{%{_bindir},/var/lib/sasl2,%{_sysconfdir},/etc/{rc.d/i
 rm -rf $RPM_BUILD_ROOT%{_mandir}/cat*
 rm -f $RPM_BUILD_ROOT%{_libdir}/sasl2/*.{la,a}
 
-install utils/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
-install saslauthd/saslauthd.mdoc $RPM_BUILD_ROOT%{_mandir}/man8/saslauthd.8
+cp -a utils/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+cp -a saslauthd/saslauthd.mdoc $RPM_BUILD_ROOT%{_mandir}/man8/saslauthd.8
 
 ln -sf libsasl2.so $RPM_BUILD_ROOT%{_libdir}/libsasl.so
 
@@ -545,11 +553,11 @@ touch $RPM_BUILD_ROOT/var/lib/sasl2/sasl.db
 
 # create empty config
 touch $RPM_BUILD_ROOT%{_sysconfdir}/saslauthd.conf
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
-install %{SOURCE3} cyrus.pam
+install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/saslauthd
+cp -a %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/saslauthd
+cp -a %{SOURCE3} cyrus.pam
 
-install saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT%{_sbindir}
+install -p saslauthd/{testsaslauthd,saslcache} $RPM_BUILD_ROOT%{_sbindir}
 
 # sample programs for testing sasl
 libtool --mode=install cp sample/sample-client $RPM_BUILD_ROOT%{_bindir}/sasl-sample-client
