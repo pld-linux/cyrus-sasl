@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.23
-Release:	7
+Release:	8
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -69,6 +69,7 @@ BuildRequires:	pam-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 %{?with_sqlite:BuildRequires:	sqlite-devel}
 Requires:	pam >= 0.79.0
+Requires:	%{name}-libs = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/sasl
@@ -109,6 +110,18 @@ Authentication and Security Layer, метод для добавления под
 Пакет cyrus-sasl містить реалізацію Cyrus SASL. SASL - це Simple
 Authentication and Security Layer, метод для додання підтримки
 аутентикації до протоколів, базованих на з'єднаннях.
+
+%package libs
+Summary:	cyrus-sasl library itself
+Summary(pl.UTF-8):	Sama biblioteka cyrus-sasl
+Group:		Libraries
+Requires(post,postun):	/sbin/ldconfig
+
+%description libs
+cyrus-sasl library itself.
+
+%description libs -l pl.UTF-8
+Sama biblioteka cyrus-sasl.
 
 %package devel
 Summary:	Header files and documentation for cyrus-sasl
@@ -572,8 +585,8 @@ install -d $RPM_BUILD_ROOT/etc/nagios/plugins
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun libs -p /sbin/ldconfig
 
 %post saslauthd
 /sbin/chkconfig --add saslauthd
@@ -591,8 +604,6 @@ fi
 %doc doc/{ONEWS,TODO,*.txt,*.html,*.fig,rfc-compliance}
 %dir %{_sysconfdir}
 %dir %{_libdir}/sasl2
-%attr(755,root,root) %{_libdir}/libsasl2.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libsasl2.so.2
 # sample programs to subpackage instead?
 %attr(755,root,root) %{_bindir}/sasl-sample-client
 %attr(755,root,root) %{_bindir}/sasl-sample-server
@@ -604,6 +615,11 @@ fi
 %{_mandir}/man8/pluginviewer.8*
 %{_mandir}/man8/sasldblistusers2.8*
 %{_mandir}/man8/saslpasswd2.8*
+
+%files libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libsasl2.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libsasl2.so.2
 
 %files devel
 %defattr(644,root,root,755)
