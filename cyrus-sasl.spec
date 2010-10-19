@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.23
-Release:	8
+Release:	9
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -116,6 +116,7 @@ Summary:	cyrus-sasl library itself
 Summary(pl.UTF-8):	Sama biblioteka cyrus-sasl
 Group:		Libraries
 Requires(post,postun):	/sbin/ldconfig
+Conflicts:	cyrus-sasl < 2.1.23-8
 
 %description libs
 cyrus-sasl library itself.
