@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.23
-Release:	9
+Release:	10
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -597,6 +597,13 @@ rm -rf $RPM_BUILD_ROOT
 if [ "$1" = "0" ]; then
 	%service saslauthd stop
 	/sbin/chkconfig --del saslauthd
+fi
+
+%triggerin saslauthd -- pam
+# restart saslauthd if pam is upgraded
+# (crond is linked with old libpam but tries to open modules linked with new libpam)
+if [ "$2" != 1 ]; then
+	%service -q saslauthd restart
 fi
 
 %files
