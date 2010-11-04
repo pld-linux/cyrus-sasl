@@ -601,7 +601,7 @@ fi
 
 %triggerin saslauthd -- pam
 # restart saslauthd if pam is upgraded
-# (crond is linked with old libpam but tries to open modules linked with new libpam)
+# (saslauth is linked with old libpam but tries to open modules linked with new libpam)
 if [ "$2" != 1 ]; then
 	%service -q saslauthd restart
 fi
