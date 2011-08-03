@@ -512,6 +512,7 @@ cd saslauthd
 cd ..
 
 %configure \
+	--with-lib-subdir=%{_lib} \
 	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
 	--disable-krb4 \
 	%{!?with_gssapi: --disable-gssapi} \
