@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.23
-Release:	13
+Release:	13.1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -525,11 +525,11 @@ cd ..
 	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl2/sasl.db \
 	%{?with_authlib:--with-authdaemond=/var/spool/authdaemon/socket} \
-	%{?with_ldap: --with-ldap=%{_prefix}} \
-	%{?with_mysql: --with-mysql=%{_prefix}} \
-	%{?with_pgsql: --with-pgsql=%{_prefix}} \
-	%{?with_sqlite: --with-sqlite=%{_prefix}} \
-	%{?with_opie: --with-opie=%{_prefix}} \
+	%{?with_ldap: --with-ldap} \
+	%{?with_mysql: --with-mysql} \
+	%{?with_pgsql: --with-pgsql} \
+	%{?with_sqlite: --with-sqlite} \
+	%{?with_opie: --with-opie} \
 	--with-pam \
 	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
 	--with-saslauthd=/var/lib/sasl2
