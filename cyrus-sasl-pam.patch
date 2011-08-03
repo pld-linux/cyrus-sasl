@@ -1,0 +1,31 @@
+--- cyrus-sasl-2.1.23/configure.in~	2011-08-03 14:03:05.002703513 +0200
++++ cyrus-sasl-2.1.23/configure.in	2011-08-03 14:03:13.561703511 +0200
+@@ -263,27 +263,7 @@
+ 	with_pam=yes)
+ if test "$with_pam" != no; then
+   AC_CHECK_HEADERS(security/pam_appl.h pam/pam_appl.h)
+-  cmu_save_LIBS="$LIBS"
+-  AC_CHECK_FUNC(pam_start, :, 
+-	LIBS="-lpam $LIBS" 
+-	AC_TRY_LINK([[
+-#include <sys/types.h>
+-#ifdef HAVE_PAM_PAM_APPL_H
+-#include <pam/pam_appl.h>
+-#endif
+-#ifdef HAVE_SECURITY_PAM_H
+-#include <security/pam_appl.h>
+-#endif]],[[
+-const char *service="foo";
+-const char *user="bar";
+-pam_handle_t *pamh;
+-struct pam_conv *conv;
+-int baz;
+-baz = pam_start(service, user, conv, &pamh);
+-return 0;
+-]], LIBPAM="-lpam")
+-)
+-  LIBS="$cmu_save_LIBS $LIBPAM"
++  AC_CHECK_LIB(pam, pam_start, LIBS="$LIBS -lpam")
+ fi
+ 
+ AC_ARG_WITH(saslauthd, [  --with-saslauthd=DIR    enable use of the saslauth daemon using state dir DIR ],
