@@ -1,0 +1,71 @@
+--- cyrus-sasl-2.1.23/configure.in.orig	2011-08-03 10:26:16.234418985 +0200
++++ cyrus-sasl-2.1.23/configure.in	2011-08-03 10:37:21.689418838 +0200
+@@ -461,8 +461,7 @@
+ 		;;
+ 	*)
+ 		if test -d $with_opie; then
+-		  CPPFLAGS="${CPPFLAGS} -I${with_opie}/include -I${with_opie}/include/security"
+-		  LDFLAGS="${LDFLAGS} -L${with_opie}/lib"
++		  CPPFLAGS="${CPPFLAGS} rI${with_opie}/include/security"
+ 		else
+ 		  with_opie="no"
+ 		fi
+@@ -692,16 +691,6 @@
+     no) true;;
+     notfound) AC_WARN([MySQL Library not found]); true;;
+     *)
+-     if test -d ${with_mysql}/lib/mysql; then
+-	CMU_ADD_LIBPATH_TO(${with_mysql}/lib/mysql, LIB_MYSQL)
+-     elif test -d ${with_mysql}/mysql/lib; then
+-	CMU_ADD_LIBPATH_TO(${with_mysql}/mysql/lib, LIB_MYSQL)
+-     elif test -d ${with_mysql}/lib; then
+-	CMU_ADD_LIBPATH_TO(${with_mysql}/lib, LIB_MYSQL)
+-     else
+-	CMU_ADD_LIBPATH_TO(${with_mysql}, LIB_MYSQL)
+-     fi
+-
+      SASL_MECHS="$SASL_MECHS libmysql.la"
+      SASL_STATIC_OBJS="$SASL_STATIC_OBJS"
+      LIB_MYSQL_DIR=$LIB_MYSQL
+@@ -758,16 +747,6 @@
+     no) true;;
+     notfound) AC_WARN([PostgreSQL Library not found]); true;;
+     *)
+-     if test -d ${with_pgsql}/lib/pgsql; then
+-	CMU_ADD_LIBPATH_TO(${with_pgsql}/lib/pgsql, LIB_PGSQL)
+-     elif test -d ${with_pgsql}/pgsql/lib; then
+-	CMU_ADD_LIBPATH_TO(${with_pgsql}/pgsql/lib, LIB_PGSQL)
+-     elif test -d ${with_pgsql}/lib; then
+-	CMU_ADD_LIBPATH_TO(${with_pgsql}/lib, LIB_PGSQL)
+-     else
+-	CMU_ADD_LIBPATH_TO(${with_pgsql}, LIB_PGSQL)
+-     fi
+-
+      SASL_MECHS="$SASL_MECHS libpgsql.la"
+      SASL_STATIC_OBJS="$SASL_STATIC_OBJS"
+      LIB_PGSQL_DIR=$LIB_PGSQL
+@@ -825,12 +804,6 @@
+     no) true;;
+     notfound) AC_WARN([SQLite Library not found]); true;;
+     *)
+-     if test -d ${with_sqlite}/lib; then
+-         LIB_SQLITE="-L${with_sqlite}/lib -R${with_sqlite}/lib"
+-     else
+-         LIB_SQLITE="-L${with_sqlite} -R${with_sqlite}"
+-     fi
+-
+      SASL_MECHS="$SASL_MECHS libsqlite.la"
+      SASL_STATIC_OBJS="$SASL_STATIC_OBJS"
+      LIB_SQLITE_DIR=$LIB_SQLITE
+@@ -872,11 +845,6 @@
+     save_CPPFLAGS=$CPPFLAGS
+     save_LDFLAGS=$LDFLAGS
+ 
+-    if test -d $with_ldap; then
+-        CPPFLAGS="${CPPFLAGS} -I${with_ldap}/include"
+-        CMU_ADD_LIBPATH(${with_ldap}/lib)
+-    fi
+-
+     AC_CHECK_HEADERS(ldap.h lber.h)
+ 
+     if test $ac_cv_header_ldap_h = yes -a $ac_cv_header_lber_h = yes; then

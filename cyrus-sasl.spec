@@ -50,7 +50,8 @@ Patch11:	%{name}-sizes.patch
 Patch12:	%{name}-nagios-plugin.patch
 Patch13:	%{name}-parallel-make.patch
 Patch14:	%{name}-gssapi-detect.patch
-Patch15:		%{name}-saslauthd-httpform-urlescape.patch
+Patch15:	%{name}-saslauthd-httpform-urlescape.patch
+Patch16:	%{name}-ac-libs.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake >= 1:1.7
@@ -475,6 +476,7 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %patch13 -p1
 %patch14 -p1
 %patch15 -p0
+%patch16 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
@@ -525,14 +527,15 @@ cd ..
 	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl2/sasl.db \
 	%{?with_authlib:--with-authdaemond=/var/spool/authdaemon/socket} \
-	%{?with_ldap: --with-ldap} \
-	%{?with_mysql: --with-mysql} \
-	%{?with_pgsql: --with-pgsql} \
-	%{?with_sqlite: --with-sqlite} \
-	%{?with_opie: --with-opie} \
+	%{?with_ldap: --with-ldap=%{_prefix}} \
+	%{?with_mysql: --with-mysql=%{_prefix}} \
+	%{?with_pgsql: --with-pgsql=%{_prefix}} \
+	%{?with_sqlite: --with-sqlite=%{_prefix}} \
+	%{?with_opie: --with-opie=%{_prefix}} \
 	--with-pam \
 	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
 	--with-saslauthd=/var/lib/sasl2
+
 %{__make}
 
 %{__make} -C saslauthd testsaslauthd
