@@ -1,5 +1,15 @@
 --- cyrus-sasl-2.1.23/configure.in.orig	2011-08-03 10:26:16.234418985 +0200
 +++ cyrus-sasl-2.1.23/configure.in	2011-08-03 10:37:21.689418838 +0200
+@@ -86,9 +86,6 @@
+ AC_PROG_INSTALL
+ CMU_C___ATTRIBUTE__
+ 
+-dnl check for -R, etc. switch
+-CMU_GUESS_RUNPATH_SWITCH
+-
+ dnl xxx compatibility
+ AC_ARG_WITH(staticsasl)
+ if test "$with_staticsasl" = yes; then
 @@ -265,10 +265,6 @@
  	with_pam=$withval,
  	with_pam=yes)
@@ -108,3 +118,36 @@
  
      # Compile and run a program that compares the version defined in
      # the header file with a version defined in the library function
+--- cyrus-sasl-2.1.23/saslauthd/configure.in~	2011-08-03 11:35:35.854770408 +0200
++++ cyrus-sasl-2.1.23/saslauthd/configure.in	2011-08-03 11:37:56.047770375 +0200
+@@ -28,7 +28,6 @@
+ 
+ dnl Checks for build foo
+ CMU_C___ATTRIBUTE__
+-CMU_GUESS_RUNPATH_SWITCH
+ 
+ dnl Checks for libraries.
+ CMU_SOCKETS
+@@ -92,10 +91,6 @@
+ 	with_pam=$withval,
+ 	with_pam=yes)
+ if test "$with_pam" != no; then
+-  if test -d $with_pam; then
+-    CPPFLAGS="$CPPFLAGS -I${with_pam}/include"
+-    LDFLAGS="$LDFLAGS -L${with_pam}/lib"
+-  fi
+   cmu_save_LIBS="$LIBS"
+   AC_CHECK_LIB(pam, pam_start, [
+ 	  AC_CHECK_HEADER(security/pam_appl.h,,
+@@ -132,11 +127,6 @@
+ 	with_ldap=no)
+ AC_MSG_RESULT($with_ldap)
+ 
+-if test -d $with_ldap; then
+-    CPPFLAGS="$CPPFLAGS -I${with_ldap}/include"
+-    CMU_ADD_LIBPATH(${with_ldap}/lib)
+-fi
+-
+ LDAP_LIBS=""
+ if test "$with_ldap" != no; then
+   AC_CHECK_LIB(ldap, ldap_initialize, [ AC_DEFINE(HAVE_LDAP,[],[Support for LDAP?])
