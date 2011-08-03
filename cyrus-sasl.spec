@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.23
-Release:	14
+Release:	15
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
@@ -52,6 +52,8 @@ Patch13:	%{name}-parallel-make.patch
 Patch14:	%{name}-gssapi-detect.patch
 Patch15:	%{name}-saslauthd-httpform-urlescape.patch
 Patch16:	%{name}-ac-libs.patch
+Patch17:	%{name}-pam.patch
+Patch18:	%{name}-ac.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake >= 1:1.7
@@ -477,6 +479,8 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %patch14 -p1
 %patch15 -p0
 %patch16 -p1
+%patch17 -p1
+%patch18 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
@@ -500,19 +504,10 @@ sed -i -e '
 %{__libtoolize}
 %{__aclocal} -I cmulocal -I config
 %{__autoheader}
-%{__automake}
 %{__autoconf}
-
-cd saslauthd
-%{__libtoolize}
-%{__aclocal} -I ../cmulocal -I ../config -I config
-%{__autoheader}
 %{__automake}
-%{__autoconf}
-cd ..
 
 %configure \
-	--with-lib-subdir=%{_lib} \
 	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
 	--disable-krb4 \
 	%{!?with_gssapi: --disable-gssapi} \
@@ -536,6 +531,29 @@ cd ..
 	--with-pam \
 	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
 	--with-saslauthd=/var/lib/sasl2
+
+cd saslauthd
+%{__aclocal} -I ../cmulocal -I ../config
+%{__autoheader}
+%{__autoconf}
+%{__automake}
+
+%configure \
+	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
+	--disable-krb4 \
+	%{!?with_gssapi: --disable-gssapi} \
+	%{?with_gssapi: --enable-gssapi --with-gss_impl=heimdal} \
+	--enable-httpform \
+	%{?with_srp: --enable-srp} \
+	--with-dblib=berkeley \
+	--with-dbpath=/var/lib/sasl2/sasl.db \
+	%{?with_authlib:--with-authdaemond=/var/spool/authdaemon/socket} \
+	%{?with_ldap: --with-ldap=%{_prefix}} \
+	%{?with_opie: --with-opie=%{_prefix}} \
+	--with-pam \
+	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
+	--with-saslauthd=/var/lib/sasl2
+cd ..
 
 %{__make}
 
