@@ -506,7 +506,12 @@ sed -i -e '
 %{__autoheader}
 %{__autoconf}
 %{__automake}
-
+cd saslauthd
+%{__aclocal} -I ../cmulocal -I ../config
+%{__autoheader}
+%{__autoconf}
+%{__automake}
+cd ..
 %configure \
 	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
 	--disable-krb4 \
@@ -532,29 +537,6 @@ sed -i -e '
 	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
 	--with-saslauthd=/var/lib/sasl2
 
-cd saslauthd
-%{__aclocal} -I ../cmulocal -I ../config
-%{__autoheader}
-%{__autoconf}
-%{__automake}
-
-%configure \
-	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
-	--disable-krb4 \
-	%{!?with_gssapi: --disable-gssapi} \
-	%{?with_gssapi: --enable-gssapi --with-gss_impl=heimdal} \
-	--enable-httpform \
-	%{?with_srp: --enable-srp} \
-	--with-dblib=berkeley \
-	--with-dbpath=/var/lib/sasl2/sasl.db \
-	%{?with_authlib:--with-authdaemond=/var/spool/authdaemon/socket} \
-	%{?with_ldap: --with-ldap=%{_prefix}} \
-	%{?with_opie: --with-opie=%{_prefix}} \
-	--with-pam \
-	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
-	--with-saslauthd=/var/lib/sasl2
-cd ..
-
 %{__make}
 
 %{__make} -C saslauthd testsaslauthd
@@ -577,8 +559,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},/var/lib/sasl2,%{_sysconfdir},/etc/{rc.d/i
 	sasldir=%{_libdir}/sasl2 \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm -rf $RPM_BUILD_ROOT%{_mandir}/cat*
-rm -f $RPM_BUILD_ROOT%{_libdir}/sasl2/*.{la,a}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/sasl2/*.{la,a}
 
 cp -a utils/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 cp -a saslauthd/saslauthd.mdoc $RPM_BUILD_ROOT%{_mandir}/man8/saslauthd.8
