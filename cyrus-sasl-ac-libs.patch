@@ -27,7 +27,7 @@
  		if test -d $with_opie; then
 -		  CPPFLAGS="${CPPFLAGS} -I${with_opie}/include -I${with_opie}/include/security"
 -		  LDFLAGS="${LDFLAGS} -L${with_opie}/lib"
-+		  CPPFLAGS="${CPPFLAGS} rI${with_opie}/include/security"
++		  CPPFLAGS="${CPPFLAGS} -I${with_opie}/include/security"
  		else
  		  with_opie="no"
  		fi
