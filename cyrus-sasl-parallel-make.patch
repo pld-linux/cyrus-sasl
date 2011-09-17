@@ -12,36 +12,48 @@ diff -ur cyrus-sasl-2.1.23.orig/plugins/Makefile.am cyrus-sasl-2.1.23/plugins/Ma
  
  # Compatibility function build rules (they build in lib/)
  $(COMPAT_OBJS):
-diff -ur cyrus-sasl-2.1.23.orig/plugins/makeinit.sh cyrus-sasl-2.1.23/plugins/makeinit.sh
---- cyrus-sasl-2.1.23.orig/plugins/makeinit.sh	2009-12-09 08:19:06.921144397 +0000
-+++ cyrus-sasl-2.1.23/plugins/makeinit.sh	2009-12-09 08:25:31.644442215 +0000
-@@ -1,5 +1,6 @@
--for mech in anonymous crammd5 digestmd5 gssapiv2 kerberos4 login ntlm otp passdss plain srp; do
--
-+mech="${1%_init.c}"
-+case "$mech" in
-+	anonymous|crammd5|digestmd5|gssapiv2|kerberos4|login|ntlm|otp|passdss|plain|srp)
+--- cyrus-sasl-2.1.25/plugins/makeinit.sh.orig	2011-09-16 21:54:18.916159956 +0200
++++ cyrus-sasl-2.1.25/plugins/makeinit.sh	2011-09-17 07:31:12.530652281 +0200
+@@ -1,6 +1,9 @@
+-# mechanism plugins
+-for mech in anonymous crammd5 digestmd5 scram gssapiv2 kerberos4 login ntlm otp passdss plain srp gs2; do
++plug="${1%_init.c}"
+ 
++# mechanism plugins
++case "$plug" in
++	anonymous|crammd5|digestmd5|scram|gssapiv2|kerberos4|login|ntlm|otp|passdss|plain|srp|gs2)
++mech="$plug"
  echo "
  #include <config.h>
  
-@@ -43,10 +44,9 @@
+@@ -44,11 +47,13 @@
  SASL_CLIENT_PLUG_INIT( $mech )
  SASL_SERVER_PLUG_INIT( $mech )
- " > ${mech}_init.c
--done
--
--for mech in sasldb mysql pgsql sqlite ldapdb; do
-+;;
- 
-+	sasldb|mysql|pgsql|sqlite|ldapdb)
- echo "
- #include <config.h>
- 
-@@ -85,5 +85,6 @@
- 
- SASL_AUXPROP_PLUG_INIT( $mech )
  " > ${mech}_init.c
 -done
 +;;
 +esac
  
+ # auxprop plugins
+-for auxprop in sasldb mysql pgsql sqlite sqlite3 ldapdb; do
+-
++case "$plug" in
++	sasldb|mysql|pgsql|sqlite|sqlite3|ldapdb)
++auxprop=$plug
+ echo "
+ #include <config.h>
+ 
+@@ -87,7 +92,12 @@
+ 
+ SASL_AUXPROP_PLUG_INIT( $auxprop )
+ " > ${auxprop}_init.c
+-done
++;;
++esac
+ 
+ # ldapdb is also a canon_user plugin
++case "$plug" in
++	ldapdb)
+ echo "SASL_CANONUSER_PLUG_INIT( ldapdb )" >> ldapdb_init.c
++;;
++esac

@@ -28,10 +28,9 @@ diff -ruN cyrus-sasl-2.1.20-orig/doc/options.html cyrus-sasl-2.1.20/doc/options.
  <TD>sql_engine</TD><TD>SQL plugin</TD>
  <TD>Name of SQL engine to use (possible values: 'mysql', 'pgsql', 'sqlite').</TD>
  <TD><tt>mysql</tt></TD>
-diff -ruN cyrus-sasl-2.1.20-orig/lib/checkpw.c cyrus-sasl-2.1.20/lib/checkpw.c
---- cyrus-sasl-2.1.20-orig/lib/checkpw.c	2004-03-17 14:58:13.000000000 +0100
-+++ cyrus-sasl-2.1.20/lib/checkpw.c	2005-07-10 16:17:11.000000000 +0200
-@@ -94,6 +94,23 @@
+--- cyrus-sasl-2.1.25/lib/checkpw.c.orig	2009-12-03 20:07:01.000000000 +0100
++++ cyrus-sasl-2.1.25/lib/checkpw.c	2011-09-16 21:27:43.302773195 +0200
+@@ -95,6 +95,23 @@
  # endif
  #endif
  
@@ -55,7 +54,7 @@ diff -ruN cyrus-sasl-2.1.20-orig/lib/checkpw.c cyrus-sasl-2.1.20/lib/checkpw.c
  
  /* we store the following secret to check plaintext passwords:
   *
-@@ -143,7 +160,51 @@
+@@ -142,7 +159,51 @@
  				       "*cmusaslsecretPLAIN",
  				       NULL };
      struct propval auxprop_values[3];
@@ -108,10 +107,10 @@ diff -ruN cyrus-sasl-2.1.20-orig/lib/checkpw.c cyrus-sasl-2.1.20/lib/checkpw.c
      if (!conn || !userstr)
  	return SASL_BADPARAM;
  
-@@ -180,14 +241,31 @@
- 	goto done;
+@@ -188,14 +249,31 @@
+ 	return SASL_NOUSER;
      }
- 
+         
 -    /* At the point this has been called, the username has been canonified
 -     * and we've done the auxprop lookup.  This should be easy. */
 -    if(auxprop_values[0].name
@@ -148,8 +147,8 @@ diff -ruN cyrus-sasl-2.1.20-orig/lib/checkpw.c cyrus-sasl-2.1.20/lib/checkpw.c
      } else if(auxprop_values[1].name
  	      && auxprop_values[1].values
  	      && auxprop_values[1].values[0]) {
-@@ -975,3 +1053,37 @@
- #endif     
+@@ -1095,3 +1173,37 @@
+ #endif
      { NULL, NULL }
  };
 +

@@ -9,15 +9,15 @@
  
  dnl Check for getaddrinfo
  GETADDRINFOOBJS=""
---- cyrus-sasl-2.1.21/cmulocal/bsd_sockets.m4.orig	2005-04-26 21:14:07.000000000 +0200
-+++ cyrus-sasl-2.1.21/cmulocal/bsd_sockets.m4	2005-05-20 22:51:01.224089408 +0200
+--- cyrus-sasl-2.1.25/cmulocal/bsd_sockets.m4.orig	2010-02-18 17:19:17.000000000 +0100
++++ cyrus-sasl-2.1.25/cmulocal/bsd_sockets.m4	2011-09-16 18:55:17.595800296 +0200
 @@ -30,7 +30,7 @@
  u_char ans[1024];
  res_search( host, C_IN, T_MX, (u_char *)&ans, sizeof(ans));
  return 0;
 -]], LIB_SOCKET="-lresolv $LIB_SOCKET")
-+]], LIB_SOCKET="$LIB_SOCKET") dnl res_* funcs aren't used anyway
-         )
++]], LIB_SOCKET="$LIB_SOCKET")
+         ])
  	LIBS="$LIB_SOCKET $save_LIBS"
  	AC_CHECK_FUNCS(dn_expand dns_lookup)
 --- cyrus-sasl-2.1.10/saslauthd/configure.in.orig	Fri Dec  6 17:24:06 2002

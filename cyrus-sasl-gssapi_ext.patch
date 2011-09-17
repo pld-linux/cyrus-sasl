@@ -1,0 +1,13 @@
+--- cyrus-sasl-2.1.25/sample/server.c.orig	2010-12-01 15:52:55.000000000 +0100
++++ cyrus-sasl-2.1.25/sample/server.c	2011-09-17 08:51:22.764146679 +0200
+@@ -85,8 +85,10 @@
+ 
+ #ifdef HAVE_GSS_GET_NAME_ATTRIBUTE
+ #include <gssapi/gssapi.h>
++#ifdef HAVE_GSSAPI_GSSAPI_EXT_H
+ #include <gssapi/gssapi_ext.h>
+ #endif
++#endif
+ 
+ #include "common.h"
+ 

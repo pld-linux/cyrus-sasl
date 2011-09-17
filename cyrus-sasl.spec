@@ -7,7 +7,8 @@
 %bcond_without	gssapi		# do not enable GSSAPI support for saslauthd and build gssapi plugin
 %bcond_without	mysql		# don't build MySQL pluggin
 %bcond_without	pgsql		# do not build PostgreSQL pluggin
-%bcond_without	sqlite		# do not enable sqlite plugin
+%bcond_without	sqlite		# do not enable sqlite 2 plugin
+%bcond_without	sqlite3		# do not enable sqlite 3 plugin
 %bcond_with	authlib		# enable courier-authlib (i wasn't able to test it)
 %bcond_with	opie		# enable opie plugin
 %bcond_with	srp		# build srp pluggin
@@ -24,12 +25,12 @@ Summary(pt_BR.UTF-8):	Implementação da API SASL
 Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.23
-Release:	15
+Version:	2.1.25
+Release:	1
 License:	distributable
 Group:		Libraries
-Source0:	ftp://ftp.andrew.cmu.edu/pub/cyrus/%{name}-%{version}.tar.gz
-# Source0-md5:	2eb0e48106f0e9cd8001e654f267ecbc
+Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
+# Source0-md5:	341cffe829a4d71f2a6503d669d5a946
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
@@ -43,17 +44,15 @@ Patch4:		%{name}-gcc4.patch
 Patch5:		%{name}-cryptedpw.patch
 Patch6:		%{name}-md5sum-passwords.patch
 Patch7:		%{name}-db.patch
-Patch8:		%{name}-automake_1_10.patch
-Patch9:		%{name}-digest-commas.patch
-Patch10:	%{name}-keytab.patch
-Patch11:	%{name}-sizes.patch
-Patch12:	%{name}-nagios-plugin.patch
-Patch13:	%{name}-parallel-make.patch
-Patch14:	%{name}-gssapi-detect.patch
-Patch15:	%{name}-saslauthd-httpform-urlescape.patch
-Patch16:	%{name}-ac-libs.patch
-Patch17:	%{name}-pam.patch
-Patch18:	%{name}-ac.patch
+Patch8:		%{name}-keytab.patch
+Patch9:		%{name}-sizes.patch
+Patch10:	%{name}-nagios-plugin.patch
+Patch11:	%{name}-parallel-make.patch
+Patch12:	%{name}-gssapi-detect.patch
+Patch13:	%{name}-saslauthd-httpform-urlescape.patch
+Patch14:	%{name}-ac-libs.patch
+Patch15:	%{name}-pam.patch
+Patch16:	%{name}-gssapi_ext.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake >= 1:1.7
@@ -71,6 +70,7 @@ BuildRequires:	pam-devel
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpmbuild(macros) >= 1.268
 %{?with_sqlite:BuildRequires:	sqlite-devel}
+%{?with_sqlite3:BuildRequires:	sqlite3-devel >= 3}
 Requires:	pam >= 0.79.0
 Requires:	%{name}-libs = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -177,6 +177,25 @@ Statyczne biblioteki cyrus-sasl.
 Статичні бібліотеки, необхідні для розробки програм, що використовують
 Cyrus SASL.
 
+%package anonymous
+Summary:	Anonymous Cyrus SASL plugin
+Summary(pl.UTF-8):	Wtyczka anonymous do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL ANONYMOUS
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description anonymous
+This plugin implements the SASL ANONYMOUS mechanism, used for
+anonymous authentication.
+
+%description anonymous -l pl.UTF-8
+Wtyczka dodająca obsługę mechanizmu ANONYMOUS do Cyrus SASL. Służy do
+anonimowego uwierzytelniania.
+
+%description anonymous -l pt_BR.UTF-8
+Este plugin implementa o mecanismo SASL ANONYMOUS, usado para
+autenticação anônima.
+
 %package cram-md5
 Summary:	Cram-MD5 Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka Cram-MD5 do Cyrus SASL
@@ -229,50 +248,6 @@ provavelmente será o novo sistema de autenticação obrigatório para
 protocolos novos. Ele é baseado na autenticação md5 digest
 desenvolvida para HTTP.
 
-%package plain
-Summary:	Plain Cyrus SASL plugin
-Summary(pl.UTF-8):	Wtyczka plain do Cyrus SASL
-Summary(pt_BR.UTF-8):	Mecanismo SASL PLAIN
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description plain
-This plugin implements the SASL PLAIN mechanism. Although insecure,
-PLAIN is useful for transitioning to new security mechanisms, as this
-is the only mechanism which gives the server a copy of the user's
-password.
-
-%description plain -l pl.UTF-8
-Wtyczka dodająca obsługę mechanizmu PLAIN do Cyrus SASL. Pomimo tego,
-że nie jest bezpieczny, PLAIN jest przydatny przy przechodzeniu na
-nowe mechanizmu bezpieczeństwa, jako że jest to jedyny mechanizm,
-który udostępnia serwerowi kopię hasła użytkownika.
-
-%description plain -l pt_BR.UTF-8
-Este plugin implementa o mecanismo SASL PLAIN. Embora inseguro, este
-mecanismo é útil durante transições para novos mecanismos de
-segurança, pois é o único esquema que fornece uma cópia da senha do
-usuário para o servidor.
-
-%package anonymous
-Summary:	Anonymous Cyrus SASL plugin
-Summary(pl.UTF-8):	Wtyczka anonymous do Cyrus SASL
-Summary(pt_BR.UTF-8):	Mecanismo SASL ANONYMOUS
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description anonymous
-This plugin implements the SASL ANONYMOUS mechanism, used for
-anonymous authentication.
-
-%description anonymous -l pl.UTF-8
-Wtyczka dodająca obsługę mechanizmu ANONYMOUS do Cyrus SASL. Służy do
-anonimowego uwierzytelniania.
-
-%description anonymous -l pt_BR.UTF-8
-Este plugin implementa o mecanismo SASL ANONYMOUS, usado para
-autenticação anônima.
-
 %package gssapi
 Summary:	GSSAPI Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka GSSAPI do Cyrus SASL
@@ -305,6 +280,135 @@ Unsupported LOGIN Cyrus SASL plugin.
 Wtyczka dodająca obsługę nie wspieranego mechanizmu LOGIN do Cyrus
 SASL.
 
+%package mysql
+Summary:	Cyrus SASL MySQL plugin
+Summary(pl.UTF-8):	Wtyczka MySQL do Cyrus SASL
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description mysql
+Cyrus SASL MySQL plugin.
+
+%description mysql -l pl.UTF-8
+Wtyczka MySQL do Cyrus SASL.
+
+%package opie
+Summary:	OPIE Cyrus SASL plugin
+Summary(pl.UTF-8):	Wtyczka OPIE do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL OPIE
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description opie
+This plugin implements the SASL OPIE (One Time Password) mechanism.
+
+%description opie -l pl.UTF-8
+Wtyczka dodająca obsługę mechanizmu OPIE (hasła jednorazowe) do Cyrus
+SASL.
+
+%package otp
+Summary:	OTP Cyrus SASL plugin
+Summary(pl.UTF-8):	Wtyczka OTP do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL OTP
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description otp
+This plugin implements the SASL OTP (One Time Password) mechanism.
+
+%description otp -l pl.UTF-8
+Wtyczka dodająca obsługę mechanizmu OTP (hasła jednorazowe) do Cyrus
+SASL.
+
+%package pgsql
+Summary:	Cyrus SASL PostgreSQL plugin
+Summary(pl.UTF-8):	Wtyczka PostgreSQL do Cyrus SASL
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description pgsql
+Cyrus SASL PostgreSQL plugin.
+
+%description pgsql -l pl.UTF-8
+Wtyczka PostgreSQL do Cyrus SASL.
+
+%package plain
+Summary:	Plain Cyrus SASL plugin
+Summary(pl.UTF-8):	Wtyczka plain do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL PLAIN
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description plain
+This plugin implements the SASL PLAIN mechanism. Although insecure,
+PLAIN is useful for transitioning to new security mechanisms, as this
+is the only mechanism which gives the server a copy of the user's
+password.
+
+%description plain -l pl.UTF-8
+Wtyczka dodająca obsługę mechanizmu PLAIN do Cyrus SASL. Pomimo tego,
+że nie jest bezpieczny, PLAIN jest przydatny przy przechodzeniu na
+nowe mechanizmu bezpieczeństwa, jako że jest to jedyny mechanizm,
+który udostępnia serwerowi kopię hasła użytkownika.
+
+%description plain -l pt_BR.UTF-8
+Este plugin implementa o mecanismo SASL PLAIN. Embora inseguro, este
+mecanismo é útil durante transições para novos mecanismos de
+segurança, pois é o único esquema que fornece uma cópia da senha do
+usuário para o servidor.
+
+%package sasldb
+Summary:	Cyrus SASL sasldb plugin
+Summary(pl.UTF-8):	Wtyczka sasldb do Cyrus SASL
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description sasldb
+Cyrus SASL sasldb plugin.
+
+%description sasldb -l pl.UTF-8
+Wtyczka sasldb do Cyrus SASL.
+
+%package scram
+Summary:	SCRAM Cyrus SASL plugin
+Summary(pl.UTF-8):	Wtyczka SCRAM do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL SCRAM
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description scram
+This plugin implements the SASL SCRAM-MD5 mechanism.
+
+%description scram -l pl.UTF-8
+Wtyczka dodająca obsługę mechanizmu SCRAM do Cyrus SASL.
+
+%description scram -l pt_BR.UTF-8
+Este plugin implementa o mecanismo SASL SCRAM.
+
+%package sqlite
+Summary:	Cyrus SQLite 2 PostgreSQL plugin
+Summary(pl.UTF-8):	Wtyczka SQLite 2 do Cyrus SASL
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description sqlite
+Cyrus SASL SQLite 2 plugin.
+
+%description sqlite -l pl.UTF-8
+Wtyczka SQLite 2 do Cyrus SASL.
+
+%package sqlite3
+Summary:	Cyrus SQLite 3 PostgreSQL plugin
+Summary(pl.UTF-8):	Wtyczka SQLite 3 do Cyrus SASL
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description sqlite3
+Cyrus SASL SQLite 3 plugin.
+
+%description sqlite3 -l pl.UTF-8
+Wtyczka SQLite 3 do Cyrus SASL.
+
 %package srp
 Summary:	SRP Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka SRP do Cyrus SASL
@@ -331,34 +435,6 @@ Este plugin implementa o mecanismo SASL SRP, baseado no protocolo SRP
 detecção de ataques de replay, garantia de integridade e/ou
 confidencialidade.
 
-%package otp
-Summary:	OTP Cyrus SASL plugin
-Summary(pl.UTF-8):	Wtyczka OTP do Cyrus SASL
-Summary(pt_BR.UTF-8):	Mecanismo SASL OTP
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description otp
-This plugin implements the SASL OTP (One Time Password) mechanism.
-
-%description otp -l pl.UTF-8
-Wtyczka dodająca obsługę mechanizmu OTP (hasła jednorazowe) do Cyrus
-SASL.
-
-%package opie
-Summary:	OPIE Cyrus SASL plugin
-Summary(pl.UTF-8):	Wtyczka OPIE do Cyrus SASL
-Summary(pt_BR.UTF-8):	Mecanismo SASL OPIE
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description opie
-This plugin implements the SASL OPIE (One Time Password) mechanism.
-
-%description opie -l pl.UTF-8
-Wtyczka dodająca obsługę mechanizmu OPIE (hasła jednorazowe) do Cyrus
-SASL.
-
 %package x509
 Summary:	x509 Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka x509 do Cyrus SASL
@@ -370,6 +446,18 @@ x509 Cyrus SASL plugin.
 
 %description x509 -l pl.UTF-8
 Wtyczka x509 do Cyrus SASL.
+
+%package pwcheck
+Summary:	Cyrus SASL pwcheck helper
+Summary(pl.UTF-8):	Program pomocniczy pwcheck do Cyrus SASL
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description pwcheck
+Cyrus SASL pwcheck helper.
+
+%description pwcheck -l pl.UTF-8
+Program pomocniczy pwcheck do Cyrus SASL.
 
 %package saslauthd
 Summary:	Cyrus SASL authd
@@ -385,66 +473,6 @@ Cyrus SASL authd.
 
 %description saslauthd -l pl.UTF-8
 Demon authd do Cyrus SASL.
-
-%package pwcheck
-Summary:	Cyrus SASL pwcheck helper
-Summary(pl.UTF-8):	Program pomocniczy pwcheck do Cyrus SASL
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description pwcheck
-Cyrus SASL pwcheck helper.
-
-%description pwcheck -l pl.UTF-8
-Program pomocniczy pwcheck do Cyrus SASL.
-
-%package sasldb
-Summary:	Cyrus SASL sasldb plugin
-Summary(pl.UTF-8):	Wtyczka sasldb do Cyrus SASL
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description sasldb
-Cyrus SASL sasldb plugin.
-
-%description sasldb -l pl.UTF-8
-Wtyczka sasldb do Cyrus SASL.
-
-%package mysql
-Summary:	Cyrus SASL MySQL plugin
-Summary(pl.UTF-8):	Wtyczka MySQL do Cyrus SASL
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description mysql
-Cyrus SASL MySQL plugin.
-
-%description mysql -l pl.UTF-8
-Wtyczka MySQL do Cyrus SASL.
-
-%package pgsql
-Summary:	Cyrus SASL PostgreSQL plugin
-Summary(pl.UTF-8):	Wtyczka PostgreSQL do Cyrus SASL
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description pgsql
-Cyrus SASL PostgreSQL plugin.
-
-%description pgsql -l pl.UTF-8
-Wtyczka PostgreSQL do Cyrus SASL.
-
-%package sqlite
-Summary:	Cyrus SQLite PostgreSQL plugin
-Summary(pl.UTF-8):	Wtyczka SQLite do Cyrus SASL
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description sqlite
-Cyrus SASL SQLite plugin.
-
-%description sqlite -l pl.UTF-8
-Wtyczka SQLite do Cyrus SASL.
 
 %package -n nagios-plugin-check_saslauthd
 Summary:	Nagios plugin to check health of saslauthd
@@ -471,16 +499,14 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %endif
 %patch7 -p1
 %patch8 -p1
-%patch9 -p2
+%patch9 -p1
 %patch10 -p1
 %patch11 -p1
 %patch12 -p1
-%patch13 -p1
+%patch13 -p0
 %patch14 -p1
-%patch15 -p0
+%patch15 -p1
 %patch16 -p1
-%patch17 -p1
-%patch18 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
@@ -488,9 +514,8 @@ ls rfc*.txt >> rfc-compliance
 rm -f rfc*.txt
 cd ..
 
-rm -rf autom4te.cache saslauthd/autom4te.cache
-# acinclude.m4 contains only old libtool.m4
-rm -f acinclude.m4 libtool config/libtool.m4 saslauthd/acinclude.m4
+# old version
+%{__rm} config/libtool.m4
 
 # update to our paths
 sed -i -e '
@@ -532,6 +557,7 @@ cd ..
 	%{?with_mysql: --with-mysql=%{_prefix}} \
 	%{?with_pgsql: --with-pgsql=%{_prefix}} \
 	%{?with_sqlite: --with-sqlite=%{_prefix}} \
+	%{?with_sqlite3: --with-sqlite3=%{_prefix}} \
 	%{?with_opie: --with-opie=%{_prefix}} \
 	--with-pam \
 	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
@@ -651,6 +677,7 @@ fi
 %if %{with gssapi}
 %files gssapi
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libgs2.so*
 %attr(755,root,root) %{_libdir}/sasl2/libgssapiv2.so*
 %endif
 
@@ -666,6 +693,12 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/liblogin.so*
 
+%if %{with mysql}
+%files mysql
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libmysql.so*
+%endif
+
 %files otp
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libotp.so*
@@ -676,6 +709,12 @@ fi
 %attr(755,root,root) %{_libdir}/sasl2/libopie.so*
 %endif
 
+%if %{with pgsql}
+%files pgsql
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libpgsql.so*
+%endif
+
 %files plain
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libplain.so*
@@ -684,22 +723,20 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libsasldb.so*
 
-%if %{with mysql}
-%files mysql
+%files scram
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl2/libmysql.so*
-%endif
-
-%if %{with pgsql}
-%files pgsql
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl2/libpgsql.so*
-%endif
+%attr(755,root,root) %{_libdir}/sasl2/libscram.so*
 
 %if %{with sqlite}
 %files sqlite
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libsqlite.so*
+%endif
+
+%if %{with sqlite3}
+%files sqlite3
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libsqlite3.so*
 %endif
 
 %if %{with srp}

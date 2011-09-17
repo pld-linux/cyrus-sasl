@@ -17,9 +17,9 @@
 -	$(AR) cru .libs/$@ $(SASL_DB_BACKEND_STATIC)
 -
 -
---- cyrus-sasl-2.1.21/lib/Makefile.am.orig	2005-05-07 06:54:18.000000000 +0200
-+++ cyrus-sasl-2.1.21/lib/Makefile.am	2005-05-21 01:12:10.739527352 +0200
-@@ -74,25 +74,6 @@
+--- cyrus-sasl-2.1.25/lib/Makefile.am.orig	2011-09-05 16:18:10.000000000 +0200
++++ cyrus-sasl-2.1.25/lib/Makefile.am	2011-09-16 18:57:36.749138290 +0200
+@@ -76,25 +76,6 @@
  install-exec-hook:
  endif
  
@@ -42,6 +42,6 @@
 -	rm -f $@
 -	ln -s .libs/$@ $@
 -
- $(SASL_STATIC_OBJS): linksrcs
+ $(SASL_STATIC_SRCS): linksrcs
  
  linksrcs:
