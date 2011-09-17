@@ -13,7 +13,6 @@
 %bcond_with	opie		# enable opie plugin
 %bcond_with	srp		# build srp pluggin
 %bcond_with	pwcheck		# build pwcheck helper (deprecated)
-%bcond_with	x509		# build x509 plugin (no sources in package???)
 #
 %if %{without mysql} && %{without pgsql}
 %undefine with_cryptedpw
@@ -73,6 +72,7 @@ BuildRequires:	rpmbuild(macros) >= 1.268
 %{?with_sqlite3:BuildRequires:	sqlite3-devel >= 3}
 Requires:	pam >= 0.79.0
 Requires:	%{name}-libs = %{version}-%{release}
+Obsoletes:	cyrus-sasl-x509
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/sasl
@@ -435,18 +435,6 @@ Este plugin implementa o mecanismo SASL SRP, baseado no protocolo SRP
 detecção de ataques de replay, garantia de integridade e/ou
 confidencialidade.
 
-%package x509
-Summary:	x509 Cyrus SASL plugin
-Summary(pl.UTF-8):	Wtyczka x509 do Cyrus SASL
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description x509
-x509 Cyrus SASL plugin.
-
-%description x509 -l pl.UTF-8
-Wtyczka x509 do Cyrus SASL.
-
 %package pwcheck
 Summary:	Cyrus SASL pwcheck helper
 Summary(pl.UTF-8):	Program pomocniczy pwcheck do Cyrus SASL
@@ -743,12 +731,6 @@ fi
 %files srp
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libsrp.so*
-%endif
-
-%if %{with x509}
-%files x509
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl2/libx509.so*
 %endif
 
 %if %{with pwcheck}
