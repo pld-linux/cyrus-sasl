@@ -1,6 +1,6 @@
---- cyrus-sasl-2.1.23/configure.in.orig	2011-08-03 10:26:16.234418985 +0200
-+++ cyrus-sasl-2.1.23/configure.in	2011-08-03 10:37:21.689418838 +0200
-@@ -86,9 +86,6 @@
+--- cyrus-sasl-2.1.25/configure.in.orig	2011-09-17 13:55:10.684757015 +0200
++++ cyrus-sasl-2.1.25/configure.in	2011-09-17 14:01:04.321435523 +0200
+@@ -92,9 +92,6 @@
  AC_PROG_INSTALL
  CMU_C___ATTRIBUTE__
  
@@ -10,7 +10,7 @@
  dnl xxx compatibility
  AC_ARG_WITH(staticsasl)
  if test "$with_staticsasl" = yes; then
-@@ -265,10 +265,6 @@
+@@ -271,10 +268,6 @@
  	with_pam=$withval,
  	with_pam=yes)
  if test "$with_pam" != no; then
@@ -21,7 +21,7 @@
    AC_CHECK_HEADERS(security/pam_appl.h pam/pam_appl.h)
    cmu_save_LIBS="$LIBS"
    AC_CHECK_FUNC(pam_start, :, 
-@@ -461,8 +461,7 @@
+@@ -497,8 +490,7 @@
  		;;
  	*)
  		if test -d $with_opie; then
@@ -31,7 +31,7 @@
  		else
  		  with_opie="no"
  		fi
-@@ -692,16 +691,6 @@
+@@ -728,16 +720,6 @@
      no) true;;
      notfound) AC_WARN([MySQL Library not found]); true;;
      *)
@@ -46,9 +46,9 @@
 -     fi
 -
       SASL_MECHS="$SASL_MECHS libmysql.la"
-      SASL_STATIC_OBJS="$SASL_STATIC_OBJS"
+      SASL_STATIC_OBJS="$SASL_STATIC_OBJS mysql.o"
       LIB_MYSQL_DIR=$LIB_MYSQL
-@@ -758,16 +747,6 @@
+@@ -794,16 +776,6 @@
      no) true;;
      notfound) AC_WARN([PostgreSQL Library not found]); true;;
      *)
@@ -63,9 +63,9 @@
 -     fi
 -
       SASL_MECHS="$SASL_MECHS libpgsql.la"
-      SASL_STATIC_OBJS="$SASL_STATIC_OBJS"
+      SASL_STATIC_OBJS="$SASL_STATIC_OBJS pgsql.o"
       LIB_PGSQL_DIR=$LIB_PGSQL
-@@ -825,12 +804,6 @@
+@@ -861,12 +833,6 @@
      no) true;;
      notfound) AC_WARN([SQLite Library not found]); true;;
      *)
@@ -76,9 +76,22 @@
 -     fi
 -
       SASL_MECHS="$SASL_MECHS libsqlite.la"
-      SASL_STATIC_OBJS="$SASL_STATIC_OBJS"
+      SASL_STATIC_OBJS="$SASL_STATIC_OBJS sqlite.o"
       LIB_SQLITE_DIR=$LIB_SQLITE
-@@ -872,11 +845,6 @@
+@@ -915,12 +881,6 @@
+     no) true;;
+     notfound) AC_WARN([SQLite3 Library not found]); true;;
+     *)
+-     if test -d ${with_sqlite3}/lib; then
+-         LIB_SQLITE3="-L${with_sqlite3}/lib -R${with_sqlite3}/lib"
+-     else
+-         LIB_SQLITE3="-L${with_sqlite3} -R${with_sqlite3}"
+-     fi
+-
+      SASL_MECHS="$SASL_MECHS libsqlite3.la"
+      SASL_STATIC_OBJS="$SASL_STATIC_OBJS sqlite3.o"
+      LIB_SQLITE3_DIR=$LIB_SQLITE3
+@@ -962,11 +922,6 @@
      save_CPPFLAGS=$CPPFLAGS
      save_LDFLAGS=$LDFLAGS
  
