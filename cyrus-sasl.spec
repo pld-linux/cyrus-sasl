@@ -10,8 +10,8 @@
 %bcond_without	sqlite		# do not enable sqlite 2 plugin
 %bcond_without	sqlite3		# do not enable sqlite 3 plugin
 %bcond_with	authlib		# enable courier-authlib (i wasn't able to test it)
-%bcond_with	opie		# enable opie plugin
-%bcond_with	srp		# build srp pluggin
+%bcond_with	opie		# OTP plugin using opie library instead of internal code
+%bcond_with	srp		# build srp plugin
 %bcond_with	pwcheck		# build pwcheck helper (deprecated)
 #
 %if %{without mysql} && %{without pgsql}
@@ -72,7 +72,7 @@ BuildRequires:	rpmbuild(macros) >= 1.268
 %{?with_sqlite3:BuildRequires:	sqlite3-devel >= 3}
 Requires:	pam >= 0.79.0
 Requires:	%{name}-libs = %{version}-%{release}
-Obsoletes:	cyrus-sasl-x509
+Obsoletes:	cyrus-sasl-x509 < %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/sasl
@@ -292,26 +292,13 @@ Cyrus SASL MySQL plugin.
 %description mysql -l pl.UTF-8
 Wtyczka MySQL do Cyrus SASL.
 
-%package opie
-Summary:	OPIE Cyrus SASL plugin
-Summary(pl.UTF-8):	Wtyczka OPIE do Cyrus SASL
-Summary(pt_BR.UTF-8):	Mecanismo SASL OPIE
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description opie
-This plugin implements the SASL OPIE (One Time Password) mechanism.
-
-%description opie -l pl.UTF-8
-Wtyczka dodająca obsługę mechanizmu OPIE (hasła jednorazowe) do Cyrus
-SASL.
-
 %package otp
 Summary:	OTP Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka OTP do Cyrus SASL
 Summary(pt_BR.UTF-8):	Mecanismo SASL OTP
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
+Obsoletes:	cyrus-sasl-opie < %{version}
 
 %description otp
 This plugin implements the SASL OTP (One Time Password) mechanism.
@@ -690,12 +677,6 @@ fi
 %files otp
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libotp.so*
-
-%if %{with opie}
-%files opie
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/sasl2/libopie.so*
-%endif
 
 %if %{with pgsql}
 %files pgsql
