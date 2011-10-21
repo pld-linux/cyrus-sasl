@@ -25,7 +25,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.25
-Release:	4.5
+Release:	4.9
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
@@ -56,6 +56,7 @@ Patch17:	0032-revert_1.103_revision_to_unbreak_GSSAPI.patch
 Patch18:	0033-fix_segfault_in_GSSAPI.patch
 Patch19:	0034-fix_dovecot_authentication.patch
 Patch20:	%{name}-auxprop.patch
+Patch21:	%{name}-get_fqhostname.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake >= 1:1.7
@@ -490,6 +491,7 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %patch18 -p1
 %patch19 -p1
 %patch20 -p1
+%patch21 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
