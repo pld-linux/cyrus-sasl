@@ -1,5 +1,3 @@
-# TODO:
-# - add ldap plugin from openldap sources
 #
 # Conditional build:
 %bcond_without	cryptedpw	# if you keep crypted passwords in your *sql
@@ -25,7 +23,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.25
-Release:	4.9
+Release:	4.99
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
@@ -57,6 +55,7 @@ Patch18:	0033-fix_segfault_in_GSSAPI.patch
 Patch19:	0034-fix_dovecot_authentication.patch
 Patch20:	%{name}-auxprop.patch
 Patch21:	%{name}-get_fqhostname.patch
+Patch22:	0030-dont_use_la_files_for_opening_plugins.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake >= 1:1.7
@@ -361,6 +360,34 @@ Cyrus SASL sasldb plugin.
 %description sasldb -l pl.UTF-8
 Wtyczka sasldb do Cyrus SASL.
 
+%package ldapdb
+Summary:	Cyrus SASL LDAPDB plugin
+Summary(pl.UTF-8):	Wtyczka LDAPDB do Cyrus SASL
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description ldapdb
+Cyrus SASL ldapdb plugin.
+
+%description ldapdb -l pl.UTF-8
+Wtyczka ldapdb do Cyrus SASL.
+
+%package passdss
+Summary:	PASSDSS Cyrus SASL plugin
+Summary(pl.UTF-8):	Wtyczka PASSDSS do Cyrus SASL
+Summary(pt_BR.UTF-8):	Mecanismo SASL PASSDSS
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description passdss
+This plugin implements the PASSDSS 3DES mechanism.
+
+%description passdss -l pl.UTF-8
+Wtyczka dodająca obsługę mechanizmu PASSDSS 3DES do Cyrus SASL.
+
+%description passdss -l pt_BR.UTF-8
+Este plugin implementa o mecanismo SASL PASSDSS 3DES.
+
 %package scram
 Summary:	SCRAM Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka SCRAM do Cyrus SASL
@@ -492,6 +519,7 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %patch19 -p1
 %patch20 -p1
 %patch21 -p1
+%patch22 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
@@ -531,6 +559,7 @@ cd ..
 	--enable-sample \
 	--enable-httpform \
 	--enable-sql \
+	--enable-passdss \
 	%{?with_srp: --enable-srp} \
 	--enable-static \
 	--with-plugindir=%{_libdir}/sasl2 \
@@ -702,6 +731,16 @@ fi
 %files sasldb
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libsasldb.so*
+
+%if %{with ldap}
+%files ldapdb
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libldapdb.so*
+%endif
+
+%files passdss
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libpassdss.so*
 
 %files scram
 %defattr(644,root,root,755)
