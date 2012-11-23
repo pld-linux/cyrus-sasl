@@ -1,5 +1,5 @@
---- cyrus-sasl-2.1.25/configure.in.orig	2011-09-17 08:56:00.724155985 +0200
-+++ cyrus-sasl-2.1.25/configure.in	2011-09-17 09:03:48.277504973 +0200
+--- cyrus-sasl-2.1.26/configure.in.orig	2012-11-23 18:23:10.112077685 +0100
++++ cyrus-sasl-2.1.26/configure.in	2012-11-23 18:29:29.238736454 +0100
 @@ -691,10 +691,7 @@
  AC_MSG_CHECKING(SQL)
  if test "$sql" != no; then
@@ -8,7 +8,7 @@
    if test "$enable_static" = yes; then
 -    SASL_STATIC_SRCS="$SASL_STATIC_SRCS \$(top_srcdir)/plugins/sql.c"
 -    SASL_STATIC_OBJS="$SASL_STATIC_OBJS sql.o"
-     AC_DEFINE(STATIC_SQL,[],[Link SQL plugin staticly])
+     AC_DEFINE(STATIC_SQL,[],[Link SQL plugin statically])
    fi
  else
 @@ -741,6 +738,8 @@

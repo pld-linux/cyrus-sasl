@@ -22,12 +22,12 @@ Summary(pt_BR.UTF-8):	Implementação da API SASL
 Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.25
-Release:	8
+Version:	2.1.26
+Release:	1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
-# Source0-md5:	341cffe829a4d71f2a6503d669d5a946
+# Source0-md5:	a7f4e5e559a0e37b3ffc438c9456e425
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
@@ -54,8 +54,7 @@ Patch17:	0032-revert_1.103_revision_to_unbreak_GSSAPI.patch
 Patch18:	0033-fix_segfault_in_GSSAPI.patch
 Patch19:	0034-fix_dovecot_authentication.patch
 Patch20:	%{name}-auxprop.patch
-Patch21:	%{name}-get_fqhostname.patch
-Patch22:	0030-dont_use_la_files_for_opening_plugins.patch
+Patch21:	0030-dont_use_la_files_for_opening_plugins.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake >= 1:1.7
@@ -519,7 +518,6 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %patch19 -p1
 %patch20 -p1
 %patch21 -p1
-%patch22 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
@@ -671,7 +669,7 @@ fi
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libsasl2.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libsasl2.so.2
+%attr(755,root,root) %ghost %{_libdir}/libsasl2.so.3
 
 %files devel
 %defattr(644,root,root,755)
@@ -679,6 +677,7 @@ fi
 %attr(755,root,root) %{_libdir}/libsasl.so
 %{_libdir}/libsasl2.la
 %{_includedir}/sasl
+%{_pkgconfigdir}/libsasl2.pc
 %{_mandir}/man3/sasl*.3*
 
 %files static
