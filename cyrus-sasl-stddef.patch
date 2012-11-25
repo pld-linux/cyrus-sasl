@@ -1,0 +1,12 @@
+--- cyrus-sasl-2.1.26/include/sasl.h.orig	2012-10-12 16:05:48.000000000 +0200
++++ cyrus-sasl-2.1.26/include/sasl.h	2012-11-25 13:51:27.182149131 +0100
+@@ -130,6 +130,9 @@
+ #define SASL_VERSION_FULL ((SASL_VERSION_MAJOR << 16) |\
+       (SASL_VERSION_MINOR << 8) | SASL_VERSION_STEP)
+ 
++/* for size_t */
++#include <stddef.h>
++
+ #include "prop.h"
+ 
+ /*************

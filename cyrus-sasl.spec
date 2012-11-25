@@ -55,6 +55,7 @@ Patch18:	0033-fix_segfault_in_GSSAPI.patch
 Patch19:	0034-fix_dovecot_authentication.patch
 Patch20:	%{name}-auxprop.patch
 Patch21:	0030-dont_use_la_files_for_opening_plugins.patch
+Patch22:	%{name}-stddef.patch
 URL:		http://asg.web.cmu.edu/sasl/
 BuildRequires:	autoconf >= 2.54
 BuildRequires:	automake >= 1:1.7
@@ -518,6 +519,7 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %patch19 -p1
 %patch20 -p1
 %patch21 -p1
+%patch22 -p1
 
 cd doc
 echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
