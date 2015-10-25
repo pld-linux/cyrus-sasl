@@ -3,8 +3,8 @@
 %bcond_without	cryptedpw	# if you keep crypted passwords in your *sql
 %bcond_without	ldap		# disable LDAP support for saslauthd
 %bcond_without	gssapi		# do not enable GSSAPI support for saslauthd and build gssapi plugin
-%bcond_without	mysql		# don't build MySQL pluggin
-%bcond_without	pgsql		# do not build PostgreSQL pluggin
+%bcond_without	mysql		# don't build MySQL plugin
+%bcond_without	pgsql		# do not build PostgreSQL plugin
 %bcond_without	sqlite		# do not enable sqlite 2 plugin
 %bcond_without	sqlite3		# do not enable sqlite 3 plugin
 %bcond_with	authlib		# enable courier-authlib (i wasn't able to test it)
@@ -555,29 +555,29 @@ cd ..
 %configure \
 	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
 	--disable-krb4 \
-	%{!?with_gssapi: --disable-gssapi} \
-	%{?with_gssapi: --enable-gssapi --with-gss_impl=heimdal} \
+	%{!?with_gssapi:--disable-gssapi} \
+	%{?with_gssapi:--enable-gssapi --with-gss_impl=heimdal} \
 	--enable-login \
 	--enable-sample \
 	--enable-httpform \
 	--enable-sql \
 	--enable-passdss \
-	%{?with_srp: --enable-srp} \
+	%{?with_srp:--enable-srp} \
 	--enable-static \
 	--with-plugindir=%{_libdir}/sasl2 \
 	--with-configdir=%{_sysconfdir} \
 	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl2/sasl.db \
 	%{?with_authlib:--with-authdaemond=/var/spool/authdaemon/socket} \
-	%{?with_ldap: --with-ldap=%{_prefix}} \
-	%{?with_ldap: --enable-ldapdb} \
-	%{?with_mysql: --with-mysql=%{_prefix}} \
-	%{?with_pgsql: --with-pgsql=%{_prefix}} \
-	%{?with_sqlite: --with-sqlite=%{_prefix}} \
-	%{?with_sqlite3: --with-sqlite3=%{_prefix}} \
-	%{?with_opie: --with-opie=%{_prefix}} \
+	%{?with_ldap:--with-ldap=%{_prefix}} \
+	%{?with_ldap:--enable-ldapdb} \
+	%{?with_mysql:--with-mysql=%{_prefix}} \
+	%{?with_pgsql:--with-pgsql=%{_prefix}} \
+	%{?with_sqlite:--with-sqlite=%{_prefix}} \
+	%{?with_sqlite3:--with-sqlite3=%{_prefix}} \
+	%{?with_opie:--with-opie=%{_prefix}} \
 	--with-pam \
-	%{?with_pwcheck: --with-pwcheck=/var/lib/sasl2} \
+	%{?with_pwcheck:--with-pwcheck=/var/lib/sasl2} \
 	--with-saslauthd=/var/lib/sasl2
 
 %{__make}
