@@ -4,6 +4,7 @@
 %bcond_without	ldap		# disable LDAP support for saslauthd
 %bcond_without	gssapi		# do not enable GSSAPI support for saslauthd and build gssapi plugin
 %bcond_without	mysql		# don't build MySQL plugin
+%bcond_without	ntlm		# do not build NTLM plugin
 %bcond_without	pgsql		# do not build PostgreSQL plugin
 %bcond_without	sqlite		# do not enable sqlite 2 plugin
 %bcond_without	sqlite3		# do not enable sqlite 3 plugin
@@ -23,7 +24,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.26
-Release:	4
+Release:	5
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
@@ -296,6 +297,18 @@ Cyrus SASL MySQL plugin.
 
 %description mysql -l pl.UTF-8
 Wtyczka MySQL do Cyrus SASL.
+
+%package ntlm
+Summary:	Cyrus SASL NTLM plugin
+Summary(pl.UTF-8):	Wtyczka NTLM do Cyrus SASL
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description ntlm
+Cyrus SASL NTLM plugin.
+
+%description ntlm -l pl.UTF-8
+Wtyczka NTLM do Cyrus SASL.
 
 %package otp
 Summary:	OTP Cyrus SASL plugin
@@ -572,6 +585,7 @@ cd ..
 	%{?with_ldap:--with-ldap=%{_prefix}} \
 	%{?with_ldap:--enable-ldapdb} \
 	%{?with_mysql:--with-mysql=%{_prefix}} \
+	%{?with_ntlm:--enable-ntlm} \
 	%{?with_pgsql:--with-pgsql=%{_prefix}} \
 	%{?with_sqlite:--with-sqlite=%{_prefix}} \
 	%{?with_sqlite3:--with-sqlite3=%{_prefix}} \
@@ -715,6 +729,12 @@ fi
 %files mysql
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/sasl2/libmysql.so*
+%endif
+
+%if %{with ntlm}
+%files ntlm
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/sasl2/libntlm.so*
 %endif
 
 %files otp
