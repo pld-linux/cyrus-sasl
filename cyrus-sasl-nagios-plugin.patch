@@ -4,7 +4,7 @@
  AUTOMAKE_OPTIONS = 1.7
  sbin_PROGRAMS	= saslauthd testsaslauthd
 +nagios_PROGRAMS	= check_saslauthd
-+nagiosdir	= @libexecdir@/nagios/plugins
++nagiosdir	= @libdir@/nagios/plugins
  EXTRA_PROGRAMS  = saslcache
  
  saslauthd_SOURCES = mechanisms.c globals.h \
