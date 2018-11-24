@@ -1,5 +1,5 @@
---- cyrus-sasl-2.1.26/configure.in.orig	2012-11-23 18:23:10.112077685 +0100
-+++ cyrus-sasl-2.1.26/configure.in	2012-11-23 18:29:29.238736454 +0100
+--- cyrus-sasl-2.1.27/configure.ac.orig	2012-11-23 18:23:10.112077685 +0100
++++ cyrus-sasl-2.1.27/configure.ac	2012-11-23 18:29:29.238736454 +0100
 @@ -691,10 +691,7 @@
  AC_MSG_CHECKING(SQL)
  if test "$sql" != no; then
@@ -47,46 +47,46 @@
       LIB_SQLITE3_DIR=$LIB_SQLITE3
       LIB_SQLITE3="$LIB_SQLITE3 -lsqlite3"
  
---- cyrus-sasl-2.1.25/plugins/Makefile.am.orig	2011-09-05 16:18:10.000000000 +0200
-+++ cyrus-sasl-2.1.25/plugins/Makefile.am	2011-09-16 19:41:32.459226542 +0200
-@@ -66,7 +66,7 @@
- sasl_LTLIBRARIES = @SASL_MECHS@
+--- cyrus-sasl-2.1.27/plugins/Makefile.am.orig	2018-10-05 16:40:16.000000000 +0200
++++ cyrus-sasl-2.1.27/plugins/Makefile.am	2018-11-24 10:25:07.244949119 +0100
+@@ -68,7 +68,7 @@
+ 
  EXTRA_LTLIBRARIES = libplain.la libanonymous.la libkerberos4.la libcrammd5.la \
  	libgs2.la libgssapiv2.la libdigestmd5.la liblogin.la libsrp.la libotp.la \
 -	libscram.la libntlm.la libpassdss.la libsasldb.la libsql.la libldapdb.la
 +	libscram.la libntlm.la libpassdss.la libsasldb.la libmysql.la libpgsql.la libsqlite.la libsqlite3.la libldapdb.la
  
- libplain_la_SOURCES = plain.c plain_init.c $(common_sources)
- libplain_la_DEPENDENCIES = $(COMPAT_OBJS)
-@@ -129,18 +129,51 @@
- libldapdb_la_DEPENDENCIES = $(COMPAT_OBJS)
- libldapdb_la_LIBADD = $(LIB_LDAP) $(COMPAT_OBJS)
+ libplain_la_SOURCES = plain.c plain_init.c
+ libplain_la_DEPENDENCIES = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
+@@ -131,18 +131,51 @@
+ libldapdb_la_DEPENDENCIES = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
+ libldapdb_la_LIBADD = $(LIB_LDAP) $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
  
--libsql_la_SOURCES = sql.c sql_init.c $(common_sources)
+-libsql_la_SOURCES = sql.c sql_init.c
 -libsql_la_LDFLAGS = $(LIB_MYSQL) $(LIB_PGSQL) $(LIB_SQLITE) $(LIB_SQLITE3) \
 -	$(AM_LDFLAGS)
--libsql_la_DEPENDENCIES = $(COMPAT_OBJS)
--libsql_la_LIBADD = $(COMPAT_OBJS)
+-libsql_la_DEPENDENCIES = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
+-libsql_la_LIBADD = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
 -
-+libmysql_la_SOURCES = mysql.c mysql_init.c $(common_sources)
++libmysql_la_SOURCES = mysql.c mysql_init.c
 +libmysql_la_LDFLAGS = $(LIB_MYSQL) $(AM_LDFLAGS)
-+libmysql_la_DEPENDENCIES = $(COMPAT_OBJS)
-+libmysql_la_LIBADD = $(COMPAT_OBJS)
++libmysql_la_DEPENDENCIES = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
++libmysql_la_LIBADD = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
 +
-+libpgsql_la_SOURCES = pgsql.c pgsql_init.c $(common_sources)
++libpgsql_la_SOURCES = pgsql.c pgsql_init.c
 +libpgsql_la_LDFLAGS = $(LIB_PGSQL) $(AM_LDFLAGS)
-+libpgsql_la_DEPENDENCIES = $(COMPAT_OBJS)
-+libpgsql_la_LIBADD = $(COMPAT_OBJS)
++libpgsql_la_DEPENDENCIES = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
++libpgsql_la_LIBADD = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
 +
-+libsqlite_la_SOURCES = sqlite.c sqlite_init.c $(common_sources)
++libsqlite_la_SOURCES = sqlite.c sqlite_init.c
 +libsqlite_la_LDFLAGS = $(LIB_SQLITE) $(AM_LDFLAGS)
-+libsqlite_la_DEPENDENCIES = $(COMPAT_OBJS)
-+libsqlite_la_LIBADD = $(COMPAT_OBJS)
++libsqlite_la_DEPENDENCIES = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
++libsqlite_la_LIBADD = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
 +
-+libsqlite3_la_SOURCES = sqlite3.c sqlite3_init.c $(common_sources)
++libsqlite3_la_SOURCES = sqlite3.c sqlite3_init.c
 +libsqlite3_la_LDFLAGS = $(LIB_SQLITE3) $(AM_LDFLAGS)
-+libsqlite3_la_DEPENDENCIES = $(COMPAT_OBJS)
-+libsqlite3_la_LIBADD = $(COMPAT_OBJS)
++libsqlite3_la_DEPENDENCIES = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
++libsqlite3_la_LIBADD = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
 +
 +mysql.c:
 +	sed -e 's#HAVE_PGSQL#HAVE_NO_PGSQL#g' -e 's#HAVE_SQLITE#HAVE_NO_SQLITE#g' \
@@ -117,14 +117,14 @@
  
  
  CLEANFILES=$(init_src)
---- cyrus-sasl-2.1.25/plugins/makeinit.sh.orig	2011-05-11 21:25:55.000000000 +0200
-+++ cyrus-sasl-2.1.25/plugins/makeinit.sh	2011-09-16 19:42:14.509227950 +0200
-@@ -47,7 +47,7 @@
+--- cyrus-sasl-2.1.27/plugins/makeinit.sh.orig	2018-11-24 09:27:31.358321911 +0100
++++ cyrus-sasl-2.1.27/plugins/makeinit.sh	2018-11-24 10:25:38.331615427 +0100
+@@ -51,7 +51,7 @@
  done
  
  # auxprop plugins
 -for auxprop in sasldb sql ldapdb; do
 +for auxprop in sasldb mysql pgsql sqlite sqlite3 ldapdb; do
+     if [ ${plugin_init} = "${auxprop}_init.c" ];then
  
- echo "
- #include <config.h>
+         echo "

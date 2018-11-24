@@ -1,5 +1,5 @@
---- cyrus-sasl-2.1.25/cmulocal/sasl2.m4.orig	2011-09-17 07:31:51.000000000 +0200
-+++ cyrus-sasl-2.1.25/cmulocal/sasl2.m4	2011-09-17 08:24:54.480760162 +0200
+--- cyrus-sasl-2.1.27/m4/sasl2.m4.orig	2011-09-17 07:31:51.000000000 +0200
++++ cyrus-sasl-2.1.27/m4/sasl2.m4	2011-09-17 08:24:54.480760162 +0200
 @@ -221,11 +221,25 @@
    elif test "$ac_cv_header_gssapi_h" = "yes"; then
      AC_EGREP_HEADER(GSS_C_NT_HOSTBASED_SERVICE, gssapi.h,

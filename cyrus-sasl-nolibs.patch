@@ -1,5 +1,5 @@
---- cyrus-sasl-2.1.10/configure.in.orig	Thu Jan  9 20:22:17 2003
-+++ cyrus-sasl-2.1.10/configure.in	Thu Jan  9 20:47:17 2003
+--- cyrus-sasl-2.1.27/configure.ac.orig	Thu Jan  9 20:22:17 2003
++++ cyrus-sasl-2.1.27/configure.ac	Thu Jan  9 20:47:17 2003
 @@ -807,7 +807,7 @@
  AC_SUBST(LTSNPRINTFOBJS)
  
@@ -9,8 +9,8 @@
  
  dnl Check for getaddrinfo
  GETADDRINFOOBJS=""
---- cyrus-sasl-2.1.25/cmulocal/bsd_sockets.m4.orig	2010-02-18 17:19:17.000000000 +0100
-+++ cyrus-sasl-2.1.25/cmulocal/bsd_sockets.m4	2011-09-16 18:55:17.595800296 +0200
+--- cyrus-sasl-2.1.27/m4/bsd_sockets.m4.orig	2010-02-18 17:19:17.000000000 +0100
++++ cyrus-sasl-2.1.27/m4/bsd_sockets.m4	2011-09-16 18:55:17.595800296 +0200
 @@ -30,7 +30,7 @@
  u_char ans[1024];
  res_search( host, C_IN, T_MX, (u_char *)&ans, sizeof(ans));
@@ -20,14 +20,3 @@
          ])
  	LIBS="$LIB_SOCKET $save_LIBS"
  	AC_CHECK_FUNCS(dn_expand dns_lookup)
---- cyrus-sasl-2.1.10/saslauthd/configure.in.orig	Fri Dec  6 17:24:06 2002
-+++ cyrus-sasl-2.1.10/saslauthd/configure.in	Thu Jan  9 21:22:46 2003
-@@ -106,7 +106,7 @@
- fi
- AC_SUBST(LIB_PAM)
- 
--AC_CHECK_LIB(resolv, inet_aton)
-+AC_SEARCH_LIBS(inet_aton, resolv)
- 
- AC_MSG_CHECKING(to include experimental LDAP support)
- AC_ARG_WITH(ldap, [  --with-ldap=DIR         use LDAP (in DIR) (experimental) [no] ],

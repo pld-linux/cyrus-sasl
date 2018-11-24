@@ -1,10 +1,12 @@
---- cyrus-sasl-2.1.26/cmulocal/berkdb.m4.orig	2012-11-23 18:30:01.142069119 +0100
-+++ cyrus-sasl-2.1.26/cmulocal/berkdb.m4	2012-11-23 18:31:46.428733592 +0100
-@@ -214,6 +214,7 @@
+--- cyrus-sasl-2.1.27/m4/berkdb.m4.orig	2016-01-29 18:35:35.000000000 +0100
++++ cyrus-sasl-2.1.27/m4/berkdb.m4	2018-11-24 10:52:48.474930149 +0100
+@@ -214,6 +214,9 @@
  
  	saved_LIBS=$LIBS
  	    for dbname in ${with_bdb} \
-+		db-5.3 db5.3 db53 \
++	        db-6.1 db6.1 db61 \
++	        db-6.0 db6.0 db60 \
++	        db-5.3 db5.3 db53 \
  	        db-5.2 db5.2 db52 \
  	        db-5.1 db5.2 db51 \
  	        db-5.0 db5.2 db50 \

@@ -23,12 +23,12 @@ Summary(pt_BR.UTF-8):	Implementação da API SASL
 Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.26
-Release:	8
+Version:	2.1.27
+Release:	1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
-# Source0-md5:	a7f4e5e559a0e37b3ffc438c9456e425
+# Source0-md5:	a33820c66e0622222c5aefafa1581083
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
@@ -37,31 +37,20 @@ Patch0:		%{name}-nolibs.patch
 Patch1:		%{name}-lt.patch
 Patch2:		%{name}-split-sql.patch
 Patch3:		%{name}-opie.patch
-Patch4:		%{name}-gcc4.patch
 # Adapted from http://frost.ath.cx/software/cyrus-sasl-patches/dist/2.1.19/cyrus-sasl-2.1.19-checkpw.c+sql.c.patch
 Patch5:		%{name}-cryptedpw.patch
 Patch6:		%{name}-md5sum-passwords.patch
 Patch7:		%{name}-db.patch
-Patch8:		%{name}-keytab.patch
 Patch9:		%{name}-sizes.patch
 Patch10:	%{name}-nagios-plugin.patch
-Patch11:	%{name}-parallel-make.patch
 Patch12:	%{name}-gssapi-detect.patch
 Patch13:	%{name}-saslauthd-httpform-urlescape.patch
 Patch14:	%{name}-ac-libs.patch
-Patch15:	%{name}-pam.patch
-Patch16:	%{name}-gssapi_ext.patch
-Patch17:	0032-revert_1.103_revision_to_unbreak_GSSAPI.patch
-Patch18:	0033-fix_segfault_in_GSSAPI.patch
-Patch19:	0034-fix_dovecot_authentication.patch
 Patch20:	%{name}-auxprop.patch
 Patch21:	0030-dont_use_la_files_for_opening_plugins.patch
-Patch22:	%{name}-stddef.patch
-Patch23:	http://sourceforge.net/projects/miscellaneouspa/files/glibc217/cyrus-sasl-2.1.26-glibc217-crypt.diff
-Patch24:	cyrus-sasl-2.1.27-openssl-1.1.0.patch
 URL:		http://asg.web.cmu.edu/sasl/
-BuildRequires:	autoconf >= 2.54
-BuildRequires:	automake >= 1:1.7
+BuildRequires:	autoconf >= 2.63
+BuildRequires:	automake >= 1:1.11
 %{?with_authlib:BuildRequires:	courier-authlib-devel}
 BuildRequires:	db-devel
 BuildRequires:	ed
@@ -514,38 +503,18 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 %if %{with cryptedpw}
 %patch5 -p1
 %patch6 -p1
 %endif
 %patch7 -p1
-%patch8 -p1
 %patch9 -p1
 %patch10 -p1
-%patch11 -p1
 %patch12 -p1
 %patch13 -p0
 %patch14 -p1
-%patch15 -p1
-%patch16 -p1
-%patch17 -p1
-%patch18 -p1
-%patch19 -p1
 %patch20 -p1
 %patch21 -p1
-%patch22 -p1
-%patch23 -p1
-%patch24 -p1
-
-cd doc
-echo "cyrus-sasl complies with the following RFCs:" > rfc-compliance
-ls rfc*.txt >> rfc-compliance
-rm -f rfc*.txt
-cd ..
-
-# old version
-%{__rm} config/libtool.m4
 
 # update to our paths
 sed -i -e '
@@ -553,48 +522,42 @@ sed -i -e '
 	s,/etc/saslauthd.conf,%{_sysconfdir}/saslauthd.conf,g
 	s,/var/run/saslauthd/mux,/var/lib/sasl2/mux,g
 	s,/var/state/saslauthd,/var/lib/sasl2,g
-' saslauthd/saslauthd.8 saslauthd/saslauthd.mdoc saslauthd/LDAP_SASLAUTHD doc/sysadmin.html
+' saslauthd/saslauthd.8 saslauthd/saslauthd.mdoc saslauthd/LDAP_SASLAUTHD doc/legacy/sysadmin.html
 
 %build
 %{__libtoolize}
-%{__aclocal} -I cmulocal -I config
-%{__autoheader}
+%{__aclocal} -I m4
 %{__autoconf}
-%{__automake}
-cd saslauthd
-%{__aclocal} -I ../cmulocal -I ../config
 %{__autoheader}
-%{__autoconf}
 %{__automake}
-cd ..
 %configure \
 	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
-	--disable-krb4 \
 	%{!?with_gssapi:--disable-gssapi} \
 	%{?with_gssapi:--enable-gssapi --with-gss_impl=heimdal} \
-	--enable-login \
-	--enable-sample \
 	--enable-httpform \
-	--enable-sql \
+	--disable-krb4 \
+	%{?with_ldap:--enable-ldapdb} \
+	--enable-login \
 	--enable-passdss \
+	--enable-sample \
+	--enable-sql \
 	%{?with_srp:--enable-srp} \
 	--enable-static \
-	--with-plugindir=%{_libdir}/sasl2 \
+	%{?with_authlib:--with-authdaemond=/var/spool/authdaemon/socket} \
 	--with-configdir=%{_sysconfdir} \
 	--with-dblib=berkeley \
 	--with-dbpath=/var/lib/sasl2/sasl.db \
-	%{?with_authlib:--with-authdaemond=/var/spool/authdaemon/socket} \
-	%{?with_ldap:--with-ldap=%{_prefix}} \
-	%{?with_ldap:--enable-ldapdb} \
+	%{?with_ldap:--with-ldap} \
 	%{?with_mysql:--with-mysql=%{_prefix}} \
 	%{?with_ntlm:--enable-ntlm} \
-	%{?with_pgsql:--with-pgsql=%{_prefix}} \
-	%{?with_sqlite:--with-sqlite=%{_prefix}} \
-	%{?with_sqlite3:--with-sqlite3=%{_prefix}} \
 	%{?with_opie:--with-opie=%{_prefix}} \
 	--with-pam \
+	%{?with_pgsql:--with-pgsql=%{_prefix}} \
+	--with-plugindir=%{_libdir}/sasl2 \
 	%{?with_pwcheck:--with-pwcheck=/var/lib/sasl2} \
-	--with-saslauthd=/var/lib/sasl2
+	--with-saslauthd=/var/lib/sasl2 \
+	%{?with_sqlite:--with-sqlite=%{_prefix}} \
+	%{?with_sqlite3:--with-sqlite3=%{_prefix}}
 
 %{__make}
 
@@ -602,12 +565,7 @@ cd ..
 %{__make} -C saslauthd saslcache
 %{__make} -C sample sample-client sample-server
 
-cd doc
-RFCLIST=$(grep 'rfc.\+\.txt' rfc-compliance)
-for i in $RFCLIST; do
-	RFCDIR=../RFC/text/`echo $i | sed -e 's:^rfc::' -e 's:..\.txt$::' `00
-	echo -e ',s:'$i':'$RFCDIR/$i'\n,w\nq' | ed index.html
-done
+%{__rm} -rf doc/html/{_sources,objects.inv,.buildinfo}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -670,8 +628,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING ChangeLog NEWS README
-%doc doc/{ONEWS,TODO,*.txt,*.html,*.fig,rfc-compliance}
+%doc AUTHORS COPYING ChangeLog README doc/legacy/{TODO,*.html,*.fig} doc/html
 %dir %{_sysconfdir}
 %dir %{_libdir}/sasl2
 # sample programs to subpackage instead?
@@ -797,8 +754,7 @@ fi
 
 %files saslauthd
 %defattr(644,root,root,755)
-%doc cyrus.pam
-%doc saslauthd/{AUTHORS,LDAP_SASLAUTHD}
+%doc cyrus.pam saslauthd/{COPYING,LDAP_SASLAUTHD}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/saslauthd.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/saslauthd
 %attr(755,root,root) %{_sbindir}/saslauthd

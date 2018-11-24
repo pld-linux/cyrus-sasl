@@ -1,6 +1,6 @@
---- a/lib/dlopen.c
-+++ b/lib/dlopen.c
-@@ -247,105 +247,6 @@ static int _sasl_plugin_load(char *plugi
+--- cyrus-sasl-2.1.27/lib/dlopen.c.orig	2018-11-08 18:29:57.000000000 +0100
++++ cyrus-sasl-2.1.27/lib/dlopen.c	2018-11-24 18:07:23.001299091 +0100
+@@ -246,113 +246,6 @@ static int _sasl_plugin_load(char *plugi
      return result;
  }
  
@@ -28,6 +28,8 @@
 -    if (strcmp(in + (length - strlen(LA_SUFFIX)), LA_SUFFIX)) {
 -	if(!strcmp(in + (length - strlen(SO_SUFFIX)),SO_SUFFIX)) {
 -	    /* check for a .la file */
+-	    if (strlen(prefix) + strlen(in) + strlen(LA_SUFFIX) + 1 >= MAX_LINE)
+-		return SASL_BADPARAM;
 -	    strcpy(line, prefix);
 -	    strcat(line, in);
 -	    length = strlen(line);
@@ -40,11 +42,15 @@
 -		return SASL_FAIL;
 -	    }
 -	}
+-        if (strlen(prefix) + strlen(in) + 1 >= PATH_MAX)
+-            return SASL_BADPARAM;
 -	strcpy(out, prefix);
 -	strcat(out, in);
 -	return SASL_OK;
 -    }
 -
+-    if (strlen(prefix) + strlen(in) + 1 >= MAX_LINE)
+-        return SASL_BADPARAM;
 -    strcpy(line, prefix);
 -    strcat(line, in);
 -
@@ -60,6 +66,7 @@
 -	if(line[strlen(line) - 1] != '\n') {
 -	    _sasl_log(NULL, SASL_LOG_WARN,
 -		      "LA file has too long of a line: %s", in);
+-	    fclose(file);
 -	    return SASL_BUFOVER;
 -	}
 -	if(line[0] == '\n' || line[0] == '#') continue;
@@ -79,6 +86,7 @@
 -		if(ntmp == end) {
 -		    _sasl_log(NULL, SASL_LOG_DEBUG,
 -			      "dlname is empty in .la file: %s", in);
+-		    fclose(file);
 -		    return SASL_FAIL;
 -		}
 -		strcpy(out, prefix);
@@ -106,7 +114,7 @@
  #endif /* DO_DLOPEN */
  
  /* loads a plugin library */
-@@ -499,18 +400,18 @@ int _sasl_load_plugins(const add_plugin_
+@@ -506,18 +399,18 @@ int _sasl_load_plugins(const add_plugin_
  		if (length + pos>=PATH_MAX) continue; /* too big */
  
  		if (strcmp(dir->d_name + (length - strlen(SO_SUFFIX)),
