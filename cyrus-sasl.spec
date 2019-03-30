@@ -48,7 +48,7 @@ Patch13:	%{name}-saslauthd-httpform-urlescape.patch
 Patch14:	%{name}-ac-libs.patch
 Patch20:	%{name}-auxprop.patch
 Patch21:	0030-dont_use_la_files_for_opening_plugins.patch
-URL:		http://asg.web.cmu.edu/sasl/
+URL:		https://www.cyrusimap.org/sasl/
 BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.11
 %{?with_authlib:BuildRequires:	courier-authlib-devel}
