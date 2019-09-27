@@ -27,7 +27,7 @@ Version:	2.1.27
 Release:	1
 License:	distributable
 Group:		Libraries
-Source0:	ftp://ftp.cyrusimap.org/cyrus-sasl/%{name}-%{version}.tar.gz
+Source0:	https://www.cyrusimap.org/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	a33820c66e0622222c5aefafa1581083
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
