@@ -49,6 +49,7 @@ Patch13:	%{name}-saslauthd-httpform-urlescape.patch
 Patch14:	%{name}-ac-libs.patch
 Patch20:	%{name}-auxprop.patch
 Patch21:	0030-dont_use_la_files_for_opening_plugins.patch
+Patch22:	sphinx.patch
 URL:		https://www.cyrusimap.org/sasl/
 BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.11
@@ -65,6 +66,7 @@ BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pam-devel
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	sphinx-pdg-2
 %{?with_sqlite:BuildRequires:	sqlite-devel}
 %{?with_sqlite3:BuildRequires:	sqlite3-devel >= 3}
 Requires:	pam >= 0.79.0
@@ -512,10 +514,11 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %patch9 -p1
 %patch10 -p1
 %patch12 -p1
-%patch13 -p0
+%patch13 -p1
 %patch14 -p1
 %patch20 -p1
 %patch21 -p1
+%patch22 -p1
 
 # update to our paths
 sed -i -e '
@@ -532,6 +535,7 @@ sed -i -e '
 %{__autoheader}
 %{__automake}
 %configure \
+	SPHINX_BUILD=/usr/bin/sphinx-build-2 \
 	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
 	%{!?with_gssapi:--disable-gssapi} \
 	%{?with_gssapi:--enable-gssapi --with-gss_impl=heimdal} \

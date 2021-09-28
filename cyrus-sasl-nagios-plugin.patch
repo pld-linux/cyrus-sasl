@@ -1,5 +1,6 @@
---- cyrus-sasl-2.1.22-nagios/saslauthd/Makefile.am	2009-01-30 18:09:01.984198032 +0200
-+++ cyrus-sasl-2.1.22/saslauthd/Makefile.am	2009-01-30 18:43:20.796560455 +0200
+diff -urNp -x '*.orig' cyrus-sasl-2.1.27.org/saslauthd/Makefile.am cyrus-sasl-2.1.27/saslauthd/Makefile.am
+--- cyrus-sasl-2.1.27.org/saslauthd/Makefile.am	2018-09-20 17:44:51.000000000 +0200
++++ cyrus-sasl-2.1.27/saslauthd/Makefile.am	2021-09-28 23:58:31.072659837 +0200
 @@ -1,5 +1,7 @@
  AUTOMAKE_OPTIONS = 1.7
  sbin_PROGRAMS	= saslauthd testsaslauthd
@@ -7,8 +8,8 @@
 +nagiosdir	= @libdir@/nagios/plugins
  EXTRA_PROGRAMS  = saslcache
  
- saslauthd_SOURCES = mechanisms.c globals.h \
-@@ -21,6 +23,10 @@
+ LTLIBOBJS = @LTLIBOBJS@
+@@ -30,6 +32,10 @@ saslauthd_LDADD	= @SASL_KRB_LIB@ \
  testsaslauthd_SOURCES = testsaslauthd.c utils.c
  testsaslauthd_LDADD = @LIB_SOCKET@
  
@@ -18,10 +19,11 @@
 +
  saslcache_SOURCES = saslcache.c
  
- EXTRA_DIST	= saslauthd.8 saslauthd.mdoc config include \
---- cyrus-sasl-2.1.22/saslauthd/testsaslauthd.c	2004-01-21 21:54:53.000000000 +0200
-+++ cyrus-sasl-2.1.22-nagios/saslauthd/testsaslauthd.c	2009-01-30 18:36:26.070737112 +0200
-@@ -57,6 +57,13 @@
+ EXTRA_DIST	= saslauthd.8 saslauthd.mdoc include \
+diff -urNp -x '*.orig' cyrus-sasl-2.1.27.org/saslauthd/testsaslauthd.c cyrus-sasl-2.1.27/saslauthd/testsaslauthd.c
+--- cyrus-sasl-2.1.27.org/saslauthd/testsaslauthd.c	2018-11-08 18:29:57.000000000 +0100
++++ cyrus-sasl-2.1.27/saslauthd/testsaslauthd.c	2021-09-28 23:58:31.072659837 +0200
+@@ -58,6 +58,13 @@
  #endif
  #include <assert.h>
  
@@ -35,7 +37,7 @@
  #include "globals.h"
  #include "utils.h"
  
-@@ -243,7 +250,11 @@
+@@ -244,7 +251,11 @@ static int saslauthd_verify_password(con
      }
    
      printf("NO \"authentication failed\"\n");
@@ -47,7 +49,7 @@
  }
  
  int
-@@ -293,7 +304,11 @@
+@@ -291,7 +302,11 @@ main(int argc, char *argv[])
  		  "              [-r realm] [-s servicename]\n"
  		  "              [-f socket path] [-R repeatnum]\n",
  		  argv[0], argv[0]);
@@ -59,7 +61,7 @@
    }
  
    if (!repeat) repeat = 1;
-@@ -302,7 +317,23 @@
+@@ -300,7 +315,23 @@ main(int argc, char *argv[])
        printf("%d: ", c);
        result = saslauthd_verify_password(path, user, password, service, realm);
    }

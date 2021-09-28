@@ -1,20 +1,21 @@
-diff -ur cyrus-sasl-2.1.19.orig/Makefile.in cyrus-sasl-2.1.19/Makefile.in
---- cyrus-sasl-2.1.19.orig/Makefile.in        2005-07-04 23:59:31.000000000 +0200
-+++ cyrus-sasl-2.1.19/Makefile.in 2005-07-05 00:04:27.000000000 +0200
-@@ -134,7 +134,7 @@
- JAVA_TRUE = @JAVA_TRUE@
+diff -urNp -x '*.orig' cyrus-sasl-2.1.27.org/Makefile.in cyrus-sasl-2.1.27/Makefile.in
+--- cyrus-sasl-2.1.27.org/Makefile.in	2018-10-09 16:58:13.000000000 +0200
++++ cyrus-sasl-2.1.27/Makefile.in	2021-09-28 23:58:30.012662863 +0200
+@@ -308,7 +308,7 @@ LDAP_LIBS = @LDAP_LIBS@
  LDFLAGS = @LDFLAGS@
+ LDFLAGS_FOR_BUILD = @LDFLAGS_FOR_BUILD@
  LIBOBJS = @LIBOBJS@
 -LIBS = @LIBS@
 +LIBS = -lcrypt @LIBS@
  LIBTOOL = @LIBTOOL@
  LIB_CRYPT = @LIB_CRYPT@
  LIB_DES = @LIB_DES@
---- cyrus-sasl-2.1.27-orig/doc/legacy/options.html	2004-05-27 18:02:58.000000000 +0200
-+++ cyrus-sasl-2.1.27/doc/legacy/options.html	2005-07-10 17:17:38.000000000 +0200
-@@ -103,6 +103,14 @@
- <TD>sasldb_path</TD><TD>sasldb plugin</TD>
- <TD>Path to sasldb file</TD><TD><tt>/etc/sasldb2</tt> (system dependant)</TD>
+diff -urNp -x '*.orig' cyrus-sasl-2.1.27.org/doc/legacy/options.html cyrus-sasl-2.1.27/doc/legacy/options.html
+--- cyrus-sasl-2.1.27.org/doc/legacy/options.html	2017-07-24 14:53:03.000000000 +0200
++++ cyrus-sasl-2.1.27/doc/legacy/options.html	2021-09-28 23:58:30.012662863 +0200
+@@ -163,6 +163,14 @@ database.</TD>
+ <TD>126</TD>
+ </TR>
  <TR>
 +<TD>password_format</TD><TD></TD>
 +<TD>Method of password storage (possible values: 'plain', 'crypt', 'crypt_trad').
@@ -25,10 +26,11 @@ diff -ur cyrus-sasl-2.1.19.orig/Makefile.in cyrus-sasl-2.1.19/Makefile.in
 +</TR>
 +<TR>
  <TD>sql_engine</TD><TD>SQL plugin</TD>
- <TD>Name of SQL engine to use (possible values: 'mysql', 'pgsql', 'sqlite').</TD>
+ <TD>Name of SQL engine to use (possible values: 'mysql', 'pgsql', 'sqlite', 'sqlite3').</TD>
  <TD><tt>mysql</tt></TD>
---- cyrus-sasl-2.1.25/lib/checkpw.c.orig	2009-12-03 20:07:01.000000000 +0100
-+++ cyrus-sasl-2.1.25/lib/checkpw.c	2011-09-16 21:27:43.302773195 +0200
+diff -urNp -x '*.orig' cyrus-sasl-2.1.27.org/lib/checkpw.c cyrus-sasl-2.1.27/lib/checkpw.c
+--- cyrus-sasl-2.1.27.org/lib/checkpw.c	2018-11-08 18:29:57.000000000 +0100
++++ cyrus-sasl-2.1.27/lib/checkpw.c	2021-09-28 23:58:30.012662863 +0200
 @@ -95,6 +95,23 @@
  # endif
  #endif
@@ -53,7 +55,7 @@ diff -ur cyrus-sasl-2.1.19.orig/Makefile.in cyrus-sasl-2.1.19/Makefile.in
  
  /* we store the following secret to check plaintext passwords:
   *
-@@ -142,7 +159,51 @@
+@@ -142,7 +159,51 @@ static int auxprop_verify_password(sasl_
  				       "*cmusaslsecretPLAIN",
  				       NULL };
      struct propval auxprop_values[3];
@@ -106,7 +108,7 @@ diff -ur cyrus-sasl-2.1.19.orig/Makefile.in cyrus-sasl-2.1.19/Makefile.in
      if (!conn || !userstr)
  	return SASL_BADPARAM;
  
-@@ -188,14 +249,31 @@
+@@ -188,14 +249,31 @@ static int auxprop_verify_password(sasl_
  	return SASL_NOUSER;
      }
          
@@ -146,7 +148,7 @@ diff -ur cyrus-sasl-2.1.19.orig/Makefile.in cyrus-sasl-2.1.19/Makefile.in
      } else if(auxprop_values[1].name
  	      && auxprop_values[1].values
  	      && auxprop_values[1].values[0]) {
-@@ -1095,3 +1173,37 @@
+@@ -1105,3 +1183,37 @@ struct sasl_verify_password_s _sasl_veri
  #endif
      { NULL, NULL }
  };

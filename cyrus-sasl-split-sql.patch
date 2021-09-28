@@ -1,6 +1,7 @@
---- cyrus-sasl-2.1.27/configure.ac.orig	2012-11-23 18:23:10.112077685 +0100
-+++ cyrus-sasl-2.1.27/configure.ac	2012-11-23 18:29:29.238736454 +0100
-@@ -691,10 +691,7 @@
+diff -urNp -x '*.orig' cyrus-sasl-2.1.27.org/configure.ac cyrus-sasl-2.1.27/configure.ac
+--- cyrus-sasl-2.1.27.org/configure.ac	2021-09-28 23:58:29.385997985 +0200
++++ cyrus-sasl-2.1.27/configure.ac	2021-09-28 23:58:29.489331023 +0200
+@@ -752,10 +752,7 @@ AC_ARG_ENABLE(sql, [  --enable-sql
  AC_MSG_CHECKING(SQL)
  if test "$sql" != no; then
    AC_MSG_RESULT(enabled)
@@ -11,7 +12,7 @@
      AC_DEFINE(STATIC_SQL,[],[Link SQL plugin statically])
    fi
  else
-@@ -741,6 +738,8 @@
+@@ -813,6 +810,8 @@ case "$with_mysql" in
  	CMU_ADD_LIBPATH_TO(${with_mysql}, LIB_MYSQL)
       fi
  
@@ -20,7 +21,7 @@
       LIB_MYSQL_DIR=$LIB_MYSQL
       LIB_MYSQL="$LIB_MYSQL -lmysqlclient"
  
-@@ -805,6 +804,8 @@
+@@ -889,6 +888,8 @@ case "$with_pgsql" in
  	CMU_ADD_LIBPATH_TO(${with_pgsql}, LIB_PGSQL)
       fi
  
@@ -29,8 +30,8 @@
       LIB_PGSQL_DIR=$LIB_PGSQL
       LIB_PGSQL="$LIB_PGSQL -lpq"
  
-@@ -866,6 +867,8 @@
-          LIB_SQLITE="-L${with_sqlite} -R${with_sqlite}"
+@@ -952,6 +953,8 @@ case "$with_sqlite" in
+          CMU_ADD_LIBPATH_TO(${with_sqlite}, LIB_SQLITE)
       fi
  
 +     SASL_MECHS="$SASL_MECHS libsqlite.la"
@@ -38,8 +39,8 @@
       LIB_SQLITE_DIR=$LIB_SQLITE
       LIB_SQLITE="$LIB_SQLITE -lsqlite"
  
-@@ -918,6 +921,8 @@
-          LIB_SQLITE3="-L${with_sqlite3} -R${with_sqlite3}"
+@@ -1004,6 +1007,8 @@ case "$with_sqlite3" in
+          CMU_ADD_LIBPATH_TO(${with_sqlite3}, LIB_SQLITE3)
       fi
  
 +     SASL_MECHS="$SASL_MECHS libsqlite3.la"
@@ -47,9 +48,10 @@
       LIB_SQLITE3_DIR=$LIB_SQLITE3
       LIB_SQLITE3="$LIB_SQLITE3 -lsqlite3"
  
---- cyrus-sasl-2.1.27/plugins/Makefile.am.orig	2018-10-05 16:40:16.000000000 +0200
-+++ cyrus-sasl-2.1.27/plugins/Makefile.am	2018-11-24 10:25:07.244949119 +0100
-@@ -68,7 +68,7 @@
+diff -urNp -x '*.orig' cyrus-sasl-2.1.27.org/plugins/Makefile.am cyrus-sasl-2.1.27/plugins/Makefile.am
+--- cyrus-sasl-2.1.27.org/plugins/Makefile.am	2018-10-05 16:40:16.000000000 +0200
++++ cyrus-sasl-2.1.27/plugins/Makefile.am	2021-09-28 23:58:29.489331023 +0200
+@@ -68,7 +68,7 @@ plugin_LTLIBRARIES = @SASL_MECHS@
  
  EXTRA_LTLIBRARIES = libplain.la libanonymous.la libkerberos4.la libcrammd5.la \
  	libgs2.la libgssapiv2.la libdigestmd5.la liblogin.la libsrp.la libotp.la \
@@ -58,7 +60,7 @@
  
  libplain_la_SOURCES = plain.c plain_init.c
  libplain_la_DEPENDENCIES = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
-@@ -131,18 +131,51 @@
+@@ -131,18 +131,51 @@ libldapdb_la_SOURCES = ldapdb.c ldapdb_i
  libldapdb_la_DEPENDENCIES = $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
  libldapdb_la_LIBADD = $(LIB_LDAP) $(COMPAT_OBJS) $(PLUGIN_COMMON_OBJS)
  
@@ -117,9 +119,10 @@
  
  
  CLEANFILES=$(init_src)
---- cyrus-sasl-2.1.27/plugins/makeinit.sh.orig	2018-11-24 09:27:31.358321911 +0100
-+++ cyrus-sasl-2.1.27/plugins/makeinit.sh	2018-11-24 10:25:38.331615427 +0100
-@@ -51,7 +51,7 @@
+diff -urNp -x '*.orig' cyrus-sasl-2.1.27.org/plugins/makeinit.sh cyrus-sasl-2.1.27/plugins/makeinit.sh
+--- cyrus-sasl-2.1.27.org/plugins/makeinit.sh	2018-09-20 17:44:51.000000000 +0200
++++ cyrus-sasl-2.1.27/plugins/makeinit.sh	2021-09-28 23:58:29.489331023 +0200
+@@ -51,7 +51,7 @@ SASL_SERVER_PLUG_INIT( $mech )
  done
  
  # auxprop plugins

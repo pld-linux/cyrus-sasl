@@ -1,6 +1,7 @@
---- saslauthd/auth_httpform.c~	2009-02-16 22:59:05.000000000 +0200
-+++ saslauthd/auth_httpform.c	2009-02-16 23:00:16.765691380 +0200
-@@ -176,7 +176,7 @@
+diff -urNp -x '*.orig' cyrus-sasl-2.1.27.org/saslauthd/auth_httpform.c cyrus-sasl-2.1.27/saslauthd/auth_httpform.c
+--- cyrus-sasl-2.1.27.org/saslauthd/auth_httpform.c	2018-11-08 18:29:57.000000000 +0100
++++ cyrus-sasl-2.1.27/saslauthd/auth_httpform.c	2021-09-28 23:58:31.612658295 +0200
+@@ -180,7 +180,7 @@ static char *url_escape(
          return NULL;
  
      while (inidx < length) {
@@ -8,4 +9,4 @@
 +        unsigned char in = string[inidx];
          if (!(in >= 'a' && in <= 'z') &&
              !(in >= 'A' && in <= 'Z') &&
-             !(in >= '0' && in <= '9') &&
+             !(in >= '0' && in <= '9')) {
