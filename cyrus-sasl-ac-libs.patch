@@ -1,6 +1,6 @@
---- cyrus-sasl-2.1.27/configure.ac.orig	2018-11-24 13:32:32.178154053 +0100
-+++ cyrus-sasl-2.1.27/configure.ac	2018-11-24 17:29:45.091324872 +0100
-@@ -104,9 +104,6 @@
+--- cyrus-sasl-2.1.28/configure.ac.orig	2022-05-23 18:58:17.991069660 +0200
++++ cyrus-sasl-2.1.28/configure.ac	2022-05-23 19:03:29.906046539 +0200
+@@ -96,9 +96,6 @@ AC_PROG_MAKE_SET
  AC_PROG_INSTALL
  AC_USE_SYSTEM_EXTENSIONS
  
@@ -10,7 +10,7 @@
  dnl xxx compatibility
  AC_ARG_WITH(staticsasl)
  if test "$with_staticsasl" = yes; then
-@@ -479,8 +476,7 @@
+@@ -430,8 +427,7 @@ if test "$otp" != no; then
  		;;
  	*)
  		if test -d $with_opie; then
@@ -20,7 +20,7 @@
  		else
  		  with_opie="no"
  		fi
-@@ -800,16 +796,6 @@
+@@ -751,16 +747,6 @@ case "$with_mysql" in
       LDFLAGS=$save_LDFLAGS
       ;;
      *)
@@ -37,7 +37,7 @@
       SASL_MECHS="$SASL_MECHS libmysql.la"
       SASL_STATIC_OBJS="$SASL_STATIC_OBJS mysql.o"
       LIB_MYSQL_DIR=$LIB_MYSQL
-@@ -878,16 +864,6 @@
+@@ -829,16 +815,6 @@ case "$with_pgsql" in
       LDFLAGS=$save_LDFLAGS
       ;;
      *)
@@ -54,9 +54,9 @@
       SASL_MECHS="$SASL_MECHS libpgsql.la"
       SASL_STATIC_OBJS="$SASL_STATIC_OBJS pgsql.o"
       LIB_PGSQL_DIR=$LIB_PGSQL
-@@ -947,11 +923,6 @@
+@@ -898,11 +874,6 @@ case "$with_sqlite" in
      no) true;;
-     notfound) AC_WARN([SQLite Library not found]); true;;
+     notfound) AC_MSG_WARN(SQLite Library not found); true;;
      *)
 -     if test -d ${with_sqlite}/lib; then
 -         CMU_ADD_LIBPATH_TO(${with_sqlite}/lib, LIB_SQLITE)
@@ -66,9 +66,9 @@
  
       SASL_MECHS="$SASL_MECHS libsqlite.la"
       SASL_STATIC_OBJS="$SASL_STATIC_OBJS sqlite.o"
-@@ -1001,11 +972,6 @@
+@@ -952,11 +923,6 @@ case "$with_sqlite3" in
      no) true;;
-     notfound) AC_WARN([SQLite3 Library not found]); true;;
+     notfound) AC_MSG_WARN(SQLite3 Library not found); true;;
      *)
 -     if test -d ${with_sqlite3}/lib; then
 -         CMU_ADD_LIBPATH_TO(${with_sqlite3}/lib, LIB_SQLITE3)
@@ -78,7 +78,7 @@
  
       SASL_MECHS="$SASL_MECHS libsqlite3.la"
       SASL_STATIC_OBJS="$SASL_STATIC_OBJS sqlite3.o"
-@@ -1048,11 +1014,6 @@
+@@ -999,11 +965,6 @@ if test "$ldapdb" != no; then
      save_CPPFLAGS=$CPPFLAGS
      save_LDFLAGS=$LDFLAGS
  

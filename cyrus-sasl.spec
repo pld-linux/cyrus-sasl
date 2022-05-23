@@ -23,13 +23,13 @@ Summary(pt_BR.UTF-8):	Implementação da API SASL
 Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
-Version:	2.1.27
-Release:	2
+Version:	2.1.28
+Release:	1
 License:	distributable
 Group:		Libraries
 #Source0Download: https://github.com/cyrusimap/cyrus-sasl/releases
 Source0:	https://github.com/cyrusimap/cyrus-sasl/releases/download/%{name}-%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	a33820c66e0622222c5aefafa1581083
+# Source0-md5:	6f228a692516f5318a64505b46966cfa
 Source1:	saslauthd.init
 Source2:	saslauthd.sysconfig
 Source3:	%{name}.pam
@@ -45,11 +45,9 @@ Patch7:		%{name}-db.patch
 Patch9:		%{name}-sizes.patch
 Patch10:	%{name}-nagios-plugin.patch
 Patch12:	%{name}-gssapi-detect.patch
-Patch13:	%{name}-saslauthd-httpform-urlescape.patch
 Patch14:	%{name}-ac-libs.patch
 Patch20:	%{name}-auxprop.patch
 Patch21:	0030-dont_use_la_files_for_opening_plugins.patch
-Patch22:	sphinx.patch
 URL:		https://www.cyrusimap.org/sasl/
 BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.11
@@ -66,7 +64,7 @@ BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pam-devel
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpmbuild(macros) >= 1.268
-BuildRequires:	sphinx-pdg-2
+BuildRequires:	sphinx-pdg-3
 %{?with_sqlite:BuildRequires:	sqlite-devel}
 %{?with_sqlite3:BuildRequires:	sqlite3-devel >= 3}
 Requires:	pam >= 0.79.0
@@ -514,11 +512,9 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %patch9 -p1
 %patch10 -p1
 %patch12 -p1
-%patch13 -p1
 %patch14 -p1
 %patch20 -p1
 %patch21 -p1
-%patch22 -p1
 
 # update to our paths
 sed -i -e '
@@ -526,7 +522,7 @@ sed -i -e '
 	s,/etc/saslauthd.conf,%{_sysconfdir}/saslauthd.conf,g
 	s,/var/run/saslauthd/mux,/var/lib/sasl2/mux,g
 	s,/var/state/saslauthd,/var/lib/sasl2,g
-' saslauthd/saslauthd.8 saslauthd/saslauthd.mdoc saslauthd/LDAP_SASLAUTHD doc/legacy/sysadmin.html
+' saslauthd/saslauthd.mdoc saslauthd/LDAP_SASLAUTHD doc/legacy/sysadmin.html
 
 %build
 %{__libtoolize}
@@ -535,7 +531,7 @@ sed -i -e '
 %{__autoheader}
 %{__automake}
 %configure \
-	SPHINX_BUILD=/usr/bin/sphinx-build-2 \
+	SPHINX_BUILD=/usr/bin/sphinx-build-3 \
 	%{?with_cryptedpw: LDFLAGS=-lcrypt} \
 	%{!?with_gssapi:--disable-gssapi} \
 	%{?with_gssapi:--enable-gssapi --with-gss_impl=heimdal} \
@@ -772,6 +768,7 @@ fi
 %ghost /var/lib/sasl2/mux.accept
 %ghost /var/lib/sasl2/saslauthd.pid
 %{_mandir}/man8/saslauthd.8*
+%{_mandir}/man8/testsaslauthd.8*
 
 %files -n nagios-plugin-check_saslauthd
 %defattr(644,root,root,755)

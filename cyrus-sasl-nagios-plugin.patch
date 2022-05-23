@@ -1,6 +1,5 @@
-diff -urNp -x '*.orig' cyrus-sasl-2.1.27.org/saslauthd/Makefile.am cyrus-sasl-2.1.27/saslauthd/Makefile.am
---- cyrus-sasl-2.1.27.org/saslauthd/Makefile.am	2018-09-20 17:44:51.000000000 +0200
-+++ cyrus-sasl-2.1.27/saslauthd/Makefile.am	2021-09-28 23:58:31.072659837 +0200
+--- cyrus-sasl-2.1.28/saslauthd/Makefile.am.orig	2022-02-18 22:50:42.000000000 +0100
++++ cyrus-sasl-2.1.28/saslauthd/Makefile.am	2022-05-23 18:49:42.340529846 +0200
 @@ -1,5 +1,7 @@
  AUTOMAKE_OPTIONS = 1.7
  sbin_PROGRAMS	= saslauthd testsaslauthd
@@ -19,7 +18,7 @@ diff -urNp -x '*.orig' cyrus-sasl-2.1.27.org/saslauthd/Makefile.am cyrus-sasl-2.
 +
  saslcache_SOURCES = saslcache.c
  
- EXTRA_DIST	= saslauthd.8 saslauthd.mdoc include \
+ EXTRA_DIST	= testsaslauthd.8 saslauthd.mdoc include \
 diff -urNp -x '*.orig' cyrus-sasl-2.1.27.org/saslauthd/testsaslauthd.c cyrus-sasl-2.1.27/saslauthd/testsaslauthd.c
 --- cyrus-sasl-2.1.27.org/saslauthd/testsaslauthd.c	2018-11-08 18:29:57.000000000 +0100
 +++ cyrus-sasl-2.1.27/saslauthd/testsaslauthd.c	2021-09-28 23:58:31.072659837 +0200
