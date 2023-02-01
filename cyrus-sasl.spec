@@ -24,7 +24,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.28
-Release:	1
+Release:	2
 License:	distributable
 Group:		Libraries
 #Source0Download: https://github.com/cyrusimap/cyrus-sasl/releases
