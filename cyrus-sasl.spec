@@ -4,6 +4,7 @@
 %bcond_without	ldap		# disable LDAP support for saslauthd
 %bcond_without	gssapi		# do not enable GSSAPI support for saslauthd and build gssapi plugin
 %bcond_without	mysql		# don't build MySQL plugin
+%bcond_without	nagios		# do not enable Nagios plugin
 %bcond_without	ntlm		# do not build NTLM plugin
 %bcond_without	pgsql		# do not build PostgreSQL plugin
 %bcond_without	sqlite		# do not enable sqlite 2 plugin
@@ -510,7 +511,7 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %endif
 %patch7 -p1
 %patch9 -p1
-%patch10 -p1
+%{?with_nagios:%patch10 -p1}
 %patch12 -p1
 %patch14 -p1
 %patch20 -p1
@@ -601,8 +602,10 @@ libtool --mode=install cp sample/sample-server $RPM_BUILD_ROOT%{_bindir}/sasl-sa
 # package for ghost
 touch $RPM_BUILD_ROOT/var/lib/sasl2/{cache.flock,cache.mmap,mux,mux.accept,saslauthd.pid}
 
+%if %{with nagios}
 install -d $RPM_BUILD_ROOT/etc/nagios/plugins
 %{__sed} -e 's,@plugindir@,%{_libdir}/nagios/plugins,' %{SOURCE4} > $RPM_BUILD_ROOT/etc/nagios/plugins/check_saslauthd.cfg
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -770,7 +773,9 @@ fi
 %{_mandir}/man8/saslauthd.8*
 %{_mandir}/man8/testsaslauthd.8*
 
+%if %{with nagios}
 %files -n nagios-plugin-check_saslauthd
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) /etc/nagios/plugins/check_saslauthd.cfg
 %attr(755,root,root) %{_libdir}/nagios/plugins/check_saslauthd
+%endif
