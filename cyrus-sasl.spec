@@ -501,21 +501,21 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
+%patch -P0 -p1
+%patch -P1 -p1
+%patch -P2 -p1
+%patch -P3 -p1
 %if %{with cryptedpw}
-%patch5 -p1
-%patch6 -p1
+%patch -P5 -p1
+%patch -P6 -p1
 %endif
-%patch7 -p1
-%patch9 -p1
+%patch -P7 -p1
+%patch -P9 -p1
 %{?with_nagios:%patch10 -p1}
-%patch12 -p1
-%patch14 -p1
-%patch20 -p1
-%patch21 -p1
+%patch -P12 -p1
+%patch -P14 -p1
+%patch -P20 -p1
+%patch -P21 -p1
 
 # update to our paths
 sed -i -e '
