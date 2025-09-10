@@ -1,0 +1,85 @@
+From: Bastian Germann <bage@debian.org>
+Date: Wed, 7 Aug 2024 11:41:02 +0200
+Subject: Harmonize getsubopt casts with glibc
+
+---
+diff --git a/sample/sample-server.c b/sample/sample-server.c
+index ee3cfc9..0d57373 100644
+--- a/sample/sample-server.c
++++ b/sample/sample-server.c
+@@ -320,7 +320,7 @@ main(int argc, char *argv[])
+     case 'b':
+       options = optarg;
+       while (*options != '\0')
+-	switch(getsubopt(&options, (const char * const *)bit_subopts, &value)) {
++	switch(getsubopt(&options, (char * const *restrict)bit_subopts, &value)) {
+ 	case OPT_MIN:
+ 	  if (! value)
+ 	    errflag = 1;
+@@ -342,7 +342,7 @@ main(int argc, char *argv[])
+     case 'e':
+       options = optarg;
+       while (*options != '\0')
+-	switch(getsubopt(&options, (const char * const *)ext_subopts, &value)) {
++	switch(getsubopt(&options, (char * const *restrict)ext_subopts, &value)) {
+ 	case OPT_EXT_SSF:
+ 	  if (! value)
+ 	    errflag = 1;
+@@ -368,7 +368,7 @@ main(int argc, char *argv[])
+     case 'f':
+       options = optarg;
+       while (*options != '\0') {
+-	switch(getsubopt(&options, (const char * const *)flag_subopts, &value)) {
++	switch(getsubopt(&options, (char * const *restrict)flag_subopts, &value)) {
+ 	case OPT_NOPLAIN:
+ 	  secprops.security_flags |= SASL_SEC_NOPLAINTEXT;
+ 	  break;
+@@ -402,7 +402,7 @@ main(int argc, char *argv[])
+     case 'i':
+       options = optarg;
+       while (*options != '\0')
+-	switch(getsubopt(&options, (const char * const *)ip_subopts, &value)) {
++	switch(getsubopt(&options, (char * const *restrict)ip_subopts, &value)) {
+ 	case OPT_IP_LOCAL:
+ 	  if (! value)
+ 	    errflag = 1;
+diff --git a/sample/sample-client.c b/sample/sample-client.c
+index 4795fa1..1354a17 100644
+--- a/sample/sample-client.c
++++ b/sample/sample-client.c
+@@ -473,7 +473,7 @@ main(int argc, char *argv[])
+     case 'b':
+       options = optarg;
+       while (*options != '\0')
+-	switch(getsubopt(&options, (const char * const *)bit_subopts, &value)) {
++	switch(getsubopt(&options, (char * const *restrict)bit_subopts, &value)) {
+ 	case OPT_MIN:
+ 	  if (! value)
+ 	    errflag = 1;
+@@ -503,7 +503,7 @@ main(int argc, char *argv[])
+     case 'e':
+       options = optarg;
+       while (*options != '\0')
+-	switch(getsubopt(&options, (const char * const *)ext_subopts, &value)) {
++	switch(getsubopt(&options, (char * const *restrict)ext_subopts, &value)) {
+ 	case OPT_EXT_SSF:
+ 	  if (! value)
+ 	    errflag = 1;
+@@ -529,7 +529,7 @@ main(int argc, char *argv[])
+     case 'f':
+       options = optarg;
+       while (*options != '\0') {
+-	switch(getsubopt(&options, (const char * const *)flag_subopts, &value)) {
++	switch(getsubopt(&options, (char * const *restrict)flag_subopts, &value)) {
+ 	case OPT_NOPLAIN:
+ 	  secprops.security_flags |= SASL_SEC_NOPLAINTEXT;
+ 	  break;
+@@ -559,7 +559,7 @@ main(int argc, char *argv[])
+     case 'i':
+       options = optarg;
+       while (*options != '\0')
+-	switch(getsubopt(&options, (const char * const *)ip_subopts, &value)) {
++	switch(getsubopt(&options, (char * const *restrict)ip_subopts, &value)) {
+ 	case OPT_IP_LOCAL:
+ 	  if (! value)
+ 	    errflag = 1;

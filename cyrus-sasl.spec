@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without	cryptedpw	# if you keep crypted passwords in your *sql
+%bcond_with	cryptedpw	# if you keep crypted passwords in your *sql
 %bcond_without	ldap		# disable LDAP support for saslauthd
 %bcond_without	gssapi		# do not enable GSSAPI support for saslauthd and build gssapi plugin
 %bcond_without	mysql		# don't build MySQL plugin
@@ -40,6 +40,7 @@ Patch1:		%{name}-lt.patch
 Patch2:		%{name}-split-sql.patch
 Patch3:		%{name}-opie.patch
 # Adapted from http://frost.ath.cx/software/cyrus-sasl-patches/dist/2.1.19/cyrus-sasl-2.1.19-checkpw.c+sql.c.patch
+# Patches 5 and 6 needs update for GCC 15!
 Patch5:		%{name}-cryptedpw.patch
 Patch6:		%{name}-md5sum-passwords.patch
 Patch7:		%{name}-db.patch
@@ -49,6 +50,10 @@ Patch12:	%{name}-gssapi-detect.patch
 Patch14:	%{name}-ac-libs.patch
 Patch20:	%{name}-auxprop.patch
 Patch21:	0030-dont_use_la_files_for_opening_plugins.patch
+Patch22:	krb5.patch
+Patch23:	getsubopt.patch
+Patch24:	time.patch
+Patch25:	gcc15.patch
 URL:		https://www.cyrusimap.org/sasl/
 BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.11
@@ -511,11 +516,15 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %endif
 %patch -P7 -p1
 %patch -P9 -p1
-%{?with_nagios:%patch10 -p1}
+%{?with_nagios:%patch -P10 -p1}
 %patch -P12 -p1
 %patch -P14 -p1
 %patch -P20 -p1
 %patch -P21 -p1
+%patch -P22 -p1
+%patch -P23 -p1
+%patch -P24 -p1
+%patch -P25 -p1
 
 # update to our paths
 sed -i -e '
