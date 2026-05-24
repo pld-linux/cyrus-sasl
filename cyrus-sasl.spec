@@ -1,5 +1,7 @@
 #
 # Conditional build:
+%bcond_with	gdbm		# use GDBM as default DB library
+%bcond_with	lmdb		# use LMDB as default DB library
 %bcond_with	cryptedpw	# if you keep crypted passwords in your *sql
 %bcond_without	ldap		# disable LDAP support for saslauthd
 %bcond_without	gssapi		# do not enable GSSAPI support for saslauthd and build gssapi plugin
@@ -16,6 +18,14 @@
 #
 %if %{without mysql} && %{without pgsql}
 %undefine with_cryptedpw
+%endif
+
+%if %{with gdbm}
+%define default_dblib gdbm
+%elif %{with lmdb}
+%define default_dblib lmdb
+%else
+%define default_dblib berkeley
 %endif
 
 Summary:	The SASL library API for the Cyrus mail system
@@ -58,7 +68,13 @@ URL:		https://www.cyrusimap.org/sasl/
 BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.11
 %{?with_authlib:BuildRequires:	courier-authlib-devel}
+%if %{with gdbm}
+BuildRequires:	gdbm-devel
+%elif %{with lmdb}
+BuildRequires:	lmdb-devel
+%else
 BuildRequires:	db-devel
+%endif
 BuildRequires:	ed
 BuildRequires:	groff
 %{?with_gssapi:BuildRequires:	heimdal-devel}
@@ -556,7 +572,7 @@ sed -i -e '
 	--enable-static \
 	%{?with_authlib:--with-authdaemond=/var/spool/authdaemon/socket} \
 	--with-configdir=%{_sysconfdir} \
-	--with-dblib=berkeley \
+	--with-dblib=%{default_dblib} \
 	--with-dbpath=/var/lib/sasl2/sasl.db \
 	%{?with_ldap:--with-ldap} \
 	%{?with_mysql:--with-mysql=%{_prefix}} \
