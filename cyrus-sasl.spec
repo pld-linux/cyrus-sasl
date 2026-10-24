@@ -35,7 +35,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.28
-Release:	3
+Release:	4
 License:	distributable
 Group:		Libraries
 #Source0Download: https://github.com/cyrusimap/cyrus-sasl/releases
@@ -90,7 +90,7 @@ BuildRequires:	sphinx-pdg-3
 %{?with_sqlite:BuildRequires:	sqlite-devel}
 %{?with_sqlite3:BuildRequires:	sqlite3-devel >= 3}
 Requires:	pam >= 0.79.0
-Requires:	%{name}-libs = %{version}-%{release}
+Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
 Obsoletes:	cyrus-sasl-x509 < %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -153,7 +153,7 @@ Summary(pt_BR.UTF-8):	Exemplos e arquivos para desenvolvimento com SASL
 Summary(ru.UTF-8):	Файлы для программирования с библиотекой Cyrus SASL
 Summary(uk.UTF-8):	Файли для програмування з бібліотекою Cyrus SASL
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 This includes the header files and documentation needed to develop
@@ -180,7 +180,7 @@ Summary(pl.UTF-8):	Statyczne biblioteki cyrus-sasl
 Summary(ru.UTF-8):	Статические библиотеки Cyrus SASL
 Summary(uk.UTF-8):	Статичні бібліотеки Cyrus SASL
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-devel%{?_isa} = %{version}-%{release}
 
 %description static
 Static cyrus-sasl libraries.
@@ -201,7 +201,7 @@ Summary:	Anonymous Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka anonymous do Cyrus SASL
 Summary(pt_BR.UTF-8):	Mecanismo SASL ANONYMOUS
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description anonymous
 This plugin implements the SASL ANONYMOUS mechanism, used for
@@ -220,7 +220,7 @@ Summary:	Cram-MD5 Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka Cram-MD5 do Cyrus SASL
 Summary(pt_BR.UTF-8):	Mecanismo SASL CRAM-MD5
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description cram-md5
 This plugin implements the SASL CRAM-MD5 mechanism. CRAM-MD5 is the
@@ -245,7 +245,7 @@ Summary:	Digest-MD5 Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka Digest-MD5 do Cyrus SASL
 Summary(pt_BR.UTF-8):	Mecanismo SASL DIGEST-MD5
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description digest-md5
 This plugin implements the latest draft of the SASL DIGEST-MD5
@@ -272,7 +272,7 @@ Summary:	GSSAPI Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka GSSAPI do Cyrus SASL
 Summary(pt_BR.UTF-8):	Mecanismo SASL GSSAPI
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description gssapi
 This plugin implements the SASL GSSAPI mechanism, used for
@@ -290,7 +290,7 @@ autenticação Kerberos/GSSAPI.
 Summary:	Unsupported Login Cyrus SASL plugin
 Summary(pl.UTF-8):	Nie wspierana wtyczka Login do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description login
 Unsupported LOGIN Cyrus SASL plugin.
@@ -303,7 +303,7 @@ SASL.
 Summary:	Cyrus SASL MySQL plugin
 Summary(pl.UTF-8):	Wtyczka MySQL do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description mysql
 Cyrus SASL MySQL plugin.
@@ -315,7 +315,7 @@ Wtyczka MySQL do Cyrus SASL.
 Summary:	Cyrus SASL NTLM plugin
 Summary(pl.UTF-8):	Wtyczka NTLM do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description ntlm
 Cyrus SASL NTLM plugin.
@@ -328,7 +328,7 @@ Summary:	OTP Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka OTP do Cyrus SASL
 Summary(pt_BR.UTF-8):	Mecanismo SASL OTP
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 Obsoletes:	cyrus-sasl-opie < %{version}
 
 %description otp
@@ -342,7 +342,7 @@ SASL.
 Summary:	Cyrus SASL PostgreSQL plugin
 Summary(pl.UTF-8):	Wtyczka PostgreSQL do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description pgsql
 Cyrus SASL PostgreSQL plugin.
@@ -355,7 +355,7 @@ Summary:	Plain Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka plain do Cyrus SASL
 Summary(pt_BR.UTF-8):	Mecanismo SASL PLAIN
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description plain
 This plugin implements the SASL PLAIN mechanism. Although insecure,
@@ -379,7 +379,7 @@ usuário para o servidor.
 Summary:	Cyrus SASL sasldb plugin
 Summary(pl.UTF-8):	Wtyczka sasldb do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description sasldb
 Cyrus SASL sasldb plugin.
@@ -391,7 +391,7 @@ Wtyczka sasldb do Cyrus SASL.
 Summary:	Cyrus SASL LDAPDB plugin
 Summary(pl.UTF-8):	Wtyczka LDAPDB do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description ldapdb
 Cyrus SASL ldapdb plugin.
@@ -404,7 +404,7 @@ Summary:	PASSDSS Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka PASSDSS do Cyrus SASL
 Summary(pt_BR.UTF-8):	Mecanismo SASL PASSDSS
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description passdss
 This plugin implements the PASSDSS 3DES mechanism.
@@ -420,7 +420,7 @@ Summary:	SCRAM Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka SCRAM do Cyrus SASL
 Summary(pt_BR.UTF-8):	Mecanismo SASL SCRAM
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description scram
 This plugin implements the SASL SCRAM-MD5 mechanism.
@@ -435,7 +435,7 @@ Este plugin implementa o mecanismo SASL SCRAM.
 Summary:	Cyrus SQLite 2 PostgreSQL plugin
 Summary(pl.UTF-8):	Wtyczka SQLite 2 do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description sqlite
 Cyrus SASL SQLite 2 plugin.
@@ -447,7 +447,7 @@ Wtyczka SQLite 2 do Cyrus SASL.
 Summary:	Cyrus SQLite 3 PostgreSQL plugin
 Summary(pl.UTF-8):	Wtyczka SQLite 3 do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description sqlite3
 Cyrus SASL SQLite 3 plugin.
@@ -460,7 +460,7 @@ Summary:	SRP Cyrus SASL plugin
 Summary(pl.UTF-8):	Wtyczka SRP do Cyrus SASL
 Summary(pt_BR.UTF-8):	Mecanismo SASL SRP
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description srp
 This plugin implements the SASL SRP mechanism, based on the Secure
@@ -485,7 +485,7 @@ confidencialidade.
 Summary:	Cyrus SASL pwcheck helper
 Summary(pl.UTF-8):	Program pomocniczy pwcheck do Cyrus SASL
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description pwcheck
 Cyrus SASL pwcheck helper.
@@ -498,7 +498,7 @@ Summary:	Cyrus SASL authd
 Summary(pl.UTF-8):	Demon authd do Cyrus SASL
 Group:		Daemons
 Requires(post,preun):	/sbin/chkconfig
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 Requires:	/sbin/chkconfig
 Requires:	rc-scripts
 
