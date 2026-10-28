@@ -35,7 +35,7 @@ Summary(ru.UTF-8):	Библиотека Cyrus SASL
 Summary(uk.UTF-8):	Бібліотека Cyrus SASL
 Name:		cyrus-sasl
 Version:	2.1.28
-Release:	4
+Release:	5
 License:	distributable
 Group:		Libraries
 #Source0Download: https://github.com/cyrusimap/cyrus-sasl/releases
@@ -64,6 +64,7 @@ Patch22:	krb5.patch
 Patch23:	getsubopt.patch
 Patch24:	time.patch
 Patch25:	gcc15.patch
+Patch26:	CVE-2026-107161.patch
 URL:		https://www.cyrusimap.org/sasl/
 BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.11
@@ -541,6 +542,7 @@ Wtyczka Nagiosa do sprawdzania działania saslauthd.
 %patch -P23 -p1
 %patch -P24 -p1
 %patch -P25 -p1
+%patch -P26 -p1
 
 # update to our paths
 sed -i -e '
